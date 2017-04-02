@@ -1,0 +1,61 @@
+*------------------------------------------------------------*
+User:                Divya
+Date:                November 23, 2016
+Time:                03:25:10
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+                  Measurement    Frequency
+Role                 Level         Count
+ 
+ASSESS             INTERVAL          2
+ASSESS             NOMINAL           1
+CLASSIFICATION     NOMINAL           3
+FREQ               INTERVAL          1
+INPUT              ORDINAL           3
+PREDICT            INTERVAL          4
+RESIDUAL           INTERVAL          2
+SEGMENT            NOMINAL           1
+TARGET             BINARY            1
+ 
+ 
+ 
+ 
+Model Events
+ 
+                                                   Number
+                                    Measurement      of
+        Target             Event       Level       Levels      Order       Label
+ 
+Contributed_To_Accident     YES       BINARY          2      Descending
+ 
+ 
+ 
+ 
+Predicted and decision variables
+ 
+Type                   Variable                              Label
+ 
+TARGET       Contributed_To_Accident
+PREDICTED    P_Contributed_To_AccidentYes    Predicted: Contributed_To_Accident=Yes
+RESIDUAL     R_Contributed_To_AccidentYes    Residual: Contributed_To_Accident=Yes
+PREDICTED    P_Contributed_To_AccidentNo     Predicted: Contributed_To_Accident=No
+RESIDUAL     R_Contributed_To_AccidentNo     Residual: Contributed_To_Accident=No
+FROM         F_Contributed_To_Accident       From: Contributed_To_Accident
+INTO         I_Contributed_To_Accident       Into: Contributed_To_Accident
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*

@@ -1,0 +1,18 @@
+NOTE: PROCEDURE PRINTTO used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+2                                           The SAS System          01:43 Wednesday, November 23, 2016
+
+297        libname _hpdmDat "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS
+297      ! Final\Workspaces\EMWS1\HPDM";
+NOTE: Libref _HPDMDAT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS 
+      Final\Workspaces\EMWS1\HPDM
+298        libname _hpdmDat;
+NOTE: Libref _HPDMDAT has been deassigned.
+299        proc printto;
+300        run;
+

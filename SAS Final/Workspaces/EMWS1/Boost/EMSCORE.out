@@ -1,0 +1,9 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+Variable Importance
+
+Obs           NAME                     LABEL              NRULES    NSURROGATES    IMPORTANCE    VIMPORTANCE     RATIO
+
+ 1     GRP_Property_Damage    Grouped: Property_Damage       1           0           1.00000       1.00000      1.00000
+ 2     GRP_Violation_Type     Grouped: Violation_Type        1           0           0.53731       0.59586      1.10897

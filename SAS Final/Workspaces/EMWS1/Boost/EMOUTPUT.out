@@ -1,0 +1,213 @@
+*------------------------------------------------------------*
+User:                Divya
+Date:                November 23, 2016
+Time:                03:23:20
+*------------------------------------------------------------*
+* Training Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Variable Summary
+ 
+          Measurement    Frequency
+ Role        Level         Count
+ 
+INPUT       ORDINAL          3
+TARGET      BINARY           1
+ 
+ 
+ 
+ 
+Model Events
+ 
+                                                   Number
+                                    Measurement      of
+        Target             Event       Level       Levels      Order       Label
+ 
+Contributed_To_Accident     YES       BINARY          2      Descending
+ 
+ 
+ 
+ 
+Predicted and decision variables
+ 
+Type                   Variable                              Label
+ 
+TARGET       Contributed_To_Accident
+PREDICTED    P_Contributed_To_AccidentYes    Predicted: Contributed_To_Accident=Yes
+RESIDUAL     R_Contributed_To_AccidentYes    Residual: Contributed_To_Accident=Yes
+PREDICTED    P_Contributed_To_AccidentNo     Predicted: Contributed_To_Accident=No
+RESIDUAL     R_Contributed_To_AccidentNo     Residual: Contributed_To_Accident=No
+FROM         F_Contributed_To_Accident       From: Contributed_To_Accident
+INTO         I_Contributed_To_Accident       Into: Contributed_To_Accident
+
+
+*------------------------------------------------------------*
+* Score Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+Variable Importance
+ 
+Obs           NAME                     LABEL              NRULES    NSURROGATES    IMPORTANCE    VIMPORTANCE     RATIO
+ 
+ 1     GRP_Property_Damage    Grouped: Property_Damage       1           0           1.00000       1.00000      1.00000
+ 2     GRP_Violation_Type     Grouped: Violation_Type        1           0           0.53731       0.59586      1.10897
+
+
+*------------------------------------------------------------*
+* Report Output
+*------------------------------------------------------------*
+ 
+ 
+ 
+ 
+Fit Statistics
+ 
+Target=Contributed_To_Accident Target Label=' '
+ 
+   Fit
+Statistics    Statistics Label                     Train    Validation
+ 
+  _NOBS_      Sum of Frequencies                 9979.00      3001.00
+  _SUMW_      Sum of Case Weights Times Freq    19958.00      6002.00
+  _MISC_      Misclassification Rate                0.34         0.03
+  _MAX_       Maximum Absolute Error                0.55         0.55
+  _SSE_       Sum of Squared Errors              4777.45      1418.41
+  _ASE_       Average Squared Error                 0.24         0.24
+  _RASE_      Root Average Squared Error            0.49         0.49
+  _DIV_       Divisor for ASE                   19958.00      6002.00
+  _DFT_       Total Degrees of Freedom           9979.00          .
+ 
+ 
+ 
+ 
+Classification Table
+ 
+Data Role=TRAIN Target Variable=Contributed_To_Accident Target Label=' '
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+ NO         NO         59.6928       98.3133        4896        49.0630
+ YES        NO         40.3072       66.1332        3306        33.1296
+ NO         YES         4.7271        1.6867          84         0.8418
+ YES        YES        95.2729       33.8668        1693        16.9656
+ 
+ 
+Data Role=VALIDATE Target Variable=Contributed_To_Accident Target Label=' '
+ 
+                       Target        Outcome     Frequency       Total
+Target    Outcome    Percentage    Percentage      Count      Percentage
+ 
+ NO         NO         98.3051       98.6395        2900        96.6345
+ YES        NO          1.6949       81.9672          50         1.6661
+ NO         YES        78.4314        1.3605          40         1.3329
+ YES        YES        21.5686       18.0328          11         0.3665
+ 
+ 
+ 
+ 
+Event Classification Table
+ 
+Data Role=TRAIN Target=Contributed_To_Accident Target Label=' '
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+  3306        4896         84         1693
+ 
+ 
+Data Role=VALIDATE Target=Contributed_To_Accident Target Label=' '
+ 
+  False       True        False       True
+Negative    Negative    Positive    Positive
+ 
+   50         2900         40          11
+ 
+ 
+ 
+ 
+Assessment Score Rankings
+ 
+Data Role=TRAIN Target Variable=Contributed_To_Accident Target Label=' '
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth     Gain      Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    90.1838   1.90184     1.90184     95.2729     95.2729         499         0.54548
+  10    90.1838   1.90184     1.90184     95.2729     95.2729         499         0.54548
+  15    90.1838   1.90184     1.90184     95.2729     95.2729         499         0.54548
+  20    79.6136   1.47903     1.79614     74.0923     89.9778         499         0.52467
+  25    62.4600   0.93845     1.62460     47.0121     81.3846         499         0.49807
+  30    51.0242   0.93845     1.51024     47.0121     75.6559         499         0.49807
+  35    42.8558   0.93845     1.42856     47.0121     71.5639         499         0.49807
+  40    36.7295   0.93845     1.36730     47.0121     68.4949         499         0.49807
+  45    31.9646   0.93845     1.31965     47.0121     66.1079         499         0.49807
+  50    28.1527   0.93845     1.28153     47.0121     64.1984         499         0.49807
+  55    25.0339   0.93845     1.25034     47.0121     62.6360         499         0.49807
+  60    22.4348   0.93845     1.22435     47.0121     61.3340         499         0.49807
+  65    20.2357   0.93845     1.20236     47.0121     60.2323         499         0.49807
+  70    18.3506   0.93845     1.18351     47.0121     59.2880         499         0.49807
+  75    16.7170   0.93845     1.16717     47.0121     58.4696         499         0.49807
+  80    15.2875   0.93845     1.15288     47.0121     57.7535         499         0.49807
+  85    11.2212   0.46161     1.11221     23.1244     55.7165         499         0.47394
+  90     7.0629   0.36371     1.07063     18.2199     53.6334         499         0.46898
+  95     3.3422   0.36371     1.03342     18.2199     51.7695         499         0.46898
+ 100     0.0000   0.36371     1.00000     18.2199     50.0952         498         0.46898
+ 
+ 
+Data Role=VALIDATE Target Variable=Contributed_To_Accident Target Label=' '
+ 
+                                                                                    Mean
+                            Cumulative       %      Cumulative     Number of     Posterior
+Depth      Gain     Lift       Lift      Response   % Response   Observations   Probability
+ 
+   5    350.502   4.50502     4.50502     9.15715     9.15715         151         0.51408
+  10    195.315   1.39093     2.95315     2.82729     6.00273         150         0.49807
+  15    143.356   1.39093     2.43356     2.82729     4.94660         150         0.49807
+  20    117.334   1.39093     2.17334     2.82729     4.41765         150         0.49807
+  25    101.707   1.39093     2.01707     2.82729     4.10000         150         0.49807
+  30     91.283   1.39093     1.91283     2.82729     3.88812         150         0.49807
+  35     83.834   1.39093     1.83834     2.82729     3.73672         150         0.49807
+  40     78.246   1.39093     1.78246     2.82729     3.62313         150         0.49807
+  45     73.899   1.39093     1.73899     2.82729     3.53477         150         0.49807
+  50     70.421   1.39093     1.70421     2.82729     3.46407         150         0.49807
+  55     67.575   1.39093     1.67575     2.82729     3.40622         150         0.49807
+  60     56.719   0.37234     1.56719     0.75683     3.18556         150         0.47422
+  65     45.813   0.14874     1.45813     0.30234     2.96389         150         0.46898
+  70     36.465   0.14874     1.36465     0.30234     2.77387         150         0.46898
+  75     28.363   0.14874     1.28363     0.30234     2.60917         150         0.46898
+  80     21.273   0.14874     1.21273     0.30234     2.46505         150         0.46898
+  85     15.016   0.14874     1.15016     0.30234     2.33789         150         0.46898
+  90      9.455   0.14874     1.09455     0.30234     2.22484         150         0.46898
+  95      4.479   0.14874     1.04479     0.30234     2.12369         150         0.46898
+ 100      0.000   0.14874     1.00000     0.30234     2.03266         150         0.46898
+ 
+ 
+ 
+ 
+Assessment Score Distribution
+ 
+Data Role=TRAIN Target Variable=Contributed_To_Accident Target Label=' '
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.50-0.55      1693          84        0.54548        17.8074
+ 0.45-0.50      3306        4896        0.49130        82.1926
+ 
+ 
+Data Role=VALIDATE Target Variable=Contributed_To_Accident Target Label=' '
+ 
+ Posterior     Number                     Mean
+Probability      of      Number of     Posterior
+   Range       Events    Nonevents    Probability    Percentage
+ 
+ 0.50-0.55       11           40        0.54548         1.6994
+ 0.45-0.50       50         2900        0.48503        98.3006

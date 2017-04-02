@@ -1,0 +1,2841 @@
+*------------------------------------------------------------*
+User:                Divya
+Date:                November 23, 2016
+Time:                03:23:20
+Site:                70080468
+Platform:            X64_8HOME
+Maintenance Release: 9.04.01M3P062415
+EM Version:          14.1
+* 
+*------------------------------------------------------------*
+* Training Log
+Date:                November 23, 2016
+Time:                03:22:46
+*------------------------------------------------------------*
+14761  proc freq data=EMWS1.Boost_VariableSet noprint;
+14762  table ROLE*LEVEL/out=WORK.BoostMETA;
+14763  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS1.BOOST_VARIABLESET.
+NOTE: The data set WORK.BOOSTMETA has 2 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.03 seconds
+ 
+ 
+14764  proc print data=WORK.BoostMETA label noobs;
+14765  var ROLE LEVEL COUNT;
+14766  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+14767  title9 ' ';
+14768  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+14769  run;
+ 
+NOTE: There were 2 observations read from the data set WORK.BOOSTMETA.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+14770  title10;
+ 
+14771  %let EMNORLEN = %DMNORLEN;
+EMWS1.Stat2_TRAIN EMWS1.Stat2_TRAIN
+EMWS1.Stat2_TRAIN EMWS1.Stat2_TRAIN EMWS1 Stat2_TRAIN
+EMWS1.Stat2_TRAIN EMWS1.Stat2_TRAIN
+EMWS1.Stat2_TRAIN EMWS1.Stat2_TRAIN EMWS1 Stat2_TRAIN
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _INIT >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _term >>
+14818  data WORK.Boost_EVENT(KEEP=VARIABLE LABEL LEVEL EVENT NUMLEVELS ORDER);
+14819  length ORDER $20;
+14820  label VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel,  NOQUOTE))" EVENT = "%sysfunc(sasmsg(sashelp.dmine, assmt_event_vlabel, NOQUOTE))" NUMLEVELS = "%sysfunc(sasmsg(sashelp.dmine, rpt_numcat_vlabel, NOQUOTE))" LEVEL =
+14821     "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" ORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_order_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+14822  set EMWS1.BOOST_CONTRIBUTED_TO_A_DM( where=(_TYPE_="TARGET"));
+14823  NumLevels=2;
+14824  select(upcase(ORDER));
+14825  when('DESC') ORDER = 'Descending';
+14826  when('ASC') ORDER = 'Ascending';
+14827  when('FMTDESC') ORDER = 'Formatted Descending';
+14828  when('FMTASC') ORDER = 'Formatted Ascending';
+14829  otherwise ORDER = 'Descending';
+14830  end;
+14831  output;
+14832  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.BOOST_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='TARGET';
+NOTE: The data set WORK.BOOST_EVENT has 1 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+14833  title9 ' ';
+14834  proc print data=WORK.Boost_EVENT noobs label;
+14835  var VARIABLE EVENT LEVEL NUMLEVELS ORDER LABEL;
+14836  title9 ' ';
+14837  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_modelEvent_title  , NOQUOTE))";
+14838  run;
+ 
+NOTE: There were 1 observations read from the data set WORK.BOOST_EVENT.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+14839  title10;
+ 
+"No decisions defined for target "Contributed_To_Accident"."
+14840  proc print data = EMWS1.Boost_Contributed_To_A_DM noobs label;
+14841  var _type_ variable label;
+14842  where _type_ ^in('MATRIX', 'DECISION', 'TRAINPRIOR', 'DATAPRIOR', 'DECPRIOR');
+14843  label _TYPE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_type_vlabel,     NOQUOTE))" VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_variable_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+14844  title9 ' ';
+14845  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_predDecVars_title  , NOQUOTE))";
+14846  run;
+ 
+NOTE: There were 7 observations read from the data set EMWS1.BOOST_CONTRIBUTED_TO_A_DM.
+      WHERE _type_ not in ('DATAPRIOR', 'DECISION', 'DECPRIOR', 'MATRIX', 'TRAINPRIOR');
+NOTE: The PROCEDURE PRINT printed page 3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+14847  title10;
+ 
+14848  %let EMEXCEPTIONSTRING=;
+PERFORMANCE  DETAILS
+15308  *------------------------------------------------------------*;
+15309  * Boost: Generation of macros and macro variables;
+15310  * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+15311  *------------------------------------------------------------*;
+ 
+15312  %let EMEXCEPTIONSTRING=;
+15313  *------------------------------------------------------------*;
+15314  * TRAIN: Boost;
+15315  *------------------------------------------------------------*;
+15316  %let EM_ACTION = TRAIN;
+15317  %let syscc = 0;
+15318  %macro main;
+15319
+15320    filename temp catalog 'sashelp.emmodl.boost_macros.source';
+15321    %include temp;
+15322    filename temp;
+15323
+15324    %setProperties;
+15325
+15326    %if %upcase(&EM_ACTION) = CREATE %then %do;
+15327      filename temp catalog 'sashelp.emmodl.boost_create.source';
+15328      %include temp;
+15329      filename temp;
+15330
+15331      %create;
+15332    %end;
+15333
+15334     %else
+15335     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+15336
+15337         filename temp catalog 'sashelp.emmodl.boost_train.source';
+15338         %include temp;
+15339         filename temp;
+15340         %train;
+15341     %end;
+15342
+15343    %else
+15344    %if %upcase(&EM_ACTION) = SCORE %then %do;
+15345      filename temp catalog 'sashelp.emmodl.boost_score.source';
+15346      %include temp;
+15347      filename temp;
+15348
+15349      %score;
+15350
+15351    %end;
+15352
+15353    %else
+15354    %if %upcase(&EM_ACTION) = REPORT %then %do;
+15355
+15356         filename temp catalog 'sashelp.emmodl.boost_report.source';
+15357         %include temp;
+15358         filename temp;
+15359
+15360         %report;
+15361     %end;
+15362
+15363     %doendm:
+15364  %mend main;
+15365
+15366  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_MACROS.SOURCE.
+15367 +
+15368 +%macro SetProperties;
+15369 +
+15370 +     /* boost options */
+15371 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONS,   value=50, global=Y);
+15372 +     %em_checkmacro(name=EM_PROPERTY_TRAINPROPORTION,   value=60, global=Y);
+15373 +     %em_checkmacro(name=EM_PROPERTY_CATEGORICALBINS, value=30, global=Y);
+15374 +     %em_checkmacro(name=EM_PROPERTY_INTERVALBINS, value=100, global=Y);
+15375 +     %em_checkmacro(name=EM_PROPERTY_HUBER, value=NO, global=Y);
+15376 +     %em_checkmacro(name=EM_PROPERTY_SEED,   value=12345, global=Y);
+15377 +     %em_checkmacro(name=EM_PROPERTY_SHRINKAGE,   value=0.1, global=Y);
+15378 +     %em_checkmacro(name=EM_PROPERTY_LEAFFRACTION,   value=0.1, global=Y);
+15379 +     %em_checkmacro(name=EM_PROPERTY_SPLITSIZE,   value=., global=Y);
+15380 +     %em_checkmacro(name=EM_PROPERTY_NODESIZE,   value=20000, global=Y);
+15381 +     %em_checkmacro(name=EM_PROPERTY_SUBSERIES,   value=BEST, global=Y);
+15382 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONNUM,   value=1, global=Y);
+15383 +
+15384 +     %em_checkmacro(name=EM_PROPERTY_PRECISION,    value=0, global=Y);
+15385 +     %em_checkmacro(name=EM_PROPERTY_MISSING,      value=USEINSEARCH, global=Y);
+15386 +     %em_checkmacro(name=EM_PROPERTY_MINCATSIZE, value=5, global=Y);
+15387 +     %em_checkmacro(name=EM_PROPERTY_MAXBRANCH,  value=2, global=Y);
+15388 +     %em_checkmacro(name=EM_PROPERTY_MAXDEPTH,   value=2, global=Y);
+15389 +     %em_checkmacro(name=EM_PROPERTY_REUSEVAR,   value=1, global=Y);
+15390 +     %em_checkmacro(name=EM_PROPERTY_EXHAUSTIVE,   value=5000, global=Y);
+15391 +     %em_checkmacro(name=EM_PROPERTY_PERFORMANCE,   value=DISK, global=Y);
+15392 +
+15393 +     %em_checkmacro(name=EM_PROPERTY_ASSESSMEASURE, value=PROFIT, global=Y);
+15394 +     %em_checkmacro(name=EM_PROPERTY_MEASURE, value=PROFIT, global=Y);
+15395 +     %em_checkmacro(name=EM_PROPERTY_NSURRS, value=0, global=Y);
+15396 +     %em_checkmacro(name=EM_PROPERTY_VARSELECTION, value=Y, global=Y);
+15397 +
+15398 +     %em_checkmacro(name=EM_PROPERTY_OBSIMPORTANCE, value=N, global=Y);
+15399 +     %em_checkmacro(name=EM_PROPERTY_NUMSINGLEIMP, value=5, global=Y);
+15400 +     %em_checkmacro(name=EM_PROPERTY_NUMPAIRIMP, value=0, global=Y);
+15401 +
+15402 +%mend SetProperties;
+15403 +
+15404 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_TRAIN.SOURCE.
+15406 +%macro train;
+15408 +   filename temp catalog 'sashelp.emmodl.boost_trainmacros.source';
+15409 +   %include temp;
+15410 +   filename temp;
+15412 +   %if &EM_IMPORT_DATA eq %then %do;
+15413 +       %let EMEXCEPTIONSTRING = exception.server.IMPORT.NOTRAIN,1;
+15414 +       %put &em_codebar;
+15415 +       %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_nodeTrainRawData_note, NOQUOTE));
+15416 +       %put &errormsg;
+15417 +       %put &em_codebar;
+15418 +       %goto doendm;
+15419 +   %end;
+15420 +   %else
+15421 +       %let EMEXCEPTIONSTRING =;
+15423 +   %if  &EM_NUM_TARGET ne 1 %then %do;
+15424 +        %let EMEXCEPTIONSTRING = exception.server.USE1TARGET;
+15425 +        %put &em_codebar;
+15426 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, metadata.use01target_err, NOQUOTE));
+15427 +        %put &errormsg;
+15428 +        %put &em_codebar;
+15429 +        %goto doendm;
+15430 +   %end;
+15432 +   %let target_level = %EM_TARGET_LEVEL;
+15433 +   %let target_var = %EM_TARGET;
+15435 +   %if ("&target_Level" ne "INTERVAL") %then %do;
+15436 +       %em_boost_makeDMDB(indata=&EM_IMPORT_DATA, target=&target_Var,
+15437 +                             nLevel=_nTargetLevel);
+15438 +   %end;
+15440 +   /* check actual num of target levels */
+15441 +   %if (&target_Level eq BINARY) %then %do;
+15442 +      %if &_nTargetLevel  > 2 %then %do;
+15443 +        %let EMEXCEPTIONSTRING = exception.server.METADATA.WRONGTARGETLEVEL,&target_Var;
+15444 +        %put &em_codebar;
+15445 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, metadata.wrongtargetlevel, NOQUOTE));
+15446 +        %put &errormsg;
+15447 +        %put &em_codebar;
+15448 +        %goto doendm;
+15449 +      %end;
+15450 +   %end;
+15452 +   %if  (&EM_NUM_INTERVAL_INPUT < 1) and (&EM_NUM_BINARY_INPUT < 1) and (&EM_NUM_ORDINAL_INPUT < 1)
+15453 +        and (&EM_NUM_NOMINAL_INPUT < 1) %then %do;
+15454 +        %let EMEXCEPTIONSTRING = exception.server.USEATLEAST1INPUTREJECT;
+15455 +        %put &em_codebar;
+15456 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_noInput_note, NOQUOTE));
+15457 +        %put &errormsg;
+15458 +        %put &em_codebar;
+15459 +        %goto doendm;
+15460 +   %end;
+15462 +   /* Initialize property macro variables */
+15463 +   %SetProperties;
+15465 +   /* data sets */
+15466 +   %EM_GETNAME(key=MODEL, type=DATA);
+15467 +   %EM_GETNAME(key=IMPORTANCE, type=DATA);
+15468 +   %EM_GETNAME(key=SUBFIT, type=DATA);
+15469 +   %EM_GETNAME(key=EMOUTFIT, type=DATA);
+15471 +   /* files
+15472 +   %EM_GETNAME(key=BINNINGCODE, type=FILE, extension=sas);*/
+15474 +   /* retrieve target information */
+15475 +   %let dsid=%sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='TARGET'))));
+15477 +   %let vn_event =%sysfunc(varnum(&dsid, EVENT));
+15478 +   %let vn_target_type = %sysfunc(varnum(&dsid, TYPE));
+15479 +   %let vn_target_format = %sysfunc(varnum(&dsid, FORMAT));
+15480 +   %let vn_target_level  = %sysfunc(varnum(&dsid, LEVEL));
+15481 +   %do %while(^ %sysfunc(fetch(&dsid)));
+15482 +      %let temp = %nrbquote(%sysfunc(getvarc(&dsid, &vn_event)));
+15483 +      %let Target_Event = %nrbquote(%sysfunc(tranwrd(&temp, %str(%"),"")));
+15484 +      %let Target_Type =  %sysfunc(getvarc(&dsid, &vn_target_type));
+15485 +      %let Target_Format = %sysfunc(getvarc(&dsid, &vn_target_format));
+15486 +      %let Target_Level = %sysfunc(getvarc(&dsid, &vn_target_level));
+15487 +   %end;
+15488 +   %let dsid = %sysfunc(close(&dsid));
+15490 +   /* if target level is ORDINAL, throw run time exception -- proc boost does not support ordinal target */
+15491 +   %if &Target_Level eq ORDINAL %then %do;
+15492 +        %let EMEXCEPTIONSTRING = exception.server.METADATA.INVALIDORDINALTARGET;
+15493 +        %put &em_codebar;
+15494 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_invalidordinaltarget_note, NOQUOTE));
+15495 +        %put &errormsg;
+15496 +        %put &em_codebar;
+15497 +        %goto doendm;
+15498 +   %end;
+15500 +   /* if subSeries=ITERATIONS and iterationNum not specified, exception should be thrown */
+15501 +   %if ((&EM_PROPERTY_SUBSERIES eq ITERATIONS) and (&EM_PROPERTY_ITERATIONNUM eq . )) %then %do;
+15502 +        %let EMEXCEPTIONSTRING = exception.server.EMTOOL.BOOST.NOITERATIONNUM;
+15503 +        %put &em_codebar;
+15504 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_noiterationnum_note, NOQUOTE));
+15505 +        %put &errormsg;
+15506 +        %put &em_codebar;
+15507 +        %goto doendm;
+15508 +   %end;
+15510 +   %runBoostProcedure;
+15513 +   %doendm:
+15514 +%mend train;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_TRAINMACROS.SOURCE.
+15515 +%Macro em_boost_makeDMDB(indata=, target=,  nLevel= );
+15516 +  %global &nLevel;
+15518 +  %let targetLevel=;
+15519 +  data _null_;
+15520 +     length orderString $64;
+15521 +     set &em_data_variableset end=eof;
+15522 +     where NAME="&target";
+15523 +     select(order);
+15524 +            when('')        order ='DESC';
+15525 +            when('FMTASC')  order='ASCFMT';
+15526 +            when('FMTDESC') order='DESFMT';
+15527 +            otherwise;
+15528 +     end;
+15529 +     if eof then do;
+15530 +        call symput("targetOrder", trim(order));
+15531 +        call symput("targetLevel", trim(Level));
+15532 +     end;
+15533 +  run;
+15535 +  %if "&targetLevel" ne "INTERVAL" %then %do;
+15536 +  proc dmdb batch data=&indata dmdbCat=_BoostDMDB
+15537 +    classout=_tmp_dmdbout;
+15538 +    class &target(&targetOrder);
+15539 +    target &target;
+15540 +  run;
+15541 +  data _tmp_dmdbout;
+15542 +    set _tmp_dmdbout;
+15543 +    if strip(TYPE) = 'N' and  strip(LEVEL) = '.' then delete;
+15544 +    if strip(TYPE) = 'C' and  strip(LEVEL) = '' then delete;
+15545 +  run;
+15546 +  data _null_;
+15547 +    %let dsid = %sysfunc(open(work._tmp_dmdbout));
+15548 +    %let _obs = %sysfunc(attrn(&dsid, NOBS));
+15549 +    %let dsid = %sysfunc(close(&dsid));
+15550 +     call symput("&nLevel", put(&_obs, Best12.));
+15551 +  run;
+15553 +  proc datasets lib=work nolist;
+15554 +     delete _tmp_dmdbout;
+15555 +  run;
+15556 +  quit;
+15557 +  %end;
+15559 +%Mend em_boost_makeDMDB;
+15561 +%macro runBoostProcedure;
+15563 +  proc sql;
+15564 +    reset noprint;
+15565 +    select count(*) into :nobs from &EM_IMPORT_DATA;
+15566 +  quit;
+15568 +  %let arborkluge= "work._BoostDMDB";
+15569 +  proc arbor proc=treeboost data=&EM_IMPORT_DATA
+15571 +    %if &EM_PROPERTY_ITERATIONS ne %then %do;
+15572 +      iterations = &EM_PROPERTY_ITERATIONS
+15573 +    %end;
+15575 +    %if &EM_PROPERTY_TRAINPROPORTION ne %then %do;
+15576 +       %let tprop = %sysevalf(&EM_PROPERTY_TRAINPROPORTION / 100);
+15577 +       trainproportion = &tprop
+15578 +    %end;
+15580 +    %if &EM_PROPERTY_SEED ne %then %do;
+15581 +       seed = &EM_PROPERTY_SEED
+15582 +    %end;
+15584 +    %if &EM_PROPERTY_SHRINKAGE ne %then %do;
+15585 +       shrinkage = &EM_PROPERTY_SHRINKAGE
+15586 +    %end;
+15588 +    %if &EM_PROPERTY_LEAFFRACTION ne %then %do;
+15589 +      leaffraction = &EM_PROPERTY_LEAFFRACTION
+15590 +    %end;
+15592 +    %let splitsize = &EM_PROPERTY_SPLITSIZE;
+15593 +    %if &splitsize ge &nobs %then %do;
+15594 +       %let splitsize= .;
+15595 +    %end;
+15596 +    %if &splitsize ne . %then %do;
+15597 +      splitsize = &splitsize
+15598 +    %end;
+15600 +    %if &EM_PROPERTY_MINCATSIZE ne %then %do;
+15601 +      mincatsize = &EM_PROPERTY_MINCATSIZE
+15602 +    %end;
+15604 +    %if &EM_PROPERTY_MAXBRANCH ne %then %do;
+15605 +       maxbranch = &EM_PROPERTY_MAXBRANCH
+15606 +    %end;
+15608 +    %if &EM_PROPERTY_MAXDEPTH ne %then %do;
+15609 +       maxdepth = &EM_PROPERTY_MAXDEPTH
+15610 +    %end;
+15612 +    %let nsurrs = ;
+15613 +    %if &EM_PROPERTY_NSURRS ne %then %do;
+15614 +      %let numInputs = %sysevalf(&EM_NUM_BINARY_INPUT + &EM_NUM_ORDINAL_INPUT + &EM_NUM_INTERVAL_INPUT + &EM_NUM_NOMINAL_INPUT);
+15615 +      %let nsurrs = %sysevalf(%sysfunc(min(&EM_PROPERTY_NSURRS, (&numInputs -1 ))));
+15616 +      maxsurrs = &nsurrs
+15617 +    %end;
+15619 +    %if &EM_PROPERTY_MISSING ne %then %do;
+15620 +      Missing = &EM_PROPERTY_MISSING
+15621 +    %end;
+15623 +    %if &EM_PROPERTY_REUSEVAR ne %then %do;
+15624 +      reusevar = &EM_PROPERTY_REUSEVAR
+15625 +    %end;
+15626 +/*
+15627 +    %if &EM_PROPERTY_PRECISION ne %then %do;
+15628 +      intervaldecimals=&EM_PROPERTY_PRECISION
+15629 +    %end;
+15630 +*/
+15631 +    %if &EM_PROPERTY_EXHAUSTIVE ne %then %do;
+15632 +      Exhaustive = &EM_PROPERTY_EXHAUSTIVE
+15633 +    %end;
+15635 +    %if &Target_Event ne %then %do;
+15636 +      Event="&Target_Event"
+15637 +    %end;
+15639 +    %if &EM_PROPERTY_CATEGORICALBINS ne %then %do;
+15640 +      CategoricalBins = &EM_PROPERTY_CATEGORICALBINS
+15641 +    %end;
+15643 +    %if &EM_PROPERTY_INTERVALBINS ne %then %do;
+15644 +      IntervalBins = &EM_PROPERTY_INTERVALBINS
+15645 +    %end;
+15647 +    %if &TARGET_LEVEL eq INTERVAL %then %do;
+15648 +      %if &EM_PROPERTY_HUBER ne %then %do;
+15649 +        Huber=&EM_PROPERTY_HUBER
+15650 +      %end;
+15651 +    %end;
+15652 +    ;
+15654 +    %if %EM_INTERVAL_INPUT %EM_INTERVAL_REJECTED ne %then %do;
+15655 +      input %EM_INTERVAL_INPUT %EM_INTERVAL_REJECTED/ level = interval;
+15656 +    %end;
+15658 +    %if %EM_BINARY_INPUT %EM_NOMINAL_INPUT %EM_BINARY_REJECTED %EM_NOMINAL_REJECTED ne  %then %do;
+15659 +      input %EM_BINARY_INPUT %EM_BINARY_REJECTED %EM_NOMINAL_INPUT %EM_NOMINAL_REJECTED / level = nominal;
+15660 +    %end;
+15662 +    %if %EM_ORDINAL_INPUT %EM_ORDINAL_REJECTED ne %then %do;
+15663 +      input %EM_ORDINAL_INPUT %EM_ORDINAL_REJECTED/ level = ordinal;
+15664 +    %end;
+15666 +    %if %EM_FREQ ne %then %do;
+15667 +       freq %EM_FREQ;
+15668 +    %end;
+15670 +    target %EM_TARGET / level = &TARGET_LEVEL;
+15672 +    &EM_DEC_STATEMENT;
+15674 +    %if &EM_PROPERTY_PERFORMANCE ne %then %do;
+15675 +      performance  workdatalocation = &EM_PROPERTY_PERFORMANCE
+15676 +    %end;
+15677 +    %if &EM_PROPERTY_NODESIZE ne %then %do;
+15678 +       nodesize = &EM_PROPERTY_NODESIZE
+15679 +    %end;
+15680 +    ;
+15681 +    save model=&EM_USER_MODEL;
+15682 +  run;
+15683 +  quit;
+15684 +  %em_checkerror();
+15686 +%mend runBoostProcedure;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+ 
+NOTE: Variable orderString is uninitialized.
+NOTE: There were 1 observations read from the data set EMWS1.BOOST_VARIABLESET.
+      WHERE NAME='Contributed_To_Accident';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: Records processed = 9979   Memory used = 511K.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           1.08 seconds
+      cpu time            1.06 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT2_TRAIN.
+NOTE: The data set WORK._TMP_DMDBOUT has 2 observations and 9 variables.
+NOTE: PROCEDURE DMDB used (Total process time):
+      real time           1.09 seconds
+      cpu time            1.07 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set WORK._TMP_DMDBOUT.
+NOTE: The data set WORK._TMP_DMDBOUT has 2 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._TMP_DMDBOUT (memtype=DATA).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           1.00 seconds
+      cpu time            0.79 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           1.01 seconds
+      cpu time            0.81 seconds
+ 
+ 
+NOTE: 1647045 kilobytes of physical memory.
+NOTE: Will use 9979 out of 9979 training cases.
+NOTE: Using memory pool with 66542592 bytes.
+NOTE: Passed training data 385 times.
+NOTE: Current TREEBOOST model contains 50 trees.
+NOTE: Training used 675416 bytes of work memory.
+NOTE: The data set EMWS1.BOOST_MODEL has 5145 observations and 4 variables.
+ 
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           12.49 seconds
+      cpu time            10.45 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT2_TRAIN.
+NOTE: PROCEDURE ARBOR used (Total process time):
+      real time           12.51 seconds
+      cpu time            10.45 seconds
+ 
+ 
+ 
+15689  %let SYSCC = 0;
+NOTE: PROCEDURE DISPLAY used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+15690  *------------------------------------------------------------*;
+15691  * End TRAIN: Boost;
+15692  *------------------------------------------------------------*;
+15693
+ 
+15694  *------------------------------------------------------------*;
+15695  * Close any missing semi colons;
+15696  *------------------------------------------------------------*;
+15697  ;
+15698  ;
+15699  ;
+15700  ;
+15701  quit;
+15702  *------------------------------------------------------------*;
+15703  * Close any unbalanced quotes;
+15704  *------------------------------------------------------------*;
+15705  /*; *"; *'; */
+15706  ;
+15707  run;
+15708  quit;
+15709  /* Reset EM Options */
+15710  options formchar="|----|+|---+=|-/\<>*";
+15711  options nocenter ls=256 ps=10000;
+15712  goptions reset=all device=GIF NODISPLAY;
+ 
+*------------------------------------------------------------*
+* Score Log
+Date:                November 23, 2016
+Time:                03:23:05
+*------------------------------------------------------------*
+15814  %let EMEXCEPTIONSTRING=;
+15815  *------------------------------------------------------------*;
+15816  * SCORE: Boost;
+15817  *------------------------------------------------------------*;
+15818  %let EM_ACTION = SCORE;
+15819  %let syscc = 0;
+15820  %macro main;
+15821
+15822    filename temp catalog 'sashelp.emmodl.boost_macros.source';
+15823    %include temp;
+15824    filename temp;
+15825
+15826    %setProperties;
+15827
+15828    %if %upcase(&EM_ACTION) = CREATE %then %do;
+15829      filename temp catalog 'sashelp.emmodl.boost_create.source';
+15830      %include temp;
+15831      filename temp;
+15832
+15833      %create;
+15834    %end;
+15835
+15836     %else
+15837     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+15838
+15839         filename temp catalog 'sashelp.emmodl.boost_train.source';
+15840         %include temp;
+15841         filename temp;
+15842         %train;
+15843     %end;
+15844
+15845    %else
+15846    %if %upcase(&EM_ACTION) = SCORE %then %do;
+15847      filename temp catalog 'sashelp.emmodl.boost_score.source';
+15848      %include temp;
+15849      filename temp;
+15850
+15851      %score;
+15852
+15853    %end;
+15854
+15855    %else
+15856    %if %upcase(&EM_ACTION) = REPORT %then %do;
+15857
+15858         filename temp catalog 'sashelp.emmodl.boost_report.source';
+15859         %include temp;
+15860         filename temp;
+15861
+15862         %report;
+15863     %end;
+15864
+15865     %doendm:
+15866  %mend main;
+15867
+15868  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_MACROS.SOURCE.
+15869 +
+15870 +%macro SetProperties;
+15871 +
+15872 +     /* boost options */
+15873 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONS,   value=50, global=Y);
+15874 +     %em_checkmacro(name=EM_PROPERTY_TRAINPROPORTION,   value=60, global=Y);
+15875 +     %em_checkmacro(name=EM_PROPERTY_CATEGORICALBINS, value=30, global=Y);
+15876 +     %em_checkmacro(name=EM_PROPERTY_INTERVALBINS, value=100, global=Y);
+15877 +     %em_checkmacro(name=EM_PROPERTY_HUBER, value=NO, global=Y);
+15878 +     %em_checkmacro(name=EM_PROPERTY_SEED,   value=12345, global=Y);
+15879 +     %em_checkmacro(name=EM_PROPERTY_SHRINKAGE,   value=0.1, global=Y);
+15880 +     %em_checkmacro(name=EM_PROPERTY_LEAFFRACTION,   value=0.1, global=Y);
+15881 +     %em_checkmacro(name=EM_PROPERTY_SPLITSIZE,   value=., global=Y);
+15882 +     %em_checkmacro(name=EM_PROPERTY_NODESIZE,   value=20000, global=Y);
+15883 +     %em_checkmacro(name=EM_PROPERTY_SUBSERIES,   value=BEST, global=Y);
+15884 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONNUM,   value=1, global=Y);
+15885 +
+15886 +     %em_checkmacro(name=EM_PROPERTY_PRECISION,    value=0, global=Y);
+15887 +     %em_checkmacro(name=EM_PROPERTY_MISSING,      value=USEINSEARCH, global=Y);
+15888 +     %em_checkmacro(name=EM_PROPERTY_MINCATSIZE, value=5, global=Y);
+15889 +     %em_checkmacro(name=EM_PROPERTY_MAXBRANCH,  value=2, global=Y);
+15890 +     %em_checkmacro(name=EM_PROPERTY_MAXDEPTH,   value=2, global=Y);
+15891 +     %em_checkmacro(name=EM_PROPERTY_REUSEVAR,   value=1, global=Y);
+15892 +     %em_checkmacro(name=EM_PROPERTY_EXHAUSTIVE,   value=5000, global=Y);
+15893 +     %em_checkmacro(name=EM_PROPERTY_PERFORMANCE,   value=DISK, global=Y);
+15894 +
+15895 +     %em_checkmacro(name=EM_PROPERTY_ASSESSMEASURE, value=PROFIT, global=Y);
+15896 +     %em_checkmacro(name=EM_PROPERTY_MEASURE, value=PROFIT, global=Y);
+15897 +     %em_checkmacro(name=EM_PROPERTY_NSURRS, value=0, global=Y);
+15898 +     %em_checkmacro(name=EM_PROPERTY_VARSELECTION, value=Y, global=Y);
+15899 +
+15900 +     %em_checkmacro(name=EM_PROPERTY_OBSIMPORTANCE, value=N, global=Y);
+15901 +     %em_checkmacro(name=EM_PROPERTY_NUMSINGLEIMP, value=5, global=Y);
+15902 +     %em_checkmacro(name=EM_PROPERTY_NUMPAIRIMP, value=0, global=Y);
+15903 +
+15904 +%mend SetProperties;
+15905 +
+15906 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_SCORE.SOURCE.
+15908 +%global ntrees ni nclasses;
+15909 +%macro selectSubseries;
+15911 +  %let arborkluge= "work._BoostDMDB";
+15912 +  %if ^%sysfunc(cexist(work._BoostDMDB)) %then %do;
+15913 +      filename temp catalog 'sashelp.emmodl.boost_trainmacros.source';
+15914 +      %include temp;
+15915 +      filename temp;
+15917 +     %let target_var = %EM_TARGET;
+15918 +     %em_boost_makeDMDB(indata=&EM_IMPORT_DATA, target=&target_Var, nLevel=_nTargetLevel);
+15919 +  %end;
+15921 +    %EM_GETNAME(key=MODEL, type=DATA);
+15922 +    %EM_GETNAME(key=IMPORTANCE, type=DATA);
+15923 +    proc arbor proc=treeboost data=&EM_IMPORT_DATA inmodel=&EM_USER_MODEL;
+15925 +    %if &EM_PROPERTY_SUBSERIES ne %then %do;
+15926 +      subseries
+15927 +      %if &EM_PROPERTY_SUBSERIES eq ITERATIONS %then %do;
+15928 +         &EM_PROPERTY_SUBSERIES = &EM_PROPERTY_ITERATIONNUM
+15929 +      %end;
+15930 +      %else %do;
+15931 +         &EM_PROPERTY_SUBSERIES
+15932 +      %end;
+15933 +    %end;
+15934 +    ;
+15936 +    makemacro nimportant=ni nclasses=nclasses
+15937 +    %if &EM_PROPERTY_SUBSERIES eq BEST %then %do;
+15938 +       nitsase=nitsase nitsmisc=nitsmisc nitsprofit=nitsprofit
+15939 +    %end;
+15940 +    ;
+15942 +    %if &EM_PROPERTY_ASSESSMEASURE ne %then %do;
+15943 +      assess
+15944 +      %if &EM_IMPORT_VALIDATE ne %then %do;
+15945 +        Validata=&EM_IMPORT_VALIDATE
+15946 +      %end;
+15947 +      %else %do;
+15948 +        NoValidata
+15949 +      %end;
+15951 +      %if &EM_PROPERTY_ASSESSMEASURE eq PROFIT %then %do;
+15952 +         %if %sysfunc(exist(&EM_DEC_DECMETA, DATA)) eq 0 %then %do;
+15953 +           %if %upcase(&Target_Level) eq INTERVAL %then %do;
+15954 +             %let EM_PROPERTY_MEASURE = ASE;
+15955 +           %end;
+15956 +           %else %do;
+15957 +             %let EM_PROPERTY_MEASURE= MISC;
+15958 +           %end;
+15959 +           %let note = %sysfunc(sasmsg(sashelp.dmine, profitlossmatrix_note, NOQUOTE));
+15960 +           %put &note;
+15961 +           %let note = %sysfunc(sasmsg(sashelp.dmine, assessmearerest_note, NOQUOTE));
+15962 +           %put &note;
+15963 +         %end;
+15964 +         %else %do;
+15965 +            %let dsid = %sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='MATRIX'))));
+15966 +            %if &dsid eq %then %do;
+15967 +               %if %upcase(&Target_Level) eq INTERVAL %then %do;
+15968 +                  %let EM_PROPERTY_MEASURE = ASE;
+15969 +               %end;
+15970 +               %else %do;
+15971 +                  %let EM_PROPERTY_MEASURE = MISC;
+15972 +               %end;
+15973 +               %let note = %sysfunc(sasmsg(sashelp.dmine, profitlossmatrix_note, NOQUOTE));
+15974 +               %put &note;
+15975 +               %let note = %sysfunc(sasmsg(sashelp.dmine, assessmeasurereset_note, NOQUOTE));
+15976 +               %put &note;
+15977 +            %end;
+15978 +            %else %do;
+15979 +               %let firstobs = %sysfunc(fetchobs(&dsid, 1));
+15980 +               %let usenum   = %sysfunc(VARNUM(&dsid, USE));
+15981 +               %let use      = %sysfunc(getvarc(&dsid, &usenum));
+15983 +               %if &use eq N %then %do;
+15984 +                 %if %upcase(&Target_Level) eq INTERVAL %then %do;
+15985 +                    %let EM_PROPERTY_MEASURE = ASE;
+15986 +                 %end;
+15987 +                 %else %do;
+15988 +                    %let EM_PROPERTY_MEASURE = MISC;
+15989 +                 %end;
+15990 +                 %let note = %sysfunc(sasmsg(sashelp.dmine, profitlossmatrix_note, NOQUOTE));
+15991 +                 %put &note;
+15992 +                 %let note = %sysfunc(sasmsg(sashelp.dmine, assessmeasurereset_note, NOQUOTE));
+15993 +                 %put &note;
+15995 +               %end;
+15996 +               %else %do;
+15997 +                 %let EM_PROPERTY_MEASURE = PROFIT;
+15998 +               %end;
+15999 +            %end;
+16000 +            %if &dsid ne %then %let dsid = %sysfunc(close(&dsid));
+16001 +         %end;
+16002 +      %end;
+16003 +      %else %if &EM_PROPERTY_ASSESSMEASURE eq MISC %then %do;
+16004 +         %if %upcase(&Target_Level) eq INTERVAL %then %do;
+16005 +           %let EM_PROPERTY_MEASURE = ASE;
+16006 +         %end;
+16007 +         %else %do;
+16008 +           %let EM_PROPERTY_MEASURE = MISC;
+16009 +         %end;
+16010 +      %end;
+16011 +      %else %if &EM_PROPERTY_ASSESSMEASURE eq ASE %then %do;
+16012 +         %let EM_PROPERTY_MEASURE = ASE;
+16013 +      %end;
+16015 +      measure = &EM_PROPERTY_MEASURE
+16017 +      ;
+16018 +    %end;
+16020 +    %let lookupString = ;
+16021 +    %if ^%symexist(EM_OPTION) %then
+16022 +        %let EM_OPTION=;
+16024 +    %if %sysfunc(index(%upcase(&EM_DEBUG), I18N)) or %sysfunc(index(%upcase(&EM_OPTION), I18N)) %then %do;
+16025 +           %let lookupString = LOOKUP=SELECT;
+16026 +    %end;
+16028 +    code file="&EM_FILE_EMFLOWSCORECODE" res group=&emloopid &lookupString;
+16029 +    code file="&EM_FILE_EMPUBLISHSCORECODE" nores group=&emloopid &lookupString;
+16031 +    save fit=SUBFIT importance=&EM_USER_IMPORTANCE model=&EM_USER_MODEL;
+16033 +    score data=&EM_IMPORT_DATA out=fds(keep= p_:) outfit=work.fit_train role=TRAIN;
+16034 +    %if &EM_IMPORT_VALIDATE ne %then %do;
+16035 +      score data=&EM_IMPORT_VALIDATE out=_NULL_ outfit=work.fit_valid role=VALID;
+16036 +    %end;
+16037 +    %if &EM_IMPORT_TEST ne %then %do;
+16038 +      score data=&EM_IMPORT_TEST out=_NULL_ outfit=work.fit_test role=TEST;
+16039 +    %end;
+16041 +    run;
+16042 +    quit;
+16044 +    %if %sysfunc(cexist(work._BoostDMDB)) %then %do;
+16045 +        /* Delete DMDB catalog */
+16046 +        proc datasets lib=work nolist;
+16047 +           delete _BoostDMDB / mt=cat;
+16048 +        run;
+16049 +    %end;
+16053 +    /* set ntrees macro to selected iteration based on subseries property */
+16054 +    %if &EM_PROPERTY_SUBSERIES eq ITERATIONS %then %do;
+16055 +      %let ntrees = &EM_PROPERTY_ITERATIONNUM;
+16056 +    %end;
+16057 +    %else %if &EM_PROPERTY_SUBSERIES eq LONGEST %then %do;
+16058 +      %let ntrees = &EM_PROPERTY_ITERATIONS;
+16059 +    %end;
+16060 +    %else %if &EM_PROPERTY_SUBSERIES eq BEST %then %do;
+16061 +       %if &EM_PROPERTY_MEASURE eq ASE %then %let ntrees=&NITSASE;
+16062 +       %else %if &EM_PROPERTY_MEASURE eq MISC %then %let ntrees=&NITSMISC;
+16063 +       %else %let ntrees=&NITSPROFIT;
+16064 +    %end;
+16065 +%mend selectSubseries;
+16067 +%macro createSubFit;
+16069 +  %EM_GETNAME(key=SUBFIT, type=DATA);
+16070 +   data &EM_USER_SUBFIT;
+16071 +     length datarole $8;
+16072 +     set SUBFIT;
+16073 +     datarole = "TRAIN";
+16074 +     label  _MISC_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_misclassrate_title, noquote))"
+16075 +            _MAX_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_maxabserror_vlabel, noquote))"
+16076 +            _SSE_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_sumsqerror_vlabel, noquote))"
+16077 +            _ASE_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgsquareerror_title, noquote))"
+16078 +            _RASE_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_rootavgsqerror_vlabel, noquote))"
+16079 +            _APROF_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgprofit_vlabel, noquote))"
+16080 +            _PROF_   = "%sysfunc(sasmsg(sashelp.dmine, assmt_profitt_vlabel, noquote))"
+16081 +            _PASE_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgsqerrprior_vlabel, noquote))"
+16082 +            _PMISC_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_missprior_vlabel, noquote))"
+16083 +            _NLEAVES_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_nleaves_vlabel, noquote))"
+16084 +            _ITERATION_="%sysfunc(sasmsg(sashelp.dmine, rpt_iter_vlabel , noquote))"
+16085 +            _NW_ = "%sysfunc(sasmsg(sashelp.dmine,  rpt_nleaves_vlabel , noquote))"
+16086 +            datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel  , noquote))";
+16087 +     keep _ITERATION_ _NW_ _MISC_ _MAX_ _SSE_ _ASE_ _RASE_ _NLEAVES_ datarole
+16088 +          %if &EM_DEC_DECDATA ne %then %do;
+16089 +            _APROF_ _PROF_ _PASE_ _PMISC_
+16090 +          %end;
+16091 +          ;
+16092 +   run;
+16094 +   %if &EM_IMPORT_VALIDATE ne %then %do;
+16095 +      data tempvalid;
+16096 +        length datarole $8;
+16097 +        set SUBFIT;
+16098 +        rename  _VMISC_ = _MISC_
+16099 +                _VMAX_  = _MAX_
+16100 +                _VSSE_ = _SSE_
+16101 +                _VASE_ = _ASE_
+16102 +                _VRASE_ = _RASE_
+16103 +                %if &EM_DEC_DECDATA ne %then %do;
+16104 +                  _VAPROF_ = _APROF_
+16105 +                  _VPROF_  = _PROF_
+16106 +                  _VPASE_  = _PASE_
+16107 +                  _VPMISC_ = _PMISC_
+16108 +                %end;
+16109 +                ;
+16110 +        datarole = "VALID";
+16111 +         label  _VMISC_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_misclassrate_title, noquote))"
+16112 +                _VMAX_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_maxabserror_vlabel, noquote))"
+16113 +                _VSSE_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_sumsqerror_vlabel, noquote))"
+16114 +                _VASE_    = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgsquareerror_title, noquote))"
+16115 +                _VRASE_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_rootavgsqerror_vlabel, noquote))"
+16116 +                _VAPROF_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgprofit_vlabel, noquote))"
+16117 +                _VPROF_   = "%sysfunc(sasmsg(sashelp.dmine, assmt_profitt_vlabel, noquote))"
+16118 +                _VPASE_   = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgsqerrprior_vlabel, noquote))"
+16119 +                _VPMISC_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_missprior_vlabel, noquote))"
+16120 +                _NLEAVES_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_nleaves_vlabel, noquote))"
+16121 +                datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel, noquote))";
+16122 +        keep _ITERATION_ _NW_ _VMISC_ _VMAX_ _VSSE_ _VASE_ _VRASE_ _NLEAVES_ datarole
+16123 +             %if &EM_DEC_DECDATA ne %then %do;
+16124 +                _VAPROF_ _VPROF_ _VPASE_ _VPMISC_
+16125 +             %end;
+16126 +             ;
+16127 +      run;
+16129 +      data &EM_USER_SUBFIT;
+16130 +        set &EM_USER_SUBFIT tempvalid;
+16131 +      run;
+16133 +      proc datasets library=work nolist;
+16134 +        delete tempvalid;
+16135 +      run;
+16136 +   %end;
+16138 +   proc datasets library=work nolist;
+16139 +     delete subfit;
+16140 +   run;
+16142 +%mend createSubFit;
+16144 +%macro createFitStatistics;
+16146 +  %EM_GETNAME(key=EMOUTFIT, type=DATA);
+16147 +   data &EM_USER_EMOUTFIT;
+16148 +     length target $32;
+16149 +     merge work.fit_train
+16150 +     %if &EM_IMPORT_VALIDATE ne %then %do;
+16151 +       work.fit_valid
+16152 +     %end;
+16153 +     %if &EM_IMPORT_TEST ne %then %do;
+16154 +       work.fit_test
+16155 +     %end;
+16156 +     ;
+16157 +     target = "%EM_TARGET";
+16158 +     drop _NW_;
+16159 +   run;
+16161 +   %if &EM_IMPORT_VALIDATE ne %then %do;
+16162 +     proc datasets library=work nolist;
+16163 +       delete fit_valid;
+16164 +     run;
+16165 +   %end;
+16166 +   %if &EM_IMPORT_TEST ne %then %do;
+16167 +     proc datasets library=work nolist;
+16168 +       delete fit_test;
+16169 +     run;
+16170 +   %end;
+16173 +%mend createFitStatistics;
+16175 +%macro generatePartialDependencyTable(iteration= ,ds1=, var=);
+16177 +  %EM_GETNAME(key=PARTIALDEPENDENCY, type=DATA);
+16179 +  %if &iteration eq 1 %then %do;
+16180 +    data &EM_USER_PARTIALDEPENDENCY;
+16181 +    run;
+16182 +  %end;
+16184 +  %let partialvar = partial&iteration;
+16185 +  data &EM_USER_PARTIALDEPENDENCY;
+16186 +    merge &EM_USER_PARTIALDEPENDENCY &ds1(rename=(P_BAD1=&partialvar) keep=P_BAD1 &var);
+16187 +    label &partialvar = "%sysfunc(sasmsg(sashelp.dmine, rpt_partialdep_vlabel, noquote, &var))";
+16188 +  run;
+16190 +%mend generatePartialDependencyTable;
+16192 +%macro merge_imp_h (iactds=, impds= );
+16193 +   %if &ni gt 0 %then %do;
+16194 +    data _imp;
+16195 +       set &impds.;
+16196 +       _obs_ = _n_;
+16197 +    run;
+16198 +    proc sort data=_imp;
+16199 +       by name;
+16200 +    run;
+16201 +    proc sort data= &iactds.;
+16202 +       by name;
+16203 +    run;
+16204 +    data &impds;
+16205 +       merge _imp &iactds;
+16206 +       by name;
+16207 +    run;
+16208 +    proc sort data=&impds;
+16209 +       by _obs_;
+16210 +    run;
+16211 +    data &impds;
+16212 +       set &impds;
+16213 +       drop _obs_;
+16214 +    run;
+16215 +    quit;
+16216 +    %end;
+16217 +%mend;
+16219 +***************************************************************************
+16220 +** MACROS FOR DISCOVERING INTERACTION OF INPUTS IN ARBORETUM MODELS
+16221 +**
+16222 +** AUTHOR:    saspgn
+16223 +** REVISED:    1 MAY 2007
+16224 +**
+16225 +** REFERENCE: Jerome H. Friedman and Bogdan E. Popescu
+16226 +**                  Predictive Models via Rule Ensembles
+16227 +**                  28 Feb 2005
+16228 +***************************************************************************;
+16230 +%macro compute_iact_h(data=, model=, outds=);
+16232 +/*** NOTE: this macro was modified to also calculation 1 way partial dependency values as well ****/
+16234 +***************************************************************************
+16235 +** MACRO:     COMPUTE_IACT_H
+16236 +** PURPOSE:   ESTIMATE INTERACTION OF INPUT TO ANY OTHER INPUTS IN MODEL
+16237 +** AUTHOR:    saspgn
+16238 +** DATE:      30 APR 2007
+16239 +**
+16240 +** ARGUMENTS: DATA=  data with which to evaluate interaction.
+16241 +**                   Typically training data.
+16242 +**            MODEL= Model data set from SAVE MODEL= option
+16243 +**                   of PROC ARBORETUM  (or SPLIT, FOREST, TREEBOOST)
+16244 +**            OUTDS= output data set from this macro.
+16245 +**                   Contains two variables:
+16246 +**                   NAME   containing name of input variable
+16247 +**                   H      containing the H statistic for interaction.
+16248 +**
+16249 +** DETAILS:   In Predictive Models via Rule Ensembles the authors
+16250 +**            define statistic Hj that will be greater than 0 to
+16251 +**            the extant that input variable j interacts with some
+16252 +**            other variable (section 8.1, equation 45 ).
+16253 +**            Macro COMPUTE_IACT_H computes Hj for all variables
+16254 +**            used as a primary splitting rule in the model.
+16255 +**            The computation of interactions is time consuming.
+16256 +**            The user might therefore consult Hj before selecting
+16257 +**            which interactions to compute.
+16258 +**
+16259 +** REFERENCE: Jerome H. Friedman and Bogdan E. Popescu
+16260 +**                  Predictive Models via Rule Ensembles
+16261 +**                  28 Feb 2005
+16262 +**                  http://www.stat-stanford.edu/~jhf
+16263 +**************************************************************************;
+16265 +    %do v=1 %to &ni;
+16266 +        proc arbor proc=treeboost inmodel=&model;
+16267 +            makemacro importantid=&v  var=var;
+16268 +            partialdep data=&data out=vds(keep= p_: &var) var= (&var);
+16269 +            partialdep data=&data out=eds(keep= p_:) exceptvar= (&var);
+16270 +        quit;
+16272 +        %let predvar=;
+16273 +        %let dsid=%sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='PREDICTED'))));
+16274 +        %let varnum =%sysfunc(varnum(&dsid, VARIABLE));
+16275 +        %do %while(^ %sysfunc(fetch(&dsid)));
+16276 +           %let variable = %sysfunc(getvarc(&dsid, &varnum));
+16277 +           %let predvar = &predvar &variable;
+16278 +        %end;
+16279 +        %let dsid = %sysfunc(close(&dsid));
+16281 +        data fds;  set fds;  keep &predvar; run;
+16282 +        data vds;  set vds;  keep &predvar; run;
+16283 +        data eds;  set eds;  keep &predvar; run;
+16286 +        %compute_iact_sub(ds1=fds, ds2=vds, ds3=eds, nc=&nclasses, outds=h);
+16288 +        /* generates table same size as training data -- too large to plot; removing for now
+16289 +        %generatePartialDependencyTable(iteration=&v, ds1=vds, var=&var); */
+16291 +        data h;
+16292 +             set h;
+16293 +             length name $ 32;
+16294 +             name = "&var";
+16295 +        run;
+16296 +        data &outds;
+16297 +          set
+16298 +              %if &v ne 1 %then %do;
+16299 +                  &outds
+16300 +              %end;
+16301 +               h;
+16302 +        run;
+16304 +    %end;
+16305 +%mend;
+16307 +%macro compute_iact_sub(ds1=, ds2=, ds3=, nc=, outds=);
+16309 +        %if &nc eq 0 %then %do;
+16310 +             data ads; set &ds1; array r p_:; keep a; a = r(1); run;
+16311 +             data bds; set &ds2; array r p_:; keep b; b = r(1); run;
+16312 +             data cds; set &ds3; array r p_:; keep c; c = r(1); run;
+16313 +             data mds; merge ads bds cds;         run;
+16315 +             proc stdize data= mds method=mean out=sds;
+16316 +                  var a b c;
+16317 +             run;
+16319 +             data &outds;
+16320 +                 retain ss 0  sf 0;
+16321 +                 set sds end=the_end;
+16322 +                 keep H;
+16324 +                 s = a - b - c;
+16325 +                 ss = ss + s*s;
+16326 +                 sf = sf + a * a;
+16328 +                 if the_end ne 0 then do;
+16329 +                    H = ss/sf;
+16330 +                    output;
+16331 +                 end;
+16332 +             run;
+16333 +        %end;
+16335 +        %else %do;  * categorical response. nclasses > 0 ;
+16336 +            data ads;
+16337 +                 set &ds1;
+16338 +                 array r{*} p_:;
+16339 +                 keep a:;
+16340 +                 %do j = 1 %to &nclasses;
+16341 +                     a&j = r(&j);
+16342 +                 %end;
+16343 +              run;
+16344 +              data bds;
+16345 +                 set &ds2;
+16346 +                 array r{*} p_:;
+16347 +                 keep b:;
+16348 +                 %do j = 1 %to &nclasses;
+16349 +                     b&j = r(&j);
+16350 +                 %end;
+16351 +              run;
+16352 +              data cds;
+16353 +                 set &ds3;
+16354 +                 array r{*} p_:;
+16355 +                 keep c:;
+16356 +                 %do j = 1 %to &nclasses;
+16357 +                     c&j = r(&j);
+16358 +                 %end;
+16359 +              run;
+16361 +              data mds;
+16362 +                   merge ads bds cds;
+16363 +              run;
+16364 +              proc stdize data=mds method=mean out=sds;
+16365 +                   var a: b: c:;
+16366 +              run;
+16368 +             data &outds;
+16369 +                 retain ss 0  sf 0;
+16370 +                 set sds end=the_end;
+16371 +                 array ra a:;
+16372 +                 array rb b:;
+16373 +                 array rc c:;
+16374 +                 keep H;
+16376 +                 do j = 1 to dim(ra);
+16377 +                    s = ra(j) - rb(j) - rc(j);
+16378 +                    ss = ss + s*s;
+16379 +                    sf = sf + ra(j) * ra(j);
+16380 +                 end;
+16382 +                 if the_end ne 0 then do;
+16383 +                    H = ss/sf;
+16384 +                    output;
+16385 +                 end;
+16386 +            run;
+16387 +        %end;
+16388 +%mend;
+16390 +%macro score;
+16392 +   /* retrieve target information */
+16393 +   %let dsid=%sysfunc(open(&EM_DEC_DECMETA(where=(_TYPE_='TARGET'))));
+16395 +   %let vn_event =%sysfunc(varnum(&dsid, EVENT));
+16396 +   %let vn_target_type = %sysfunc(varnum(&dsid, TYPE));
+16397 +   %let vn_target_format = %sysfunc(varnum(&dsid, FORMAT));
+16398 +   %let vn_target_level  = %sysfunc(varnum(&dsid, LEVEL));
+16399 +   %do %while(^ %sysfunc(fetch(&dsid)));
+16400 +      %let temp = %nrbquote(%sysfunc(getvarc(&dsid, &vn_event)));
+16401 +      %let Target_Event = %nrbquote(%sysfunc(tranwrd(&temp, %str(%"),"")));
+16402 +      %let Target_Type =  %sysfunc(getvarc(&dsid, &vn_target_type));
+16403 +      %let Target_Format = %sysfunc(getvarc(&dsid, &vn_target_format));
+16404 +      %let Target_Level = %sysfunc(getvarc(&dsid, &vn_target_level));
+16405 +   %end;
+16406 +   %let dsid = %sysfunc(close(&dsid));
+16408 +   /* if subSeries=ITERATIONS and iterationNum not specified, exception should be thrown */
+16409 +   %if ((&EM_PROPERTY_SUBSERIES eq ITERATIONS) and (&EM_PROPERTY_ITERATIONNUM eq . )) %then %do;
+16410 +        %let EMEXCEPTIONSTRING = exception.server.EMTOOL.BOOST.NOITERATIONNUM;
+16411 +        %put &em_codebar;
+16412 +        %let errormsg = %sysfunc(sasmsg(sashelp.dmine, error_noiterationnum_note, NOQUOTE));
+16413 +        %put &errormsg;
+16414 +        %put &em_codebar;
+16415 +        %goto doendm;
+16416 +   %end;
+16418 +   /* score based on selected subseries */
+16419 +   %selectSubseries;
+16421 +   /* detect variables that have interaction with other input variables in model;    */
+16422 +   /* also used to calculate 1 way partial dependency statistics                     */
+16423 +   %if %symexist(EM_PROPERTY_CREATEHSTAT) %then %do;
+16424 +     %if &EM_PROPERTY_CREATEHSTAT eq Y %then %do;
+16425 +       %compute_iact_h(data=&EM_IMPORT_DATA, model=&EM_USER_MODEL, outds=iact);
+16426 +     %end;
+16427 +   %end;
+16429 +   /* determine whether priors were used during modelling */
+16430 +   %let usePriors = N;
+16431 +   data _null_;
+16432 +     set &EM_DEC_DECMETA(where=(_TYPE_='DECPRIOR'));
+16433 +     call symput('usePriors', strip(USE));
+16434 +   run;
+16436 +   /* update scorecode with code to calculated unadjusted residual variables if priors were detected */
+16437 +   %if &usePriors eq Y %then %do;
+16438 +      filename temp catalog 'sashelp.emutil.em_makeunadjustedresidualvars.source';
+16439 +      %include temp;
+16440 +      filename temp;
+16442 +      %EM_GETNAME(key=ADJUSTEDRESIDUALS, type=FILE, extension=sas);
+16443 +      filename adjref "&EM_USER_ADJUSTEDRESIDUALS";
+16444 +      %makeUnadjustedResidualVars(target=%EM_TARGET, decmeta=&EM_DEC_DECMETA, fref=adjref);
+16446 +      /* append adjusted residual code to already populated flowscorecode */
+16447 +      filename temp catalog 'sashelp.emutil.em_copyfile.source';
+16448 +      %include temp;
+16449 +      filename temp;
+16451 +      filename fref "&EM_FILE_EMFLOWSCORECODE";
+16452 +      %em_copyfile(infref=adjref, outfref=fref, append=Y);
+16453 +      filename adjref;
+16454 +      filenmae fref;
+16456 +   %end;
+16458 +   /* set all Q variables created by proc arbor to have a role of ASSESS */
+16459 +   %let numLevels = 0;
+16460 +   data _null_;
+16461 +     set &EM_DEC_DECMETA end=eof;
+16462 +     where _TYPE_ ='RESIDUAL';
+16463 +     call symput('res_vars'!!strip(put(_N_,BEST.)),   strip(Variable));
+16464 +     if eof then
+16465 +       call symput('numLevels', strip(put(_N_,BEST.)));
+16466 +   run;
+16468 +   %do i=1 %to &numLevels;
+16469 +     %let qvar = &&res_vars&i;
+16470 +     %let qvar = %substr(&qvar,2);
+16471 +     %let qvar = Q&qvar;
+16472 +     %em_metachange(name=&qvar, role=ASSESS);
+16473 +   %end;
+16475 +   /* merge H Statistic into the outimportance dataset */
+16476 +   %EM_GETNAME(key=IMPORTANCE, type=DATA);
+16477 +   %if %symexist(EM_PROPERTY_CREATEHSTAT) %then %do;
+16478 +     %if &EM_PROPERTY_CREATEHSTAT eq Y %then %do;
+16479 +       %merge_imp_h(iactds=iact, impds=&EM_USER_IMPORTANCE);
+16480 +     %end;
+16481 +   %end;
+16483 +   /* add labels to importance table */
+16484 +   data &EM_USER_IMPORTANCE;
+16485 +     set &EM_USER_IMPORTANCE;
+16486 +     label  NAME = "%sysfunc(sasmsg(sashelp.dmine, meta_name_vlabel, noquote))"
+16487 +            LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, noquote))"
+16488 +            NRULES = "%sysfunc(sasmsg(sashelp.dmine, rpt_nrules_vlabel, noquote))"
+16489 +            IMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_importance_vlabel, noquote))"
+16490 +            %if %symexist(EM_PROPERTY_CREATEHSTAT) %then %do;
+16491 +              %if &EM_PROPERTY_CREATEHSTAT eq Y %then %do;
+16492 +                H = "%sysfunc(sasmsg(sashelp.dmine, rpt_h_vlabel, noquote))"
+16493 +              %end;
+16494 +            %end;
+16495 +            %if &EM_IMPORT_VALIDATE ne %then %do;
+16496 +              VIMPORTANCE = "%sysfunc(sasmsg(sashelp.dmine, rpt_vimportance_vlabel, noquote))"
+16497 +              RATIO = "%sysfunc(sasmsg(sashelp.dmine, rpt_ratio_vlabel, noquote))"
+16498 +            %end;
+16499 +            %let nsurrs = ;
+16500 +            %if &EM_PROPERTY_NSURRS ne %then %do;
+16501 +              %let numInputs = %sysevalf(&EM_NUM_BINARY_INPUT + &EM_NUM_ORDINAL_INPUT + &EM_NUM_INTERVAL_INPUT + &EM_NUM_NOMINAL_INPUT);
+16502 +              %let nsurrs = %sysevalf(%sysfunc(min(&EM_PROPERTY_NSURRS, (&numInputs -1 ))));
+16503 +              %if &nsurrs gt 0 %then %do;
+16504 +                 NSURROGATES =  "%sysfunc(sasmsg(sashelp.dmine, rpt_nsurrogates_vlabel, noquote))";
+16505 +              %end;
+16506 +            %end;
+16507 +            ;
+16508 +   run;
+16510 +   /* print outimportance dataset to output window */
+16511 +   %let title10 = %sysfunc(sasmsg(sashelp.dmine, rpt_variableImportance_title, NOQUOTE));
+16512 +   %if &EM_PROPERTY_NSURRS gt 0 %then %do;
+16513 +     title10 "&title10";
+16515 +     %if &ni gt 0 %then %do;
+16516 +       proc print data=&EM_USER_IMPORTANCE (where=((nrules>0) OR (nsurrogates > 0)
+16517 +       %if %symexist(EM_PROPERTY_CREATEHSTAT) %then %do;
+16518 +         %if &EM_PROPERTY_CREATEHSTAT eq Y %then %do;
+16519 +         OR (H ne .)
+16520 +         %end;
+16521 +       %end;
+16522 +       ));
+16523 +     %end;
+16524 +     %else %do;
+16525 +       proc print data=&EM_USER_IMPORTANCE (where=((nrules>0) OR (nsurrogates > 0)));
+16526 +     %end;
+16527 +     run;
+16528 +     title10;
+16529 +   %end;
+16530 +   %else %do;
+16531 +     title10 "&title10";
+16532 +     %if &ni gt 0 %then %do;
+16533 +       proc print data=&EM_USER_IMPORTANCE (where=((nrules>0)
+16534 +      %if %symexist(EM_PROPERTY_CREATEHSTAT) %then %do;
+16535 +         %if &EM_PROPERTY_CREATEHSTAT eq Y %then %do;
+16536 +           OR (H ne .)
+16537 +         %end;
+16538 +      %end;
+16539 +      ));
+16540 +     %end;
+16541 +     %else %do;
+16542 +       proc print data=&EM_USER_IMPORTANCE (where=((nrules>0)));
+16543 +     %end;
+16544 +     run;
+16545 +     title10;
+16546 +   %end;
+16548 +   /* generate EM_USER_SUBFIT dataset to plot train and validation data across iterations*/
+16549 +   %createSubFit;
+16551 +   /* generate fit statistics for train, valid and test datasets */
+16552 +   %createFitStatistics;
+16554 +   /* refresh exports */
+16555 +    /* variable selection based on importance values */
+16556 +    %if &EM_PROPERTY_VARSELECTION eq Y %then %do;
+16557 +      %let dsid = %sysfunc(open(&EM_USER_IMPORTANCE));
+16558 +      %if &dsid %then %do;
+16559 +        %let obs= %sysfunc(fetch(&dsid));
+16560 +        %let imp_num = %sysfunc(VARNUM(&dsid, IMPORTANCE));
+16561 +        %let var_num = %sysfunc(VARNUM(&dsid, NAME));
+16562 +        %let nobs = %sysfunc(ATTRN(&dsid, NOBS));
+16564 +        %if ((&imp_num ne 0 ) AND (&var_num ne 0)) %then %do;
+16565 +          %do %while(&obs=0);
+16566 +             %let nobs = %eval(&nobs-1);
+16567 +             %let imp_value = %sysfunc(getvarn(&dsid, &imp_num));
+16568 +             %let varname = %upcase(%sysfunc(getvarc(&dsid, &var_num)));
+16570 +             %if &imp_value lt 0.05 %then %do;
+16571 +               %em_metachange(name=&varname, role=REJECTED);
+16572 +             %end;
+16573 +             %else %do;
+16574 +               %em_metachange(name=&varname, role=INPUT);
+16575 +             %end;
+16576 +             %let obs= %sysfunc(fetch(&dsid));
+16577 +          %end;
+16578 +        %end;
+16579 +      %end;
+16580 +      %if &dsid %then %let dsid= %sysfunc(close(&dsid));
+16581 +    %end;
+16583 +   /* build reports dependent on subseries selection */
+16584 +   %EM_REPORT(key=SUBFIT, viewtype=LINEPLOT, block=MODEL, view=1, X=_ITERATION_, Y=_ASE_, group=dataRole, autodisplay=Y, xref=&ntrees, DESCRIPTION=SUBFIT);
+16585 +   %EM_REPORT(VIEW=1, Y=_NW_, xref=&ntrees);
+16586 +   %EM_REPORT(VIEW=1, Y=_MISC_, xref=&ntrees);
+16587 +   %EM_REPORT(VIEW=1, Y=_MAX_, xref=&ntrees);
+16588 +   %EM_REPORT(VIEW=1, Y=_SSE_, xref=&ntrees);
+16589 +   %EM_REPORT(VIEW=1, Y=_ASE_, xref=&ntrees);
+16590 +   %EM_REPORT(VIEW=1, Y=_RASE_, xref=&ntrees);
+16591 +   %EM_REPORT(VIEW=1, Y=_APROF_, xref=&ntrees);
+16592 +   %EM_REPORT(VIEW=1, Y=_PROF_, xref=&ntrees);
+16593 +   %EM_REPORT(VIEW=1, Y=_PASE_, xref=&ntrees);
+16594 +   %EM_REPORT(VIEW=1, Y=_PMISC_, xref=&ntrees);
+16596 +   /* build importance table including H statistics for display */
+16597 +   %EM_REPORT(key=IMPORTANCE, viewtype=DATA, block=MODEL, DESCRIPTION=IMPORTANCE, AUTODISPLAY=Y);
+16599 +   %doendm:
+16600 +%mend score;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: 1647045 kilobytes of physical memory.
+NOTE: Will use 9979 out of 9979 training cases.
+NOTE: Using memory pool with 66073600 bytes.
+NOTE: Passed training data 385 times.
+NOTE: Current TREEBOOST model contains 50 trees.
+NOTE: Training used 675416 bytes of work memory.
+NOTE: Current TREEBOOST model contains 1 trees.
+NOTE: Created macro variable NCLASSES equal to 2.
+NOTE: Created macro variable NI equal to 2.
+NOTE: Created macro variable NITSASE equal to 49.
+NOTE: Created macro variable NITSMISC equal to 1.
+NOTE: Created macro variable NITSPROFIT equal to 0.
+A profit/loss matrix must be defined for AssessMeasure=PROFIT/LOSS
+The value for Assessment Measure has been reset to DECISION.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_DATA.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_TRAIN.
+NOTE: There were 3001 observations read from the data set EMWS1.REPL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.IMPT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.STAT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.VARSEL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.TRANS_VALIDATE.
+NOTE: View EMWS1.STAT2_VALIDATE.VIEW used (Total process time):
+      real time           0.75 seconds
+      cpu time            0.64 seconds
+ 
+NOTE: There were 3001 observations read from the data set EMWS1.BINNING_VALIDATE.
+NOTE: Current TREEBOOST model contains 1 trees.
+NOTE: External file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMFLOWSCORE.sas opened.
+NOTE: External file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMPUBLISHSCORE.sas opened.
+NOTE: The data set WORK.SUBFIT has 50 observations and 19 variables.
+NOTE: The data set EMWS1.BOOST_IMPORTANCE has 3 observations and 7 variables.
+NOTE: The data set EMWS1.BOOST_MODEL has 5657 observations and 4 variables.
+NOTE: The data set WORK.FIT_TRAIN has 1 observations and 10 variables.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           1.09 seconds
+      cpu time            0.95 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: The data set WORK.FDS has 9979 observations and 2 variables.
+NOTE: The data set WORK.FIT_VALID has 1 observations and 8 variables.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_DATA.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_TRAIN.
+NOTE: There were 3001 observations read from the data set EMWS1.REPL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.IMPT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.STAT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.VARSEL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.TRANS_VALIDATE.
+NOTE: View EMWS1.STAT2_VALIDATE.VIEW used (Total process time):
+      real time           0.35 seconds
+      cpu time            0.31 seconds
+ 
+NOTE: There were 3001 observations read from the data set EMWS1.BINNING_VALIDATE.
+ 
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           5.39 seconds
+      cpu time            5.03 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT2_TRAIN.
+NOTE: The data set WORK._NAMEDAT has 2 observations and 5 variables.
+NOTE: PROCEDURE ARBOR used (Total process time):
+      real time           5.41 seconds
+      cpu time            5.04 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK._BOOSTDMDB (memtype=CATALOG).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set EMWS1.BOOST_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='DECPRIOR';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.BOOST_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='RESIDUAL';
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK.EM_METACHANGE has 1 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 2 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_IMPORTANCE.
+NOTE: The data set EMWS1.BOOST_IMPORTANCE has 3 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.BOOST_IMPORTANCE.
+      WHERE (nrules>0) or (nsurrogates>0);
+NOTE: The PROCEDURE PRINT printed page 4.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Variable _APROF_ is uninitialized.
+NOTE: Variable _PROF_ is uninitialized.
+NOTE: Variable _PASE_ is uninitialized.
+NOTE: Variable _PMISC_ is uninitialized.
+NOTE: Variable _NLEAVES_ is uninitialized.
+WARNING: The variable _NLEAVES_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _APROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _PROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _PASE_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _PMISC_ in the DROP, KEEP, or RENAME list has never been referenced.
+NOTE: There were 50 observations read from the data set WORK.SUBFIT.
+NOTE: The data set EMWS1.BOOST_SUBFIT has 50 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: Variable _VAPROF_ is uninitialized.
+NOTE: Variable _VPROF_ is uninitialized.
+NOTE: Variable _VPASE_ is uninitialized.
+NOTE: Variable _VPMISC_ is uninitialized.
+NOTE: Variable _NLEAVES_ is uninitialized.
+WARNING: The variable _NLEAVES_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VAPROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPASE_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPMISC_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VAPROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPROF_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPASE_ in the DROP, KEEP, or RENAME list has never been referenced.
+WARNING: The variable _VPMISC_ in the DROP, KEEP, or RENAME list has never been referenced.
+NOTE: There were 50 observations read from the data set WORK.SUBFIT.
+NOTE: The data set WORK.TEMPVALID has 50 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 50 observations read from the data set EMWS1.BOOST_SUBFIT.
+NOTE: There were 50 observations read from the data set WORK.TEMPVALID.
+NOTE: The data set EMWS1.BOOST_SUBFIT has 100 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK.TEMPVALID (memtype=DATA).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK.SUBFIT (memtype=DATA).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set WORK.FIT_TRAIN.
+NOTE: There were 1 observations read from the data set WORK.FIT_VALID.
+NOTE: The data set EMWS1.BOOST_EMOUTFIT has 1 observations and 18 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK.FIT_VALID (memtype=DATA).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 3 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 3 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 4 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 4 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 5 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK.EM_USER_REPORT has 133 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 133 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 266 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 266 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 399 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 399 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 532 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 532 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 665 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 665 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 798 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+ 
+ 
+ 
+NOTE: There were 798 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 931 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 931 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1064 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 1064 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1197 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.04 seconds
+ 
+ 
+ 
+NOTE: There were 1197 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1330 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 1330 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1463 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 1463 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1595 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.06 seconds
+ 
+ 
+16601  *------------------------------------------------------------*;
+16602  * End SCORE: Boost;
+16603  *------------------------------------------------------------*;
+16604
+ 
+16605  proc sort data=WORK.EM_METACHANGE;
+16606  by key uname;
+16607  run;
+ 
+NOTE: There were 5 observations read from the data set WORK.EM_METACHANGE.
+NOTE: The data set WORK.EM_METACHANGE has 5 observations and 9 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16608  filename x "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\CDELTA_TRAIN.sas";
+16609  data _null_;
+16610  file x;
+16611  put 'if upcase(NAME) = "GRP_PERSONAL_INJURY" then do;';
+16612  put 'ROLE = "REJECTED";';
+16613  put 'end;';
+16614  put 'else ';
+16615  put 'if upcase(NAME) = "GRP_PROPERTY_DAMAGE" then do;';
+16616  put 'ROLE = "INPUT";';
+16617  put 'end;';
+16618  put 'else ';
+16619  put 'if upcase(NAME) = "GRP_VIOLATION_TYPE" then do;';
+16620  put 'ROLE = "INPUT";';
+16621  put 'end;';
+16622  put 'else ';
+16623  put 'if upcase(NAME) = "Q_CONTRIBUTED_TO_ACCIDENTNO" then do;';
+16624  put 'ROLE = "ASSESS";';
+16625  put 'end;';
+16626  put 'else ';
+16627  put 'if upcase(NAME) = "Q_CONTRIBUTED_TO_ACCIDENTYES" then do;';
+16628  put 'ROLE = "ASSESS";';
+16629  put 'end;';
+16630  run;
+ 
+NOTE: The file X is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\CDELTA_TRAIN.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=23Nov2016:03:23:11,
+      Create Time=23Nov2016:01:52:54
+ 
+NOTE: 19 records were written to the file X.
+      The minimum record length was 4.
+      The maximum record length was 57.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16631  filename x;
+NOTE: Fileref X has been deassigned.
+ 
+16632  filename emflow "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMFLOWSCORE.sas";
+16633  *------------------------------------------------------------*;
+16634  * Boost: Scoring DATA data;
+16635  *------------------------------------------------------------*;
+16636  data EMWS1.Boost_TRAIN
+16637  / view=EMWS1.Boost_TRAIN
+16638  ;
+16639  set EMWS1.Stat2_TRAIN
+16640  ;
+16641  %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMFLOWSCORE.sas.
+16642 +****************************************************************;
+16643 +******             DECISION TREE SCORING CODE             ******;
+16644 +****************************************************************;
+16645 +
+16646 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+16647 +LENGTH F_Contributed_To_Accident  $    3;
+16648 +LENGTH I_Contributed_To_Accident  $    3;
+16649 +LENGTH U_Contributed_To_Accident  $    3;
+16650 +LENGTH _WARN_  $    4;
+16651 +
+16652 +******              LABELS FOR NEW VARIABLES              ******;
+16653 +label P_Contributed_To_AccidentYes =
+16654 +'Predicted: Contributed_To_Accident=Yes' ;
+16655 +      P_Contributed_To_AccidentYes  = 0;
+16656 +label P_Contributed_To_AccidentNo = 'Predicted: Contributed_To_Accident=No' ;
+16657 +      P_Contributed_To_AccidentNo  = 0;
+16658 +label Q_Contributed_To_AccidentYes =
+16659 +'Unadjusted P: Contributed_To_Accident=Yes' ;
+16660 +      Q_Contributed_To_AccidentYes  = 0;
+16661 +label Q_Contributed_To_AccidentNo =
+16662 +'Unadjusted P: Contributed_To_Accident=No' ;
+16663 +      Q_Contributed_To_AccidentNo  = 0;
+16664 +label R_Contributed_To_AccidentYes = 'Residual: Contributed_To_Accident=Yes' ;
+16665 +label R_Contributed_To_AccidentNo = 'Residual: Contributed_To_Accident=No' ;
+16666 +label F_Contributed_To_Accident = 'From: Contributed_To_Accident' ;
+16667 +label I_Contributed_To_Accident = 'Into: Contributed_To_Accident' ;
+16668 +label U_Contributed_To_Accident =
+16669 +'Unnormalized Into: Contributed_To_Accident' ;
+16670 +label _WARN_ = 'Warnings' ;
+16671 +
+16672 +
+16673 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+16674 +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+16675 +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+16676 +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+16677 +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+16678 +
+16679 +
+16680 +_ARBFMT_3 = PUT( Contributed_To_Accident , $3.);
+16681 + %DMNORMCP( _ARBFMT_3, F_Contributed_To_Accident );
+16682 +
+16683 + DROP _ARB_F_;
+16684 + DROP _ARB_BADF_;
+16685 +     _ARB_F_ = -0.001904001;
+16686 +     _ARB_BADF_ = 0;
+16687 +******             ASSIGN OBSERVATION TO NODE             ******;
+16688 + DROP _ARB_P_;
+16689 + _ARB_P_ = 0;
+16690 + DROP _ARB_PPATH_; _ARB_PPATH_ = 1;
+16691 +
+16692 +********** LEAF     1  NODE   244 ***************;
+16693 +IF _ARB_BADF_ EQ 0 THEN DO;
+16694 +
+16695 +   DROP _BRANCH_;
+16696 +  _BRANCH_ = -1;
+16697 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16698 +   %DMNORMIP( _ARBFMT_12);
+16699 +    IF _ARBFMT_12 IN ('2' ) THEN DO;
+16700 +     _BRANCH_ =    1;
+16701 +    END;
+16702 +  IF _BRANCH_ LT 0 THEN DO;
+16703 +     IF MISSING( GRP_Property_Damage  ) THEN _BRANCH_ = 1;
+16704 +    ELSE IF _ARBFMT_12 NOTIN (
+16705 +      '2' ,'3'
+16706 +       ) THEN _BRANCH_ = 1;
+16707 +  END;
+16708 +  IF _BRANCH_ GT 0 THEN DO;
+16709 +
+16710 +    _BRANCH_ = -1;
+16711 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16712 +     %DMNORMIP( _ARBFMT_12);
+16713 +      IF _ARBFMT_12 IN ('2' ) THEN DO;
+16714 +       _BRANCH_ =    1;
+16715 +      END;
+16716 +    IF _BRANCH_ LT 0 THEN DO;
+16717 +       IF MISSING( GRP_Violation_Type  ) THEN _BRANCH_ = 1;
+16718 +      ELSE IF _ARBFMT_12 NOTIN (
+16719 +        '2' ,'3' ,'4'
+16720 +         ) THEN _BRANCH_ = 1;
+16721 +    END;
+16722 +    IF _BRANCH_ GT 0 THEN DO;
+16723 +       _ARB_F_ + 0.0057607125;
+16724 +      END;
+16725 +    END;
+16726 +  END;
+16727 +
+16728 +********** LEAF     2  NODE   245 ***************;
+16729 +IF _ARB_BADF_ EQ 0 THEN DO;
+16730 +
+16731 +  _BRANCH_ = -1;
+16732 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16733 +   %DMNORMIP( _ARBFMT_12);
+16734 +    IF _ARBFMT_12 IN ('2' ) THEN DO;
+16735 +     _BRANCH_ =    1;
+16736 +    END;
+16737 +  IF _BRANCH_ LT 0 THEN DO;
+16738 +     IF MISSING( GRP_Property_Damage  ) THEN _BRANCH_ = 1;
+16739 +    ELSE IF _ARBFMT_12 NOTIN (
+16740 +      '2' ,'3'
+16741 +       ) THEN _BRANCH_ = 1;
+16742 +  END;
+16743 +  IF _BRANCH_ GT 0 THEN DO;
+16744 +
+16745 +    _BRANCH_ = -1;
+16746 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16747 +     %DMNORMIP( _ARBFMT_12);
+16748 +      IF _ARBFMT_12 IN ('3' ,'4' ) THEN DO;
+16749 +       _BRANCH_ =    2;
+16750 +      END;
+16751 +
+16752 +    IF _BRANCH_ GT 0 THEN DO;
+16753 +       _ARB_F_ + 0.0640167189;
+16754 +      END;
+16755 +    END;
+16756 +  END;
+16757 +
+16758 +********** LEAF     3  NODE   243 ***************;
+16759 +IF _ARB_BADF_ EQ 0 THEN DO;
+16760 +
+16761 +  _BRANCH_ = -1;
+16762 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16763 +   %DMNORMIP( _ARBFMT_12);
+16764 +    IF _ARBFMT_12 IN ('3' ) THEN DO;
+16765 +     _BRANCH_ =    2;
+16766 +    END;
+16767 +
+16768 +  IF _BRANCH_ GT 0 THEN DO;
+16769 +     _ARB_F_ + -0.089313204;
+16770 +    END;
+16771 +  END;
+16772 +
+16773 +_ARB_F_ = 2.0 * _ARB_F_;
+16774 +IF _ARB_BADF_ NE 0 THEN P_Contributed_To_AccidentNo  = 0.4990480008;
+16775 +ELSE IF _ARB_F_ > 45.0 THEN P_Contributed_To_AccidentNo  = 1.0;
+16776 +ELSE IF _ARB_F_ < -45.0 THEN P_Contributed_To_AccidentNo  = 0.0;
+16777 +ELSE P_Contributed_To_AccidentNo  = 1.0/(1.0 + EXP( - _ARB_F_));
+16778 +P_Contributed_To_AccidentYes  = 1.0 - P_Contributed_To_AccidentNo ;
+16779 +*****  CREATE Q_: POSTERIORS WITHOUT PRIORS ****;
+16780 +Q_Contributed_To_AccidentYes  = P_Contributed_To_AccidentYes ;
+16781 +Q_Contributed_To_AccidentNo  = P_Contributed_To_AccidentNo ;
+16782 +
+16783 +*****  I_ AND U_ VARIABLES *******************;
+16784 + DROP _ARB_I_ _ARB_IP_;
+16785 + _ARB_IP_ = -1.0;
+16786 + IF _ARB_IP_ + 1.0/32768.0 < P_Contributed_To_AccidentYes THEN DO;
+16787 +   _ARB_IP_ = P_Contributed_To_AccidentYes ;
+16788 +   _ARB_I_  = 1;
+16789 +   END;
+16790 + IF _ARB_IP_ + 1.0/32768.0 < P_Contributed_To_AccidentNo THEN DO;
+16791 +   _ARB_IP_ = P_Contributed_To_AccidentNo ;
+16792 +   _ARB_I_  = 2;
+16793 +   END;
+16794 + SELECT( _ARB_I_);
+16795 +  WHEN( 1) DO;
+16796 +    I_Contributed_To_Accident  = 'YES' ;
+16797 +    U_Contributed_To_Accident  = 'Yes' ;
+16798 +     END;
+16799 +  WHEN( 2) DO;
+16800 +    I_Contributed_To_Accident  = 'NO' ;
+16801 +    U_Contributed_To_Accident  = 'No' ;
+16802 +     END;
+16803 +   END;
+16804 +
+16805 +*****  RESIDUALS R_ *************;
+16806 +IF  F_Contributed_To_Accident  NE 'YES'
+16807 +AND F_Contributed_To_Accident  NE 'NO'  THEN DO;
+16808 +        R_Contributed_To_AccidentYes  = .;
+16809 +        R_Contributed_To_AccidentNo  = .;
+16810 + END;
+16811 + ELSE DO;
+16812 +       R_Contributed_To_AccidentYes  =  -P_Contributed_To_AccidentYes ;
+16813 +       R_Contributed_To_AccidentNo  =  -P_Contributed_To_AccidentNo ;
+16814 +       SELECT( F_Contributed_To_Accident  );
+16815 +          WHEN( 'YES'  ) R_Contributed_To_AccidentYes  =
+16816 +        R_Contributed_To_AccidentYes  +1;
+16817 +          WHEN( 'NO'  ) R_Contributed_To_AccidentNo  =
+16818 +        R_Contributed_To_AccidentNo  +1;
+16819 +       END;
+16820 + END;
+16821 +
+16822 +****************************************************************;
+16823 +******          END OF DECISION TREE SCORING CODE         ******;
+16824 +****************************************************************;
+16825 +
+NOTE: %INCLUDE (level 1) ending.
+16826  run;
+ 
+NOTE: DATA STEP view saved on file EMWS1.BOOST_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.03 seconds
+ 
+ 
+16827  quit;
+16828  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+ 
+16829  filename emflow "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMFLOWSCORE.sas";
+16830  *------------------------------------------------------------*;
+16831  * Boost: Scoring VALIDATE data;
+16832  *------------------------------------------------------------*;
+16833  data EMWS1.Boost_VALIDATE
+16834  / view=EMWS1.Boost_VALIDATE
+16835  ;
+16836  set EMWS1.Stat2_VALIDATE
+16837  ;
+16838  %inc emflow;
+NOTE: %INCLUDE (level 1) file EMFLOW is file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\Boost\EMFLOWSCORE.sas.
+16839 +****************************************************************;
+16840 +******             DECISION TREE SCORING CODE             ******;
+16841 +****************************************************************;
+16842 +
+16843 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+16844 +LENGTH F_Contributed_To_Accident  $    3;
+16845 +LENGTH I_Contributed_To_Accident  $    3;
+16846 +LENGTH U_Contributed_To_Accident  $    3;
+16847 +LENGTH _WARN_  $    4;
+16848 +
+16849 +******              LABELS FOR NEW VARIABLES              ******;
+16850 +label P_Contributed_To_AccidentYes =
+16851 +'Predicted: Contributed_To_Accident=Yes' ;
+16852 +      P_Contributed_To_AccidentYes  = 0;
+16853 +label P_Contributed_To_AccidentNo = 'Predicted: Contributed_To_Accident=No' ;
+16854 +      P_Contributed_To_AccidentNo  = 0;
+16855 +label Q_Contributed_To_AccidentYes =
+16856 +'Unadjusted P: Contributed_To_Accident=Yes' ;
+16857 +      Q_Contributed_To_AccidentYes  = 0;
+16858 +label Q_Contributed_To_AccidentNo =
+16859 +'Unadjusted P: Contributed_To_Accident=No' ;
+16860 +      Q_Contributed_To_AccidentNo  = 0;
+16861 +label R_Contributed_To_AccidentYes = 'Residual: Contributed_To_Accident=Yes' ;
+16862 +label R_Contributed_To_AccidentNo = 'Residual: Contributed_To_Accident=No' ;
+16863 +label F_Contributed_To_Accident = 'From: Contributed_To_Accident' ;
+16864 +label I_Contributed_To_Accident = 'Into: Contributed_To_Accident' ;
+16865 +label U_Contributed_To_Accident =
+16866 +'Unnormalized Into: Contributed_To_Accident' ;
+16867 +label _WARN_ = 'Warnings' ;
+16868 +
+16869 +
+16870 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+16871 +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+16872 +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+16873 +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+16874 +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+16875 +
+16876 +
+16877 +_ARBFMT_3 = PUT( Contributed_To_Accident , $3.);
+16878 + %DMNORMCP( _ARBFMT_3, F_Contributed_To_Accident );
+16879 +
+16880 + DROP _ARB_F_;
+16881 + DROP _ARB_BADF_;
+16882 +     _ARB_F_ = -0.001904001;
+16883 +     _ARB_BADF_ = 0;
+16884 +******             ASSIGN OBSERVATION TO NODE             ******;
+16885 + DROP _ARB_P_;
+16886 + _ARB_P_ = 0;
+16887 + DROP _ARB_PPATH_; _ARB_PPATH_ = 1;
+16888 +
+16889 +********** LEAF     1  NODE   244 ***************;
+16890 +IF _ARB_BADF_ EQ 0 THEN DO;
+16891 +
+16892 +   DROP _BRANCH_;
+16893 +  _BRANCH_ = -1;
+16894 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16895 +   %DMNORMIP( _ARBFMT_12);
+16896 +    IF _ARBFMT_12 IN ('2' ) THEN DO;
+16897 +     _BRANCH_ =    1;
+16898 +    END;
+16899 +  IF _BRANCH_ LT 0 THEN DO;
+16900 +     IF MISSING( GRP_Property_Damage  ) THEN _BRANCH_ = 1;
+16901 +    ELSE IF _ARBFMT_12 NOTIN (
+16902 +      '2' ,'3'
+16903 +       ) THEN _BRANCH_ = 1;
+16904 +  END;
+16905 +  IF _BRANCH_ GT 0 THEN DO;
+16906 +
+16907 +    _BRANCH_ = -1;
+16908 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16909 +     %DMNORMIP( _ARBFMT_12);
+16910 +      IF _ARBFMT_12 IN ('2' ) THEN DO;
+16911 +       _BRANCH_ =    1;
+16912 +      END;
+16913 +    IF _BRANCH_ LT 0 THEN DO;
+16914 +       IF MISSING( GRP_Violation_Type  ) THEN _BRANCH_ = 1;
+16915 +      ELSE IF _ARBFMT_12 NOTIN (
+16916 +        '2' ,'3' ,'4'
+16917 +         ) THEN _BRANCH_ = 1;
+16918 +    END;
+16919 +    IF _BRANCH_ GT 0 THEN DO;
+16920 +       _ARB_F_ + 0.0057607125;
+16921 +      END;
+16922 +    END;
+16923 +  END;
+16924 +
+16925 +********** LEAF     2  NODE   245 ***************;
+16926 +IF _ARB_BADF_ EQ 0 THEN DO;
+16927 +
+16928 +  _BRANCH_ = -1;
+16929 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16930 +   %DMNORMIP( _ARBFMT_12);
+16931 +    IF _ARBFMT_12 IN ('2' ) THEN DO;
+16932 +     _BRANCH_ =    1;
+16933 +    END;
+16934 +  IF _BRANCH_ LT 0 THEN DO;
+16935 +     IF MISSING( GRP_Property_Damage  ) THEN _BRANCH_ = 1;
+16936 +    ELSE IF _ARBFMT_12 NOTIN (
+16937 +      '2' ,'3'
+16938 +       ) THEN _BRANCH_ = 1;
+16939 +  END;
+16940 +  IF _BRANCH_ GT 0 THEN DO;
+16941 +
+16942 +    _BRANCH_ = -1;
+16943 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16944 +     %DMNORMIP( _ARBFMT_12);
+16945 +      IF _ARBFMT_12 IN ('3' ,'4' ) THEN DO;
+16946 +       _BRANCH_ =    2;
+16947 +      END;
+16948 +
+16949 +    IF _BRANCH_ GT 0 THEN DO;
+16950 +       _ARB_F_ + 0.0640167189;
+16951 +      END;
+16952 +    END;
+16953 +  END;
+16954 +
+16955 +********** LEAF     3  NODE   243 ***************;
+16956 +IF _ARB_BADF_ EQ 0 THEN DO;
+16957 +
+16958 +  _BRANCH_ = -1;
+16959 +  _ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16960 +   %DMNORMIP( _ARBFMT_12);
+16961 +    IF _ARBFMT_12 IN ('3' ) THEN DO;
+16962 +     _BRANCH_ =    2;
+16963 +    END;
+16964 +
+16965 +  IF _BRANCH_ GT 0 THEN DO;
+16966 +     _ARB_F_ + -0.089313204;
+16967 +    END;
+16968 +  END;
+16969 +
+16970 +_ARB_F_ = 2.0 * _ARB_F_;
+16971 +IF _ARB_BADF_ NE 0 THEN P_Contributed_To_AccidentNo  = 0.4990480008;
+16972 +ELSE IF _ARB_F_ > 45.0 THEN P_Contributed_To_AccidentNo  = 1.0;
+16973 +ELSE IF _ARB_F_ < -45.0 THEN P_Contributed_To_AccidentNo  = 0.0;
+16974 +ELSE P_Contributed_To_AccidentNo  = 1.0/(1.0 + EXP( - _ARB_F_));
+16975 +P_Contributed_To_AccidentYes  = 1.0 - P_Contributed_To_AccidentNo ;
+16976 +*****  CREATE Q_: POSTERIORS WITHOUT PRIORS ****;
+16977 +Q_Contributed_To_AccidentYes  = P_Contributed_To_AccidentYes ;
+16978 +Q_Contributed_To_AccidentNo  = P_Contributed_To_AccidentNo ;
+16979 +
+16980 +*****  I_ AND U_ VARIABLES *******************;
+16981 + DROP _ARB_I_ _ARB_IP_;
+16982 + _ARB_IP_ = -1.0;
+16983 + IF _ARB_IP_ + 1.0/32768.0 < P_Contributed_To_AccidentYes THEN DO;
+16984 +   _ARB_IP_ = P_Contributed_To_AccidentYes ;
+16985 +   _ARB_I_  = 1;
+16986 +   END;
+16987 + IF _ARB_IP_ + 1.0/32768.0 < P_Contributed_To_AccidentNo THEN DO;
+16988 +   _ARB_IP_ = P_Contributed_To_AccidentNo ;
+16989 +   _ARB_I_  = 2;
+16990 +   END;
+16991 + SELECT( _ARB_I_);
+16992 +  WHEN( 1) DO;
+16993 +    I_Contributed_To_Accident  = 'YES' ;
+16994 +    U_Contributed_To_Accident  = 'Yes' ;
+16995 +     END;
+16996 +  WHEN( 2) DO;
+16997 +    I_Contributed_To_Accident  = 'NO' ;
+16998 +    U_Contributed_To_Accident  = 'No' ;
+16999 +     END;
+17000 +   END;
+17001 +
+17002 +*****  RESIDUALS R_ *************;
+17003 +IF  F_Contributed_To_Accident  NE 'YES'
+17004 +AND F_Contributed_To_Accident  NE 'NO'  THEN DO;
+17005 +        R_Contributed_To_AccidentYes  = .;
+17006 +        R_Contributed_To_AccidentNo  = .;
+17007 + END;
+17008 + ELSE DO;
+17009 +       R_Contributed_To_AccidentYes  =  -P_Contributed_To_AccidentYes ;
+17010 +       R_Contributed_To_AccidentNo  =  -P_Contributed_To_AccidentNo ;
+17011 +       SELECT( F_Contributed_To_Accident  );
+17012 +          WHEN( 'YES'  ) R_Contributed_To_AccidentYes  =
+17013 +        R_Contributed_To_AccidentYes  +1;
+17014 +          WHEN( 'NO'  ) R_Contributed_To_AccidentNo  =
+17015 +        R_Contributed_To_AccidentNo  +1;
+17016 +       END;
+17017 + END;
+17018 +
+17019 +****************************************************************;
+17020 +******          END OF DECISION TREE SCORING CODE         ******;
+17021 +****************************************************************;
+17022 +
+NOTE: %INCLUDE (level 1) ending.
+17023  run;
+ 
+NOTE: DATA STEP view saved on file EMWS1.BOOST_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.STAT2_VALIDATE.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+ 
+17024  quit;
+17025  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+ 
+NOTE: View EMWS1.BOOST_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+17027  proc sort data=WORK.EM_USER_REPORT;
+17028  by ID VIEW;
+17029  run;
+ 
+NOTE: There were 1595 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 1595 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17030  *------------------------------------------------------------*;
+17031  * Boost: Computing metadata for TRAIN data;
+17032  *------------------------------------------------------------*;
+ 
+NOTE: View EMWS1.BOOST_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+17399  data WORK.MODELTEMP_INFO;
+17400  set EMWS1.Boost_EMINFO;
+17401  where DATA='Boost' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+17402  run;
+ 
+NOTE: There were 0 observations read from the data set EMWS1.BOOST_EMINFO.
+      WHERE (DATA='Boost') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 0 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17403  data EMWS1.Boost_EMINFO;
+17404  length TARGET KEY $32 DATA $43;
+17405  input TARGET KEY DATA $;
+17406  cards;
+ 
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17410  run;
+17411  data EMWS1.Boost_EMINFO;
+17412  set EMWS1.Boost_EMINFO WORK.MODELTEMP_INFO;
+17413  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_EMINFO.
+NOTE: There were 0 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17414  proc sort data = EMWS1.Boost_EMINFO NOTHREADS;
+17415  by TARGET KEY;
+17416  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_EMINFO.
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17417  proc sort data = EMWS1.FIMPORT_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+17418  by TARGET KEY;
+17419  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.FIMPORT_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 1 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17420  proc sort data = EMWS1.Boost_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+17421  by TARGET KEY;
+17422  run;
+ 
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17423  data EMWS1.Boost_EMINFO;
+17424  merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+17425  by TARGET KEY;
+17426  run;
+ 
+NOTE: There were 1 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 3 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS1.BOOST_EMINFO has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17427  proc datasets lib=work nolist;
+17428  delete TEMP_INFO SORTEDEMINFO;
+17429  run;
+ 
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+17430  quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: View EMWS1.BOOST_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+17431  *------------------------------------------------------------*;
+17432  * Boost: Computing metadata for VALIDATE data;
+17433  *------------------------------------------------------------*;
+ 
+NOTE: View EMWS1.BOOST_VALIDATE.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+17800  data WORK.MODELTEMP_INFO;
+17801  set EMWS1.Boost_EMINFO;
+17802  where DATA='Boost' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+17803  run;
+ 
+NOTE: There were 0 observations read from the data set EMWS1.BOOST_EMINFO.
+      WHERE (DATA='Boost') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 0 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17804  data EMWS1.Boost_EMINFO;
+17805  length TARGET KEY $32 DATA $43;
+17806  input TARGET KEY DATA $;
+17807  cards;
+ 
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17811  run;
+17812  data EMWS1.Boost_EMINFO;
+17813  set EMWS1.Boost_EMINFO WORK.MODELTEMP_INFO;
+17814  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_EMINFO.
+NOTE: There were 0 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17815  proc sort data = EMWS1.Boost_EMINFO NOTHREADS;
+17816  by TARGET KEY;
+17817  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.BOOST_EMINFO.
+NOTE: The data set EMWS1.BOOST_EMINFO has 3 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+ 
+NOTE: View EMWS1.BOOST_VALIDATE.VIEW used (Total process time):
+      real time           0.09 seconds
+      cpu time            0.06 seconds
+ 
+*------------------------------------------------------------*
+* Report Log
+Date:                November 23, 2016
+Time:                03:23:14
+*------------------------------------------------------------*
+17841  data EMWS1.Boost_EMOUTFIT;
+17842  set EMWS1.Boost_EMOUTFIT;
+17843  length TargetLabel $200;
+17844  label targetLabel = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))";
+17845  run;
+ 
+NOTE: Variable TargetLabel is uninitialized.
+NOTE: There were 1 observations read from the data set EMWS1.BOOST_EMOUTFIT.
+NOTE: The data set EMWS1.BOOST_EMOUTFIT has 1 observations and 19 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17846  proc sort data=EMWS1.Boost_EMREPORTFIT nothreads;
+17847  by TARGET;
+17848  run;
+ 
+NOTE: There were 9 observations read from the data set EMWS1.BOOST_EMREPORTFIT.
+NOTE: The data set EMWS1.BOOST_EMREPORTFIT has 9 observations and 7 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17849  %let _EMwarndup = 0;
+17850  %let _EMtargetdup =;
+17851  %let _EMASEtargetdup =;
+17852  data _null_;
+17853  set EMWS1.Boost_EMOUTFIT;
+17854  if .<_ASE_<0.000001 then do;
+17855  call symput('_EMwarndup', '1');
+17856  call symput('_EMtargetdup', target);
+17857  call symput('_EMASEtargetdup', put(_ASE_, best.));
+17858  end;
+17859  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.BOOST_EMOUTFIT.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17860  %let EMEXCEPTIONSTRING=;
+17861  *------------------------------------------------------------*;
+17862  * REPORT: Boost;
+17863  *------------------------------------------------------------*;
+17864  %let EM_ACTION = REPORT;
+17865  %let syscc = 0;
+17866  %macro main;
+17867
+17868    filename temp catalog 'sashelp.emmodl.boost_macros.source';
+17869    %include temp;
+17870    filename temp;
+17871
+17872    %setProperties;
+17873
+17874    %if %upcase(&EM_ACTION) = CREATE %then %do;
+17875      filename temp catalog 'sashelp.emmodl.boost_create.source';
+17876      %include temp;
+17877      filename temp;
+17878
+17879      %create;
+17880    %end;
+17881
+17882     %else
+17883     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+17884
+17885         filename temp catalog 'sashelp.emmodl.boost_train.source';
+17886         %include temp;
+17887         filename temp;
+17888         %train;
+17889     %end;
+17890
+17891    %else
+17892    %if %upcase(&EM_ACTION) = SCORE %then %do;
+17893      filename temp catalog 'sashelp.emmodl.boost_score.source';
+17894      %include temp;
+17895      filename temp;
+17896
+17897      %score;
+17898
+17899    %end;
+17900
+17901    %else
+17902    %if %upcase(&EM_ACTION) = REPORT %then %do;
+17903
+17904         filename temp catalog 'sashelp.emmodl.boost_report.source';
+17905         %include temp;
+17906         filename temp;
+17907
+17908         %report;
+17909     %end;
+17910
+17911     %doendm:
+17912  %mend main;
+17913
+17914  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_MACROS.SOURCE.
+17915 +
+17916 +%macro SetProperties;
+17917 +
+17918 +     /* boost options */
+17919 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONS,   value=50, global=Y);
+17920 +     %em_checkmacro(name=EM_PROPERTY_TRAINPROPORTION,   value=60, global=Y);
+17921 +     %em_checkmacro(name=EM_PROPERTY_CATEGORICALBINS, value=30, global=Y);
+17922 +     %em_checkmacro(name=EM_PROPERTY_INTERVALBINS, value=100, global=Y);
+17923 +     %em_checkmacro(name=EM_PROPERTY_HUBER, value=NO, global=Y);
+17924 +     %em_checkmacro(name=EM_PROPERTY_SEED,   value=12345, global=Y);
+17925 +     %em_checkmacro(name=EM_PROPERTY_SHRINKAGE,   value=0.1, global=Y);
+17926 +     %em_checkmacro(name=EM_PROPERTY_LEAFFRACTION,   value=0.1, global=Y);
+17927 +     %em_checkmacro(name=EM_PROPERTY_SPLITSIZE,   value=., global=Y);
+17928 +     %em_checkmacro(name=EM_PROPERTY_NODESIZE,   value=20000, global=Y);
+17929 +     %em_checkmacro(name=EM_PROPERTY_SUBSERIES,   value=BEST, global=Y);
+17930 +     %em_checkmacro(name=EM_PROPERTY_ITERATIONNUM,   value=1, global=Y);
+17931 +
+17932 +     %em_checkmacro(name=EM_PROPERTY_PRECISION,    value=0, global=Y);
+17933 +     %em_checkmacro(name=EM_PROPERTY_MISSING,      value=USEINSEARCH, global=Y);
+17934 +     %em_checkmacro(name=EM_PROPERTY_MINCATSIZE, value=5, global=Y);
+17935 +     %em_checkmacro(name=EM_PROPERTY_MAXBRANCH,  value=2, global=Y);
+17936 +     %em_checkmacro(name=EM_PROPERTY_MAXDEPTH,   value=2, global=Y);
+17937 +     %em_checkmacro(name=EM_PROPERTY_REUSEVAR,   value=1, global=Y);
+17938 +     %em_checkmacro(name=EM_PROPERTY_EXHAUSTIVE,   value=5000, global=Y);
+17939 +     %em_checkmacro(name=EM_PROPERTY_PERFORMANCE,   value=DISK, global=Y);
+17940 +
+17941 +     %em_checkmacro(name=EM_PROPERTY_ASSESSMEASURE, value=PROFIT, global=Y);
+17942 +     %em_checkmacro(name=EM_PROPERTY_MEASURE, value=PROFIT, global=Y);
+17943 +     %em_checkmacro(name=EM_PROPERTY_NSURRS, value=0, global=Y);
+17944 +     %em_checkmacro(name=EM_PROPERTY_VARSELECTION, value=Y, global=Y);
+17945 +
+17946 +     %em_checkmacro(name=EM_PROPERTY_OBSIMPORTANCE, value=N, global=Y);
+17947 +     %em_checkmacro(name=EM_PROPERTY_NUMSINGLEIMP, value=5, global=Y);
+17948 +     %em_checkmacro(name=EM_PROPERTY_NUMPAIRIMP, value=0, global=Y);
+17949 +
+17950 +%mend SetProperties;
+17951 +
+17952 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMMODL.BOOST_REPORT.SOURCE.
+17953 +%macro generateObsImportance;
+17954 +
+17955 +  %EM_GETNAME(key=MODEL, type=DATA);
+17956 +  %EM_GETNAME(key=IMPORTANCE, type=DATA);
+17957 +  %EM_GETNAME(key=OBSIMPFIT, type=DATA);
+17958 +
+17959 +  proc arbor proc=treeboost inmodel=&EM_USER_MODEL;
+17960 +    importance data=&EM_IMPORT_DATA out=_NULL_ outfit=&EM_USER_OBSIMPFIT nvars=&EM_PROPERTY_NUMSINGLEIMP n2way=&EM_PROPERTY_NUMPAIRIMP;
+17961 +  run;
+17962 +  quit;
+17963 +
+17964 +%mend generateObsImportance;
+17965 +
+17966 +%macro report;
+17967 +
+17968 +  /* create observation based importance statistics */
+17969 +  %EM_GETNAME(key=OBSIMPFIT, type=DATA);
+17970 +
+17971 +  %if &EM_PROPERTY_OBSIMPORTANCE eq Y %then %do;
+17972 +     %generateObsImportance;
+17973 +
+17974 +     data &EM_USER_OBSIMPFIT;
+17975 +       set &EM_USER_OBSIMPFIT;
+17976 +       label _ASE_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_avgsquareerror_title, noquote))"
+17977 +             _DFT_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_fitstat_label_dft, noquote))"
+17978 +             _DIV_  = "%sysfunc(sasmsg(sashelp.dmine,  stat_div_vlabel , noquote))"
+17979 +             _MAX_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_maxabserror_vlabel, noquote))"
+17980 +             _MISC_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_misclassrate_title, noquote))"
+17981 +             _NOBS_ = "%sysfunc(sasmsg(sashelp.dmine,  stat_nobs_vlabel, noquote))"
+17982 +             _NW_   = "%sysfunc(sasmsg(sashelp.dmine,  rpt_nleaves_vlabel , noquote))"
+17983 +             _RASE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_rootavgsqerror_vlabel, noquote))"
+17984 +             _SSE_  = "%sysfunc(sasmsg(sashelp.dmine, rpt_sumsqerror_vlabel, noquote))"
+17985 +             _SUMW_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_fitstat_label_sumw, noquote))"
+17986 +       ;
+17987 +     run;
+17988 +  %end;
+17989 +
+17990 +  %else %do;
+17991 +     %let exist_flag = %sysfunc(exist(&EM_USER_OBSIMPFIT, DATA));
+17992 +     %if &exist_flag eq 1 %then %do;
+17993 +        proc datasets lib=&EM_LIB nolist;
+17994 +          delete &EM_NODEID._OBSIMPFIT;
+17995 +        run;
+17996 +        quit;
+17997 +     %end;
+17998 +  %end;
+17999 +
+18000 +  /* build reports based on observation importance */
+18001 +  %em_report(key=OBSIMPFIT, viewtype=DATA, block=MODEL, DESCRIPTION=OBSIMPFIT, AUTODISPLAY=N);
+18002 +
+18003 +%mend report;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+ 
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.04 seconds
+ 
+ 
+18004  *------------------------------------------------------------*;
+18005  * End REPORT: Boost;
+18006  *------------------------------------------------------------*;
+18007
+ 
+18008  /* Reset EM Options */
+18009  options formchar="|----|+|---+=|-/\<>*";
+18010  options nocenter ls=256 ps=10000;
+18011  goptions reset=all device=GIF NODISPLAY;
+ 
+18012  proc sort data=WORK.EM_USER_REPORT;
+18013  by ID VIEW;
+18014  run;
+ 
+NOTE: There were 132 observations read from the data set WORK.EM_USER_REPORT.
+NOTE: The data set WORK.EM_USER_REPORT has 132 observations and 4 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+18015  proc sort data=EMWS1.Stat2_CMeta_TRAIN out=WORK.SUBSETINMETA;
+18016  by NAME;
+18017  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS1.STAT2_CMETA_TRAIN.
+NOTE: The data set WORK.SUBSETINMETA has 4 observations and 20 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+18018  proc sort data=EMWS1.Boost_VariableSet out=WORK.SUBSETVARSET(keep=NAME REPORT);
+18019  by NAME;
+18020  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS1.BOOST_VARIABLESET.
+NOTE: The data set WORK.SUBSETVARSET has 4 observations and 2 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+18021  data WORK.ASSESS_META;
+18022  merge WORK.SUBSETINMETA WORK.SUBSETVARSET;
+18023  by NAME;
+18024  run;
+ 
+NOTE: There were 4 observations read from the data set WORK.SUBSETINMETA.
+NOTE: There were 4 observations read from the data set WORK.SUBSETVARSET.
+NOTE: The data set WORK.ASSESS_META has 4 observations and 20 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+18025  data EM_temp_assessMeta;
+18026  set EMWS1.Boost_CMeta_TRAIN;
+18027  where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+18028  run;
+ 
+NOTE: There were 10 observations read from the data set EMWS1.BOOST_CMETA_TRAIN.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 10 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+18029  data EM_temp_assessdata;
+18030  set EMWS1.Boost_TRAIN(keep=
+18031  F_Contributed_To_Accident
+18032  I_Contributed_To_Accident
+18033  P_Contributed_To_AccidentNo
+18034  P_Contributed_To_AccidentYes
+18035  Q_Contributed_To_AccidentNo
+18036  Q_Contributed_To_AccidentYes
+18037  R_Contributed_To_AccidentNo
+18038  R_Contributed_To_AccidentYes
+18039  U_Contributed_To_Accident
+18040  _WARN_
+18041  Contributed_To_Accident
+18042  );
+18043  run;
+ 
+NOTE: Variable _WARN_ is uninitialized.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_DATA.
+NOTE: There were 9979 observations read from the data set EMWS1.FIMPORT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.REPL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.IMPT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.STAT_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.VARSEL_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.TRANS_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.BINNING_TRAIN.
+NOTE: View EMWS1.BOOST_TRAIN.VIEW used (Total process time):
+      real time           1.24 seconds
+      cpu time            1.21 seconds
+ 
+NOTE: There were 9979 observations read from the data set EMWS1.STAT2_TRAIN.
+NOTE: There were 9979 observations read from the data set EMWS1.BOOST_TRAIN.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 9979 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           1.25 seconds
+      cpu time            1.21 seconds
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+22324   data EM_temp_assessMeta;
+22325   set EMWS1.Boost_CMeta_VALIDATE;
+22326   where role in('DECISION', 'PREDICT', 'RESIDUAL', 'CLASSIFICATION', 'ASSESS', 'COST');
+22327   run;
+ 
+NOTE: There were 10 observations read from the data set EMWS1.BOOST_CMETA_VALIDATE.
+      WHERE role in ('ASSESS', 'CLASSIFICATION', 'COST', 'DECISION', 'PREDICT', 'RESIDUAL');
+NOTE: The data set WORK.EM_TEMP_ASSESSMETA has 10 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+22328   data EM_temp_assessdata;
+22329   set EMWS1.Boost_VALIDATE(keep=
+22330   F_Contributed_To_Accident
+22331   I_Contributed_To_Accident
+22332   P_Contributed_To_AccidentNo
+22333   P_Contributed_To_AccidentYes
+22334   Q_Contributed_To_AccidentNo
+22335   Q_Contributed_To_AccidentYes
+22336   R_Contributed_To_AccidentNo
+22337   R_Contributed_To_AccidentYes
+22338   U_Contributed_To_Accident
+22339   _WARN_
+22340   Contributed_To_Accident
+22341   );
+22342   run;
+ 
+NOTE: Variable _WARN_ is uninitialized.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_DATA.
+NOTE: There were 3001 observations read from the data set EMWS1.FIMPORT2_TRAIN.
+NOTE: There were 3001 observations read from the data set EMWS1.REPL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.IMPT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.STAT_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.VARSEL_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.TRANS_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.BINNING_VALIDATE.
+NOTE: View EMWS1.BOOST_VALIDATE.VIEW used (Total process time):
+      real time           0.41 seconds
+      cpu time            0.39 seconds
+ 
+NOTE: There were 3001 observations read from the data set EMWS1.STAT2_VALIDATE.
+NOTE: There were 3001 observations read from the data set EMWS1.BOOST_VALIDATE.
+NOTE: The data set WORK.EM_TEMP_ASSESSDATA has 3001 observations and 11 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.42 seconds
+      cpu time            0.40 seconds
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+26632   %let _cn = %sysfunc(getoption(CENTER));
+26633   options nocenter;
+26634   proc print data=EMWS1.Boost_EMREPORTFIT noobs label;
+26635   var STAT LABEL TRAIN
+26636   VALIDATE
+26637   ;
+26638   by TARGET TARGETLABEL;
+26639   title9 ' ';
+26640   title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_fitstat_title  , NOQUOTE))";
+26641   run;
+ 
+NOTE: There were 9 observations read from the data set EMWS1.BOOST_EMREPORTFIT.
+NOTE: The PROCEDURE PRINT printed page 5.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+26642   title10;
+26643   options &_cn;
+ 
+26644   proc sort data=EMWS1.Boost_EMCLASSIFICATION nothreads;
+26645   by DATAROLE TARGET TARGETLABEL;
+26646   run;
+ 
+NOTE: There were 8 observations read from the data set EMWS1.BOOST_EMCLASSIFICATION.
+NOTE: The data set EMWS1.BOOST_EMCLASSIFICATION has 8 observations and 12 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+26647   %let _cn = %sysfunc(getoption(CENTER));
+26648   options nocenter;
+26649   proc print data=EMWS1.Boost_EMCLASSIFICATION noobs label;
+26650   var from into pct_row pct_col count percent
+26651   ;
+26652   by DATAROLE TARGET TARGETLABEL;
+26653   label FROM = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,     NOQUOTE))";
+26654   label INTO = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcome_vlabel ,    NOQUOTE))";
+26655   label PCT_ROW = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetpct_vlabel ,  NOQUOTE))";
+26656   label PCT_COL = "%sysfunc(sasmsg(sashelp.dmine, rpt_outcomepct_vlabel , NOQUOTE))";
+26657   label COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel ,      NOQUOTE))";
+26658   label PERCENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_totalpct_vlabel ,   NOQUOTE))";
+26659   where _TYPE_='PREDICTION';
+26660   title9 ' ';
+26661   title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_classification_title    , NOQUOTE))";
+26662   run;
+ 
+NOTE: There were 8 observations read from the data set EMWS1.BOOST_EMCLASSIFICATION.
+      WHERE _TYPE_='PREDICTION';
+NOTE: The PROCEDURE PRINT printed page 6.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+26663   title9;
+26664   title10;
+26665   options &_cn;
+ 
+26666   %let _cn = %sysfunc(getoption(CENTER));
+26667   options nocenter;
+26668   data EMWS1.Boost_EMEVENTREPORT;
+26669   length DATAROLE TARGET $32 TARGETLABEL $200 FALSENEVENT TRUENEVENT FALSEEVENT TRUEEVENT
+26669 !  8;
+26670   label DATAROLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))"
+26670 ! TARGET = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,      NOQUOTE))"
+26670 ! TARGETLABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))"
+26670 ! FALSEEVENT
+26671   = "%sysfunc(sasmsg(sashelp.dmine, rpt_falseevent_vlabel ,  NOQUOTE))" FALSENEVENT =
+26671 ! "%sysfunc(sasmsg(sashelp.dmine, rpt_falsenevent_vlabel , NOQUOTE))" TRUEEVENT =
+26671 ! "%sysfunc(sasmsg(sashelp.dmine, rpt_trueevent_vlabel ,   NOQUOTE))" TRUENEVENT =
+26672      "%sysfunc(sasmsg(sashelp.dmine, rpt_truenevent_vlabel ,  NOQUOTE))";
+26673   FALSEEVENT=0;
+26674   FALSENEVENT=0;
+26675   TRUEEVENT=0;
+26676   TRUENEVENT=0;
+26677   set EMWS1.Boost_EMEVENTREPORT;
+26678   run;
+ 
+NOTE: There were 2 observations read from the data set EMWS1.BOOST_EMEVENTREPORT.
+NOTE: The data set EMWS1.BOOST_EMEVENTREPORT has 2 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+ 
+ 
+26679   proc print data=EMWS1.Boost_EMEVENTREPORT noobs label;
+26680   title9 ' ';
+26681   title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_eventtable_title    , NOQUOTE))";
+26682   by notsorted DATAROLE notsorted TARGET notsorted TARGETLABEL;
+26683   run;
+ 
+NOTE: There were 2 observations read from the data set EMWS1.BOOST_EMEVENTREPORT.
+NOTE: The PROCEDURE PRINT printed page 7.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+26684   title10;
+26685   options &_cn;
+ 
+26686   proc datasets library=EMWS1 nolist;
+26687   modify Boost_EMRANK;
+26688   label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,   NOQUOTE))";
+26689   label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+26690   run;
+ 
+NOTE: MODIFY was successful for EMWS1.BOOST_EMRANK.DATA.
+26691   quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.07 seconds
+      cpu time            0.06 seconds
+ 
+ 
+26692   %let _cn = %sysfunc(getoption(CENTER));
+26693   options nocenter;
+26694   proc print data=EMWS1.Boost_EMRANK label noobs;
+26695   var
+26696   decile gain lift liftc resp respc N _meanP_;
+26697   by
+26698   notsorted DATAROLE
+26699   notsorted TARGET
+26700   notsorted TARGETLABEL
+26701   ;
+26702   title9 ' ';
+26703   title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_scoreranking_title , NOQUOTE))";
+26704   run;
+ 
+NOTE: There were 40 observations read from the data set EMWS1.BOOST_EMRANK.
+NOTE: The PROCEDURE PRINT printed page 8.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+26705   title10;
+26706   options &_cn;
+ 
+26707   proc datasets library=EMWS1 nolist;
+26708   modify Boost_EMSCOREDIST;
+26709   label target = "%sysfunc(sasmsg(sashelp.dmine, rpt_targetvar_vlabel ,      NOQUOTE))";
+26710   label datarole = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))";
+26711   run;
+ 
+NOTE: MODIFY was successful for EMWS1.BOOST_EMSCOREDIST.DATA.
+26712   quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 

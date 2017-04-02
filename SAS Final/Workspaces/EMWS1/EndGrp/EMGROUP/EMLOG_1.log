@@ -1,0 +1,2381 @@
+*------------------------------------------------------------*
+User:                Divya
+Date:                November 23, 2016
+Time:                03:23:19
+Site:                70080468
+Platform:            X64_8HOME
+Maintenance Release: 9.04.01M3P062415
+EM Version:          14.1
+* 
+*------------------------------------------------------------*
+* Training Log
+Date:                November 23, 2016
+Time:                03:23:10
+*------------------------------------------------------------*
+14768  proc freq data=EMWS1.EndGrp_VariableSet noprint;
+14769  table ROLE*LEVEL/out=WORK.EndGrpMETA;
+14770  run;
+ 
+NOTE: There were 18 observations read from the data set EMWS1.ENDGRP_VARIABLESET.
+NOTE: The data set WORK.ENDGRPMETA has 9 observations and 4 variables.
+NOTE: PROCEDURE FREQ used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.03 seconds
+ 
+ 
+14771  proc print data=WORK.EndGrpMETA label noobs;
+14772  var ROLE LEVEL COUNT;
+14773  label ROLE = "%sysfunc(sasmsg(sashelp.dmine, meta_role_vlabel, NOQUOTE))" LEVEL = "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" COUNT = "%sysfunc(sasmsg(sashelp.dmine, rpt_count_vlabel, NOQUOTE))";
+14774  title9 ' ';
+14775  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_varSummary_title  , NOQUOTE))";
+14776  run;
+ 
+NOTE: There were 9 observations read from the data set WORK.ENDGRPMETA.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+14777  title10;
+ 
+14778  %let EMNORLEN = %DMNORLEN;
+EMWS1.Tree5_TRAIN EMWS1.Tree5_TRAIN
+EMWS1.Tree5_TRAIN EMWS1.Tree5_TRAIN EMWS1 Tree5_TRAIN
+EMWS1.Tree5_TRAIN EMWS1.Tree5_TRAIN
+EMWS1.Tree5_TRAIN EMWS1.Tree5_TRAIN EMWS1 Tree5_TRAIN
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _INIT >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL setMetaData >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL next >>
+Executing  SASHELP.EMCORE.EMINFOITERATOR.SCL _term >>
+14807  data WORK.EndGrp_EVENT(KEEP=VARIABLE LABEL LEVEL EVENT NUMLEVELS ORDER);
+14808  length ORDER $20;
+14809  label VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel,  NOQUOTE))" EVENT = "%sysfunc(sasmsg(sashelp.dmine, assmt_event_vlabel, NOQUOTE))" NUMLEVELS = "%sysfunc(sasmsg(sashelp.dmine, rpt_numcat_vlabel, NOQUOTE))" LEVEL =
+14810     "%sysfunc(sasmsg(sashelp.dmine, meta_level_vlabel, NOQUOTE))" ORDER = "%sysfunc(sasmsg(sashelp.dmine, meta_order_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+14811  set EMWS1.TREE5_CONTRIBUTED_TO_A_DM( where=(_TYPE_="TARGET"));
+14812  NumLevels=2;
+14813  select(upcase(ORDER));
+14814  when('DESC') ORDER = 'Descending';
+14815  when('ASC') ORDER = 'Ascending';
+14816  when('FMTDESC') ORDER = 'Formatted Descending';
+14817  when('FMTASC') ORDER = 'Formatted Ascending';
+14818  otherwise ORDER = 'Descending';
+14819  end;
+14820  output;
+14821  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='TARGET';
+NOTE: The data set WORK.ENDGRP_EVENT has 1 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+14822  title9 ' ';
+14823  proc print data=WORK.EndGrp_EVENT noobs label;
+14824  var VARIABLE EVENT LEVEL NUMLEVELS ORDER LABEL;
+14825  title9 ' ';
+14826  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_modelEvent_title  , NOQUOTE))";
+14827  run;
+ 
+NOTE: There were 1 observations read from the data set WORK.ENDGRP_EVENT.
+NOTE: The PROCEDURE PRINT printed page 2.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+14828  title10;
+ 
+"No decisions defined for target "Contributed_To_Accident"."
+14829  proc print data = EMWS1.Tree5_Contributed_To_A_DM noobs label;
+14830  var _type_ variable label;
+14831  where _type_ ^in('MATRIX', 'DECISION', 'TRAINPRIOR', 'DATAPRIOR', 'DECPRIOR');
+14832  label _TYPE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_type_vlabel,     NOQUOTE))" VARIABLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_variable_vlabel, NOQUOTE))" LABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_label_vlabel, NOQUOTE))";
+14833  title9 ' ';
+14834  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_predDecVars_title  , NOQUOTE))";
+14835  run;
+ 
+NOTE: There were 7 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _type_ not in ('DATAPRIOR', 'DECISION', 'DECPRIOR', 'MATRIX', 'TRAINPRIOR');
+NOTE: The PROCEDURE PRINT printed page 3.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+14836  title10;
+ 
+14837  %let EMEXCEPTIONSTRING=;
+PERFORMANCE  DETAILS
+15288  *------------------------------------------------------------*;
+15289  * EndGrp: Generation of macros and macro variables;
+15290  * To see the code generated, set the EM_DEBUG macro variable to SOURCE or _ALL_;
+15291  *------------------------------------------------------------*;
+ 
+15292  %let EMEXCEPTIONSTRING=;
+15293  *------------------------------------------------------------*;
+15294  * TRAIN: EndGrp;
+15295  *------------------------------------------------------------*;
+15296  %let EM_ACTION = TRAIN;
+15297  %let syscc = 0;
+15298  %macro main;
+15299     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+15300
+15301         filename temp catalog 'sashelp.emutil.endgp_train.source';
+15302         %include temp;
+15303         filename temp;
+15304
+15305         %train;
+15306
+15307     %end;
+15308     %else
+15309        %if %upcase(&EM_ACTION) = SCORE %then %do;
+15310
+15311         filename temp catalog 'sashelp.emutil.endgp_score.source';
+15312         %include temp;
+15313         filename temp;
+15314
+15315         %score;
+15316     %end;
+15317     %else
+15318     %if %upcase(&EM_ACTION) = POSTLOOP %then %do;
+15319
+15320         filename temp catalog 'sashelp.emutil.endgp_postloop.source';
+15321         %include temp;
+15322         filename temp;
+15323
+15324         %postloop;
+15325
+15326     %end;
+15327
+15328     %doendm:
+15329  %mend main;
+15330
+15331  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMUTIL.ENDGP_TRAIN.SOURCE.
+15332 +%macro copyModelDs(model=, key=);
+15333 +   %let modelDs  = &em_lib..&model._&key;
+15334 +   %let reportDs = &em_lib..&em_nodeid._&key;
+15335 +   %if %sysfunc(exist(&modelDs)) %then %do;
+15336 +       data &reportDs;
+15337 +          length ModelId $16;
+15338 +          retain ModelId "&model";
+15339 +          set &modelDs;
+15340 +       run;
+15341 +   %end;
+15342 +%mend copyModelDs;
+15343 +
+15344 +%macro traintarget(groupid=);
+15345 +   %em_getname(key=emoutfit, type=DATA);
+15346 +   %let targetname=;
+15347 +   data _null_;
+15348 +     set &em_lib..&groupid._&looptype;
+15349 +     where _LOOP_ = &EMLOOPNUMBER;
+15350 +     call symput('targetname', strip(_TARGET_));
+15351 +   run;
+15352 +   %let modelId =;
+15353 +   data _null_;
+15354 +      set &em_import_data_eminfo;
+15355 +      where key = 'MODEL' and TARGET = "&targetname";
+15356 +      call symput('modelId',   strip(data));
+15357 +   run;
+15358 +   %if "&modelId" ne "" %then %do;
+15359 +       %copyModelDs(model=&modelid, key=EMRANK);
+15360 +       %copyModelDs(model=&modelid, key=EMSCOREDIST);
+15361 +       %copyModelDs(model=&modelid, key=EMOUTFIT);
+15362 +       %copyModelDs(model=&modelid, key=EMCLASSIFICATION);
+15363 +       %copyModelDs(model=&modelid, key=EMEVENREPORT);
+15364 +       %copyModelDs(model=&modelid, key=EMRESIDUALS);
+15365 +       %em_model(TARGET=&targetname, ASSESS=N, DECSCORECODE=N, FITSTATISTICS=N, CLASSIFICATION=N, RESIDUALS=N, PREDICTED=Y);
+15366 +   %end;
+15367 +
+15368 +   %doendtgp:
+15369 +%mend;
+15370 +
+15371 +%macro trainboost(groupid=);
+15372 +
+15373 +   %let boostinfoDs  = &em_lib..%sysfunc(strip(&groupid))_boostinfo;
+15374 +   %let boostscoreDs = &em_lib..%sysfunc(strip(&groupid))_boostscore;
+15375 +
+15376 +   data _null_;
+15377 +      retain index 0;
+15378 +      set &boostinfoDs;
+15379 +      call symput('targetname', strip(_target_));
+15380 +   run;
+15381 +
+15382 +   %if "&em_import_data_eminfo" ne "" and %sysfunc(exist(&em_import_data_eminfo)) %then %do;
+15383 +       %let decmeta = ;
+15384 +       data _null_;
+15385 +          set &em_import_data_eminfo;
+15386 +          where (key='DECMETA' and TARGET="&targetname");
+15387 +          call symput('DECMETA', strip(data));
+15388 +       run;
+15389 +       %if "&decmeta" eq "" %then %do;
+15390 +           %let emexceptionstring = EMTOOL.NOTARGETMODELED;
+15391 +           %goto doendtb;
+15392 +       %end;
+15393 +
+15394 +       %let predictedVars=;
+15395 +       data _null_;
+15396 +          set &decmeta;
+15397 +          if _TYPE_ = 'FROM' then call symput('FROMVAR', strip(variable));
+15398 +          else
+15399 +          if _TYPE_ = 'INTO' then call symput('INTOVAR', strip(variable));
+15400 +          else
+15401 +          if _TYPE_ = 'PREDICTED' then call symput('predictedvars', strip(symget('predictedVars'))!!' '!!strip(variable));
+15402 +       run;
+15403 +       %if %index(&EM_DEBUG, _ALL_) %then %do;
+15404 +           %put GROUPID: &GROUPID DECMETA: &DECMETA FROMVAR: &FROMVAR INTO: &INTOVAR PREDICTED: &PREDICTEDVARS;
+15405 +       %end;
+15406 +   %end;
+15407 +
+15408 +   * ;
+15409 +   * ENDGROUP &NODEID : Boosting scoring ;
+15410 +   * ;
+15411 +   data &em_lib..&groupid._boostscore;
+15412 +      set &em_import_data;
+15413 +      keep _WARN_ &targetname &fromvar &intovar &predictedvars;
+15414 +      %if "%em_freq" ne "" %then %do ;
+15415 +          keep %em_freq ;
+15416 +      %end ;
+15417 +   run;
+15418 +   %em_model(TARGET=&targetname , ASSESS=N, DECSCORECODE=N, FITSTATISTICS=Y, CLASSIFICATION=N, RESIDUALS=N, PREDICTED=Y);
+15419 +
+15420 +   %doendtb:
+15421 +
+15422 +%mend trainboost;
+15423 +
+15424 +%macro trainbag(groupid=);
+15425 +   %let baginfoDs  = &em_lib..%sysfunc(strip(&groupid))_baginfo;
+15426 +   data _null_;
+15427 +      retain index 0;
+15428 +      set &baginfoDs;
+15429 +      call symput('targetname', strip(_target_));
+15430 +   run;
+15431 +
+15432 +   %let decmeta = ;
+15433 +   data _null_;
+15434 +       set &em_import_data_eminfo;
+15435 +       where (key='DECMETA' and TARGET="&targetname");
+15436 +       call symput('DECMETA', strip(data));
+15437 +   run;
+15438 +   %if "&decmeta" eq "" %then %do;
+15439 +       %let emexceptionstring = EMTOOL.NOTARGETMODELED;
+15440 +       %goto doendtg;
+15441 +   %end;
+15442 +
+15443 +   %em_model(TARGET=&targetname, ASSESS=N, DECSCORECODE=N, FITSTATISTICS=Y, CLASSIFICATION=N, RESIDUALS=N, PREDICTED=Y);
+15444 +
+15445 +   %doendtg:
+15446 +%mend trainbag;
+15447 +
+15448 +%macro traingroup(groupid=);
+15449 +   %let targetNum = 0;
+15450 +
+15451 +   data _temp1;
+15452 +      set &em_lib..&groupid._eminfo;
+15453 +      where key='MODEL';
+15454 +   run;
+15455 +   data _temp2;
+15456 +      set &em_import_data_eminfo;
+15457 +      where key='MODEL';
+15458 +   run;
+15459 +   proc sort data=_temp1; by TARGET DATA;
+15460 +   proc sort data=_temp2; by TARGET DATA;
+15461 +   data _temp2;
+15462 +      merge _temp1(in=_a) _temp2(in=_b);
+15463 +      by TARGET DATA;
+15464 +      if ^_a and _b then output;
+15465 +   run;
+15466 +   data _null_;
+15467 +      retain index 0;
+15468 +      set _temp2 end=eof;
+15469 +      index +1;
+15470 +      where key ='MODEL';
+15471 +      call symput('MODELID'!!strip(put(index, best.)), strip(data));
+15472 +      call symput('TARGET'!!strip(put(index, best.)), strip(target));
+15473 +      if eof then
+15474 +         call symput('targetnum', strip(put(index, best.)));
+15475 +   run;
+15476 +   proc datasets lib=work nolist;
+15477 +      delete _temp1 _temp2;
+15478 +   run;
+15479 +   %if "&targetNum" eq "0" %then %goto doendtgp;
+15480 +
+15481 +   %let modelString =;
+15482 +   %do i=1 %to &targetnum;
+15483 +        %if ^%sysfunc(indexw(&modelString, &&modelid&i)) %then %do;
+15484 +            %copyModelDs(model=&&modelid&i, key=EMRANK);
+15485 +            %copyModelDs(model=&&modelid&i, key=EMSCOREDIST);
+15486 +            %copyModelDs(model=&&modelid&i, key=EMOUTFIT);
+15487 +            %copyModelDs(model=&&modelid&i, key=EMCLASSIFICATION);
+15488 +            %copyModelDs(model=&&modelid&i, key=EMEVENREPORT);
+15489 +            %copyModelDs(model=&&modelid&i, key=EMRESIDUALS);
+15490 +            %let modelString = &modelString &&modelid&i;
+15491 +       %end;
+15492 +       %em_model(TARGET=&&target&i, ASSESS=N, DECSCORECODE=N, FITSTATISTICS=N, CLASSIFICATION=N, RESIDUALS=N, PREDICTED=Y);
+15493 +   %end;
+15494 +
+15495 +   %doendtgp:
+15496 +
+15497 +%mend traingroup;
+15498 +
+15499 +%macro getSize(data=, nobsvar=);
+15500 +
+15501 +   %if %sysfunc(exist(&data, DATA)) %then %do;
+15502 +       %let dsid = %sysfunc(open(&data));
+15503 +       %if &dsid %then %do;
+15504 +           %let &&nobsvar = %sysfunc(attrn(&dsid, NLOBS));
+15505 +           %let dsid = %sysfunc(close(&dsid));
+15506 +       %end;
+15507 +   %end;
+15508 +    %if %sysfunc(exist(&data, VIEW)) %then %do;
+15509 +        proc sql;
+15510 +           reset noprint;
+15511 +           select count(*) into :&nobsvar from &data;
+15512 +        quit;
+15513 +   %end;
+15514 +
+15515 +%mend getsize;
+15516 +
+15517 +%macro train;
+15518 +
+15519 +   %if ^%symexist(em_import_data_eminfo) or ("&emloopmode" eq "") %then %do;
+15520 +      %let EM_TOOLTYPE=UTILITY;
+15521 +      %if %sysfunc(exist(&em_data_eminfo)) %then %do;
+15522 +          proc delete data=&em_data_eminfo;
+15523 +          run;
+15524 +      %end;
+15525 +      %goto doendtr;
+15526 +   %end;
+15527 +
+15528 +   %if "&em_import_data_eminfo" eq "" or ^%sysfunc(exist(&em_import_data_eminfo)) %then %do;
+15529 +       %let emexceptionstring = EMTOOL.NOTARGETMODELED;
+15530 +       %goto doendtr;
+15531 +   %end;
+15532 +
+15533 +   %let xgroupid = ;
+15534 +   data _null_;
+15535 +      set &em_import_data_eminfo;
+15536 +      where key in('GROUPINFO', 'BOOSTINFO', 'BAGINFO', 'TARGETINFO', 'INDEXINFO');
+15537 +      call symput('XGROUPID',  strip(data));
+15538 +      call symput('LOOPTYPE', strip(key));
+15539 +   run;
+15540 +
+15541 +   %if "&looptype" eq "BOOSTINFO" %then %do;
+15542 +       %let nDataObs=0;
+15543 +       %getSize(data=&em_import_data, nobsvar=nDataObs);
+15544 +
+15545 +       %let nStartObs=0;
+15546 +       %getsize(data=&em_lib..&xgroupid._train, nobsvar=nStartObs);
+15547 +
+15548 +       %if &nDataObs ne &nStartObs %then %do;
+15549 +           %let emexceptionstring = EMTOOL.BOOSTERRORNOBSCHANGED;
+15550 +           %goto doendtr;
+15551 +       %end;
+15552 +
+15553 +       %trainboost(groupid=&xgroupid);
+15554 +   %end;
+15555 +   %else
+15556 +   %if "&looptype" eq "BAGINFO" %then %do;
+15557 +       %trainbag(groupid=&xgroupid);
+15558 +   %end;
+15559 +   %else
+15560 +   %if "&looptype" eq "GROUPINFO" %then %do;
+15561 +       %traingroup(groupid=&xgroupid);
+15562 +   %end;
+15563 +   %else
+15564 +   %if "&looptype" eq "TARGETINFO" %then %do;
+15565 +       %traintarget(groupid=&xgroupid);
+15566 +   %end;
+15567 +
+15568 +   data &em_data_eminfo;
+15569 +      length TARGET KEY $32  DATA $43;
+15570 +      TARGET=''; KEY='ENDGROUP'; DATA="&em_nodeid"; output;
+15571 +   run;
+15572 +
+15573 +   %let EM_TOOLTYPE=MODEL;
+15574 +
+15575 +   %doendtr:
+15576 +
+15577 +%mend train;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+ 
+NOTE: There were 1 observations read from the data set EMWS1.TREE5_EMINFO.
+      WHERE key in ('BAGINFO', 'BOOSTINFO', 'GROUPINFO', 'INDEXINFO', 'TARGETINFO');
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set EMWS1.GRP_BAGINFO.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 1 observations read from the data set EMWS1.TREE5_EMINFO.
+      WHERE (key='DECMETA') and (TARGET='Contributed_To_Accident');
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set WORK.EM_USER_MODEL has 1 observations and 8 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 1 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+15578  *------------------------------------------------------------*;
+15579  * End TRAIN: EndGrp;
+15580  *------------------------------------------------------------*;
+15581
+ 
+15582  *------------------------------------------------------------*;
+15583  * Close any missing semi colons;
+15584  *------------------------------------------------------------*;
+15585  ;
+15586  ;
+15587  ;
+15588  ;
+15589  quit;
+15590  *------------------------------------------------------------*;
+15591  * Close any unbalanced quotes;
+15592  *------------------------------------------------------------*;
+15593  /*; *"; *'; */
+15594  ;
+15595  run;
+15596  quit;
+15597  /* Reset EM Options */
+15598  options formchar="|----|+|---+=|-/\<>*";
+15599  options nocenter ls=256 ps=10000;
+15600  goptions reset=all device=GIF NODISPLAY;
+ 
+*------------------------------------------------------------*
+* Score Log
+Date:                November 23, 2016
+Time:                03:23:12
+*------------------------------------------------------------*
+15702  %let EMEXCEPTIONSTRING=;
+15703  *------------------------------------------------------------*;
+15704  * SCORE: EndGrp;
+15705  *------------------------------------------------------------*;
+15706  %let EM_ACTION = SCORE;
+15707  %let syscc = 0;
+15708  %macro main;
+15709     %if %upcase(&EM_ACTION) = TRAIN %then %do;
+15710
+15711         filename temp catalog 'sashelp.emutil.endgp_train.source';
+15712         %include temp;
+15713         filename temp;
+15714
+15715         %train;
+15716
+15717     %end;
+15718     %else
+15719        %if %upcase(&EM_ACTION) = SCORE %then %do;
+15720
+15721         filename temp catalog 'sashelp.emutil.endgp_score.source';
+15722         %include temp;
+15723         filename temp;
+15724
+15725         %score;
+15726     %end;
+15727     %else
+15728     %if %upcase(&EM_ACTION) = POSTLOOP %then %do;
+15729
+15730         filename temp catalog 'sashelp.emutil.endgp_postloop.source';
+15731         %include temp;
+15732         filename temp;
+15733
+15734         %postloop;
+15735
+15736     %end;
+15737
+15738     %doendm:
+15739  %mend main;
+15740
+15741  %main;
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMUTIL.ENDGP_SCORE.SOURCE.
+15742 +%macro scoreTables(data=, out=, scoreref=, prescore=);
+15744 +   %if ("&data" ne "") and (%sysfunc(exist(&data)) or %sysfunc(exist(&data, VIEW))) %then %do;
+15745 +       data &out / view=&out;
+15746 +          set &data
+15748 +          %if "&prescore" = "Y" %then %do;
+15749 +              (obs=1)
+15750 +          %end;
+15752 +          ;
+15754 +          %inc &scoreref;
+15756 +          %if "&prescore" eq "Y" %then %do;
+15757 +              drop I_: R_:;
+15758 +          %end;
+15760 +       run;
+15761 +   %end;
+15763 +%mend scoretables;
+15765 +%macro boostbagcode(groupid=, type=, EnsembleIndex=);
+15766 +   %let infoDs = &em_lib..%sysfunc(strip(&groupid))_&type;
+15767 +   data _null_;
+15768 +      retain index 0;
+15769 +      set &infoDs;
+15770 +      call symput('targetname', strip(_target_));
+15771 +      call symput('endloopnum', strip(_loop_));
+15772 +   run;
+15774 +   %let endgrp_decmeta=;
+15775 +   %let endgrp_decdata=;
+15777 +   data _null_;
+15778 +      set &em_import_data_eminfo;
+15779 +      where key in('MODEL', 'DECMETA', 'DECDATA') and TARGET="&targetname";
+15780 +      if key='DECMETA' then call symput('ENDGRP_DECMETA', strip(data));
+15781 +      else
+15782 +      if key='DECDATA' then call symput('ENDGRP_DECDATA', strip(data));
+15783 +      else call symput('MODELID', strip(data));
+15784 +   run;
+15786 +   %let headerString= Boosting;
+15787 +   %let prefixString= _BoostVar;
+15789 +   %if "&type" = "BAGINFO" %then %do;
+15790 +        %let headerString = Bagging;
+15791 +        %let prefixString= _BagVar;
+15792 +   %end;
+15794 +   %let targetType=;
+15795 +   %let predictedVars=;
+15796 +   data _null_;
+15797 +      retain index;
+15798 +      set &endgrp_decmeta end=eof;
+15799 +      length tempvar $200;
+15800 +      if _TYPE_='TARGET' then call symput('TARGETTYPE', strip(level));
+15801 +      else
+15802 +      if _TYPE_ = 'FROM' then call symput('FROMVAR', strip(variable));
+15803 +      else
+15804 +      if _TYPE_ = 'INTO' then call symput('INTOVAR', strip(variable));
+15805 +      else
+15806 +      if _TYPE_ = 'PREDICTED' then do;
+15807 +         index+1;
+15808 +         call symput('predvars'!!strip(put(index, best.)), strip(variable));
+15809 +         tempvar = strip("&em_nodeid")!!'_'!!strip(variable);
+15810 +         if length(tempvar)<=32 then call symput('tempvars'!!strip(put(index, best.)), strip(tempvar));
+15811 +         else call symput('tempvars'!!strip(put(index, best.)), strip("&prefixString")!!strip(put(index, best.)));
+15812 +      end;
+15813 +      if eof then
+15814 +         call symput('prednum', strip(put(index, best.)));
+15815 +   run;
+15817 +   %em_getname(key=LOOPFLOWCODE, type=FILE, extension=sas);
+15818 +   %em_getname(key=LOOPPUBCODE,  type=FILE, extension=sas);
+15820 +   filename loopflow "&em_user_loopflowcode";
+15821 +   filename looppub "&em_user_looppubcode";
+15823 +   filename emflow "&EM_FILE_EMFLOWSCORECODE" MOD;
+15824 +   filename empub "&EM_FILE_EMPUBLISHSCORECODE";
+15826 +   %if "&emloopnumber" = "1" %then %do;
+15827 +       data _null_;
+15828 +          rc = fdelete('loopflow');
+15829 +          rc = fdelete('looppub');
+15830 +       run;
+15831 +       data _null_;
+15832 +          file loopflow;
+15833 +          put "&em_codebar;";
+15834 +          put "* &em_nodeid: ;" ;
+15835 +          put "* User: &sysuserid;";
+15836 +          put "* Date: &sysdate: &systime;";
+15837 +          put "&em_codebar ;";
+15838 +          put "* Ensemble Code;";
+15839 +          put "&em_codebar ;";
+15840 +          put "* &headerString: Loop=1;";
+15841 +          put "* Temporary Variables;";
+15842 +          %do i= 1 %to &prednum;
+15843 +              put "drop &&tempvars&i;";
+15844 +              put "&&tempvars&i = 0;";
+15845 +          %end;
+15846 +       run;
+15847 +       %em_copyfile(infref=loopflow, outfref=looppub);
+15848 +   %end;
+15850 +   %let j=&emloopnumber;
+15851 +   %do i = 1 %to &loopcodenum;
+15852 +       %let fsourceEntry = &em_lib..%sysfunc(strip(&&loopnode&i))_LOOP.EMFLOWCODE_&j..source;
+15853 +       %let psourceEntry = &em_lib..%sysfunc(strip(&&loopnode&i))_LOOP.EMPUBLISHCODE_&j..source;
+15855 +       %if (&&loopnode&i eq &em_nodeid ) or
+15856 +           ( (&&loopnode&i ne &em_nodeid) and (&ensembleIndex = 0) or (&i=1 or &i>=&ensembleIndex )) %then %do;
+15857 +           data _null_;
+15858 +              file loopflow mod;
+15859 +              put "&em_codebar;";
+15860 +              put "* &&loopnode&i: &&loopdesc&i;" ;
+15861 +              put "* User: &sysuserid;";
+15862 +              put "* Date: &sysdate: &systime;";
+15863 +              put "* &headerString: Loop=&j;";
+15864 +              put "&em_codebar;";
+15865 +           run;
+15866 +           data _null_;
+15867 +              file looppub mod;
+15868 +              put "&em_codebar;";
+15869 +              put "* &&loopnode&i: &&loopdesc&i;" ;
+15870 +              put "* User: &sysuserid;";
+15871 +              put "* Date: &sysdate: &systime;";
+15872 +              put "* &headerString: Loop=&j;";
+15873 +              put "&em_codebar;";
+15874 +           run;
+15875 +       %end;
+15877 +       %if &&loopnode&i ne &em_nodeid %then %do;
+15878 +           %if (&ensembleIndex = 0) or (&i=1 or &i>=&ensembleIndex ) %then %do;
+15879 +               filename x catalog "&fsourceEntry";
+15880 +               %em_copyfile(infref=x, outfref=loopflow, append=Y);
+15881 +               filename x;
+15883 +               filename y catalog "&psourceEntry";
+15884 +               %em_copyfile(infref=y, outfref=looppub, append=Y);
+15885 +               filename y;
+15886 +           %end;
+15887 +       %end;
+15888 +       %else %do;
+15889 +           %if "&j" ne "1" %then %do;
+15890 +               %let weight = %eval(&j-1);
+15891 +               data _null_;
+15892 +                  file loopflow mod;
+15893 +                  put "&em_codebar;";
+15894 +                  %if "&j" ne "&endloopnum" %then %do;
+15895 +                      put "* &headerString: accumulate probabilities for iteration: &j;";
+15896 +                  %end;
+15897 +                  %else %do;
+15898 +                      put "* &headerString: accumulate final probabilities;";
+15899 +                  %end;
+15900 +                  put "&em_codebar;";
+15901 +                  %do k=1 %to &prednum;
+15902 +                      put "&&predvars&k = &&tempvars&k*(&weight/&j) + &&predvars&k*(1/&j);";
+15903 +                  %end;
+15904 +               run;
+15905 +               data _null_;
+15906 +                  file looppub mod;
+15907 +                  put "&em_codebar;";
+15908 +                  %if "&j" ne "&endloopnum" %then %do;
+15909 +                      put "* &headerString: accumulate probabilities for iteration: &j;";
+15910 +                  %end;
+15911 +                  %else %do;
+15912 +                      put "* &headerString: accumulate final probabilities;";
+15913 +                  %end;
+15914 +                  %do k=1 %to &prednum;
+15915 +                      put "&&predvars&k = &&tempvars&k*(&weight/&j) + &&predvars&k*(1/&j);";
+15916 +                  %end;
+15917 +               run;
+15918 +           %end;
+15919 +           %if "&j" ne "&endloopnum" %then %do;
+15920 +               data _null_;
+15921 +                  file loopflow mod;
+15922 +                  put "&em_codebar;";
+15923 +                  put "* &headerString: Saving Probabilities for Next Iteration;";
+15924 +                  put "&em_codebar;";
+15925 +               %do k=1 %to &prednum;
+15926 +                  put "&&tempvars&k = &&predvars&k;";
+15927 +               %end;
+15928 +               run;
+15929 +               data _null_;
+15930 +                  file looppub mod;
+15931 +                  put "&em_codebar;";
+15932 +                  put "* &headerString: Saving Probabilities for Next Iteration;";
+15933 +                  put "&em_codebar;";
+15934 +               %do k=1 %to &prednum;
+15935 +                   put "&&tempvars&k = &&predvars&k;";
+15936 +               %end;
+15937 +               run;
+15938 +           %end;
+15940 +       %end;
+15941 +   %end;
+15943 +   %em_copyfile(infref=loopflow, outfref=emflow, append=N);
+15944 +   %em_copyfile(infref=looppub,  outfref=empub,  append=N);
+15946 +   filename loopflow;
+15947 +   filename looppub;
+15948 +   filename empub;
+15950 +   %let groupImportDs = &em_lib..%sysfunc(strip(&groupid))_importset;
+15951 +   %let gpTrain=;
+15952 +   %let gpValidate=;
+15953 +   %let gpTest=;
+15955 +   data _null_;
+15956 +      set &groupImportDs;
+15957 +      select(upcase(port));
+15958 +          when('DATA')     call symput('gpTrain',    strip(dataset));
+15959 +          when('VALIDATE') call symput('gpValidate', strip(dataset));
+15960 +          when('TEST')     call symput('gpTest',     strip(dataset));
+15961 +       otherwise;
+15962 +      end;
+15963 +   run;
+15965 +   %if "&gpTrain" ne "" %then %do;
+15967 +       %scoreTables(data=&em_lib..&gpTrain,     out=&em_export_train,    scoreref=emflow, prescore=Y);
+15969 +       %if &targetType ne INTERVAL %then %do;
+15970 +           %makeClassificationVars(target=&targetname, data=&em_export_train, decmeta=&endgrp_decmeta, publish=N, fref=emflow);
+15971 +       %end;
+15973 +       %makeResidualVars(target=&targetname, decmeta=&endgrp_decmeta, fref=emflow);
+15975 +       %let decflow = %sysfunc(Pathname(WORK))&em_dsep._decflow.sas;
+15977 +       %em_decidecode(data=&em_export_train , decdata=&ENDGRP_DECDATA , decmeta=&ENDGRP_DECMETA ,
+15978 +                                                           noresfile=, resfile=%nrbquote(&decflow));
+15980 +       filename _decflow "&decflow";
+15981 +       %em_copyfile(infref=_decflow, outfref=emflow, append=Y);
+15982 +       filename _decflow;
+15984 +   %end;
+15986 +   %if "&gpTrain" ne "" %then
+15987 +        %scoreTables(data=&em_lib..%sysfunc(strip(&gpTrain)),     out=&em_export_train,    scoreref=emflow);
+15988 +   %if "&gpValidate" ne "" %then
+15989 +       %scoreTables(data=&em_lib..%sysfunc(strip(&gpValidate)),  out=&em_export_validate, scoreref=emflow);
+15990 +   %if "&gpTest" ne "" %then
+15991 +       %scoreTables(data=&em_lib..%sysfunc(strip(&gpTest)),      out=&em_export_test,     scoreref=emflow);
+15993 +   filename emflow;
+15995 +%mend boostbagcode;
+15997 +%macro score;
+15999 +   filename _dec catalog "sashelp.emutil.em_decidecode.source";
+16000 +   %inc _dec;
+16001 +   filename _dec;
+16003 +   %if ^%symexist(em_import_data_eminfo) or ("&emloopmode" eq "") %then %goto doendpl;
+16005 +   %if "&em_import_data_eminfo" eq "" or ^%sysfunc(exist(&em_import_data_eminfo)) %then %do;
+16006 +       %let emexceptionstring = nomodeltarget;
+16007 +       %goto doendpl;
+16008 +   %end;
+16010 +   %LET GROUPID=;
+16011 +   %let LOOPTYPE=;
+16012 +   data _null_;
+16013 +      set &em_import_data_eminfo;
+16014 +      where key in('GROUPINFO','BOOSTINFO', 'BAGINFO', 'TARGETINFO', 'INDEXINFO');
+16015 +      call symput('GROUPID',   strip(data));
+16016 +      call symput('LOOPTYPE', strip(key));
+16017 +   run;
+16019 +   %em_getname(key=PATH, type=DATA);
+16021 +   filename temp catalog 'sashelp.emutil.em_gettrainpath.source';
+16022 +   %include temp;
+16023 +   filename temp;
+16025 +   %em_gettrainpath(NODEID=&em_nodeid, OUTPATH= score_path);
+16027 +   %if &emloopnumber = 1 and %sysfunc(exist(&em_user_path)) %then %do;
+16028 +       %let deleteString = &em_nodeid._path;
+16029 +       proc datasets lib=&em_lib nolist;
+16030 +          delete &deleteString;
+16031 +       run;
+16032 +       quit;
+16033 +   %end;
+16035 +   %if ^%sysfunc(exist(WORK.score_path)) %then %goto doendpl;
+16037 +   data score_path;
+16038 +      retain LOOPID &emloopnumber;
+16039 +      set score_path;
+16040 +   run;
+16042 +   proc append base=&em_user_path  data=score_path;
+16043 +   run;
+16045 +   %let EnsembleIndex=0;
+16046 +   data _null_;
+16047 +      retain index 0 ensembleIndex 0;
+16048 +      set score_Path end=eof;
+16049 +      if nodelabel = "&groupid" or index then do;
+16050 +         index + 1;
+16051 +         call symput('loopnode'!!strip(put(index, best.)), strip(nodelabel));
+16052 +         call symput('loopdesc'!!strip(put(index, best.)), strip(component));
+16053 +      end;
+16054 +      if component='Ensemble' then ensembleIndex = index;
+16055 +      if eof then do;
+16056 +         call symput('loopcodenum', strip(put(index, best.)));
+16057 +         call symput('EnsembleIndex', strip(put(ensembleIndex, best.)));
+16058 +      end;
+16059 +   run;
+16061 +   proc datasets lib=work nolist;
+16062 +      delete score_Path;
+16063 +   run;
+16064 +   quit;
+16066 +   %if ("&looptype" eq "BOOSTINFO") or ("&looptype" eq "BAGINFO") %then
+16067 +       %boostbagcode(groupid=&groupid, type=&looptype, EnsembleIndex=&EnsembleIndex);
+16069 +   %doendpl:
+16071 +%mend score;
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+NOTE: %INCLUDE (level 1) file _DEC is file SASHELP.EMUTIL.EM_DECIDECODE.SOURCE.
+16072 +/*
+16073 +       MACRO: EM_DECIDECODE
+16074 +
+16075 +       PURPOSE: Generate EM Decide Score Code for non-interval target.
+16076 +       SUPPORT: Taiyeong Lee
+16077 +
+16078 +       HISTORY: 01OCT04 Initial code
+16079 +       NOTE:    All parameters are optional, call %EM_DECIDECODE()
+16080 +                to add the corresponding decision code
+16081 +
+16082 +*/
+16083 +
+16084 +
+16085 +%macro  EM_DECIDECODE(data= , decdata= , decmeta= , noresfile=, resfile=);
+16086 + %global m_data    m_decdata   m_decmeta  m_noresfile  m_resfile ;
+16087 +
+16088 +    %do;
+16089 +    %let m_data      = &data;
+16090 +    %let m_decdata   = &decdata;
+16091 +    %let m_decmeta   = &decmeta;
+16092 +    %let m_noresfile = &noresfile;
+16093 +    %let m_resfile   = &resfile;
+16094 +    dm "afa c=sashelp.emutil.decidecode.scl";
+16095 +  %end;
+16096 +%mend EM_DECIDECODE;
+16097 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref _DEC has been deassigned.
+ 
+NOTE: There were 1 observations read from the data set EMWS1.TREE5_EMINFO.
+      WHERE key in ('BAGINFO', 'BOOSTINFO', 'GROUPINFO', 'INDEXINFO', 'TARGETINFO');
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: %INCLUDE (level 1) file TEMP is file SASHELP.EMUTIL.EM_GETTRAINPATH.SOURCE.
+16098 +%macro EM_GETTRAINPATH(NODEID=, OUTPATH=);
+16099 +   proc display c=sashelp.emcore.pathscorecode.scl;
+16100 +   run;
+16101 +%mend EM_GETTRAINPATH;
+16102 +
+NOTE: %INCLUDE (level 1) ending.
+NOTE: Fileref TEMP has been deassigned.
+ 
+16103  data score_path;
+16104  length Parent $32 nodelabel $32 description $200 tooltype $32 component $32 FlowScoreCodeFormat PublishScoreCode $16 PublishScoreCodeFormat $8 accumulatedScoreCode $1;
+16105  nodelabel="FIMPORT";
+16106  parent=" ";
+16107  description="Extension Class";
+16108  component="FileImport";
+16109  tooltype="SAMPLE";
+16110  FlowScoreCodeFormat="DATASTEP";
+16111  PublishScoreCode="EMPUBLISHSCORECODE";
+16112  PublishScoreCodeFormat="DATASTEP";
+16113  accumulatedScoreCode= "N";
+16114  output;
+16115  nodelabel="Repl";
+16116  parent="FIMPORT";
+16117  description="Extension Class";
+16118  component="Replace";
+16119  tooltype="MODIFY";
+16120  FlowScoreCodeFormat="DATASTEP";
+16121  PublishScoreCode="EMPUBLISHSCORECODE";
+16122  PublishScoreCodeFormat="DATASTEP";
+16123  accumulatedScoreCode= "N";
+16124  output;
+16125  nodelabel="Impt";
+16126  parent="Repl";
+16127  description="Imputation";
+16128  component="Impute";
+16129  tooltype="MODIFY";
+16130  FlowScoreCodeFormat="DATASTEP";
+16131  PublishScoreCode="EMPUBLISHSCORECODE";
+16132  PublishScoreCodeFormat="DATASTEP";
+16133  accumulatedScoreCode= "N";
+16134  output;
+16135  nodelabel="Stat";
+16136  parent="Impt";
+16137  description="Statistics Exploration";
+16138  component="StatExplore";
+16139  tooltype="EXPLORE";
+16140  FlowScoreCodeFormat="DATASTEP";
+16141  PublishScoreCode="EMFLOWSCORECODE";
+16142  PublishScoreCodeFormat="DATASTEP";
+16143  accumulatedScoreCode= "N";
+16144  output;
+16145  nodelabel="Varsel";
+16146  parent="Stat";
+16147  description="Variable selection  Class";
+16148  component="VariableSelection";
+16149  tooltype="EXPLORE";
+16150  FlowScoreCodeFormat="DATASTEP";
+16151  PublishScoreCode="EMFLOWSCORECODE";
+16152  PublishScoreCodeFormat="DATASTEP";
+16153  accumulatedScoreCode= "N";
+16154  output;
+16155  nodelabel="Trans";
+16156  parent="Varsel";
+16157  description="Transform";
+16158  component="Transform";
+16159  tooltype="MODIFY";
+16160  FlowScoreCodeFormat="DATASTEP";
+16161  PublishScoreCode="EMPUBLISHSCORECODE";
+16162  PublishScoreCodeFormat="DATASTEP";
+16163  accumulatedScoreCode= "N";
+16164  output;
+16165  nodelabel="BINNING";
+16166  parent="Trans";
+16167  description="Extension Class";
+16168  component="Binning";
+16169  tooltype="MODIFY";
+16170  FlowScoreCodeFormat="DATASTEP";
+16171  PublishScoreCode="EMPUBLISHSCORECODE";
+16172  PublishScoreCodeFormat="DATASTEP";
+16173  accumulatedScoreCode= "N";
+16174  output;
+16175  nodelabel="Stat2";
+16176  parent="BINNING";
+16177  description="Statistics Exploration";
+16178  component="StatExplore";
+16179  tooltype="EXPLORE";
+16180  FlowScoreCodeFormat="DATASTEP";
+16181  PublishScoreCode="EMFLOWSCORECODE";
+16182  PublishScoreCodeFormat="DATASTEP";
+16183  accumulatedScoreCode= "N";
+16184  output;
+16185  nodelabel="Grp";
+16186  parent="Stat2";
+16187  description="Extension Class";
+16188  component="StartGroup";
+16189  tooltype="UTILITY";
+16190  FlowScoreCodeFormat="DATASTEP";
+16191  PublishScoreCode="EMPUBLISHSCORECODE";
+16192  PublishScoreCodeFormat="DATASTEP";
+16193  accumulatedScoreCode= "N";
+16194  output;
+16195  nodelabel="Tree5";
+16196  parent="Grp";
+16197  description="Extension Class";
+16198  component="DecisionTree";
+16199  tooltype="MODEL";
+16200  FlowScoreCodeFormat="DATASTEP";
+16201  PublishScoreCode="EMPUBLISHSCORECODE";
+16202  PublishScoreCodeFormat="DATASTEP";
+16203  accumulatedScoreCode= "N";
+16204  output;
+16205  nodelabel="EndGrp";
+16206  parent="Tree5";
+16207  description="Extension Class";
+16208  component="EndGroup";
+16209  tooltype="MODEL";
+16210  FlowScoreCodeFormat="DATASTEP";
+16211  PublishScoreCode="EMPUBLISHSCORECODE";
+16212  PublishScoreCodeFormat="DATASTEP";
+16213  accumulatedScoreCode= "N";
+16214  output;
+16215  run;
+ 
+NOTE: The data set WORK.SCORE_PATH has 11 observations and 9 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: PROCEDURE DISPLAY used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 11 observations read from the data set WORK.SCORE_PATH.
+NOTE: The data set WORK.SCORE_PATH has 11 observations and 10 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: Appending WORK.SCORE_PATH to EMWS1.ENDGRP_PATH.
+NOTE: BASE data set does not exist. DATA file is being copied to BASE file.
+NOTE: There were 11 observations read from the data set WORK.SCORE_PATH.
+NOTE: The data set EMWS1.ENDGRP_PATH has 11 observations and 10 variables.
+NOTE: PROCEDURE APPEND used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 11 observations read from the data set WORK.SCORE_PATH.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: Deleting WORK.SCORE_PATH (memtype=DATA).
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: Numeric values have been converted to character values at the places given by: (Line):(Column).
+      15:120
+NOTE: There were 1 observations read from the data set EMWS1.GRP_BAGINFO.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 3 observations read from the data set EMWS1.TREE5_EMINFO.
+      WHERE key in ('DECDATA', 'DECMETA', 'MODEL') and (TARGET='Contributed_To_Accident');
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 13 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 13 records were written to the file LOOPFLOW.
+      The minimum record length was 11.
+      The maximum record length was 64.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 13 records were written to the file LOOPPUB.
+      The minimum record length was 11.
+      The maximum record length was 64.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=375,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPFLOW.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=375,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPPUB.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: Fileref X has been deassigned.
+NOTE: Fileref Y has been deassigned.
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=586,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPFLOW.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=586,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPPUB.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=801,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 124 records were written to the file LOOPFLOW.
+      The minimum record length was 1.
+      The maximum record length was 78.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: Fileref X has been deassigned.
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=801,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 100 records were written to the file LOOPPUB.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: Fileref Y has been deassigned.
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=6060,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPFLOW.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=5040,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 6 records were written to the file LOOPPUB.
+      The minimum record length was 14.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file LOOPFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPFLOWCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=6272,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 5 records were written to the file LOOPFLOW.
+      The minimum record length was 39.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file LOOPPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\LOOPPUBCODE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=5252,
+      Last Modified=23Nov2016:03:23:12,
+      Create Time=23Nov2016:03:23:12
+ 
+NOTE: 5 records were written to the file LOOPPUB.
+      The minimum record length was 39.
+      The maximum record length was 63.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: The file EMFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=23Nov2016:03:23:13,
+      Create Time=23Nov2016:03:23:13
+ 
+NOTE: 160 records were written to the file EMFLOW.
+      The minimum record length was 1.
+      The maximum record length was 78.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file EMPUB is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMPUBLISHSCORE.sas,
+      RECFM=V,LRECL=20000,File Size (bytes)=0,
+      Last Modified=23Nov2016:03:23:13,
+      Create Time=23Nov2016:03:23:13
+ 
+NOTE: 136 records were written to the file EMPUB.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.00 seconds
+ 
+ 
+NOTE: Fileref LOOPFLOW has been deassigned.
+NOTE: Fileref LOOPPUB has been deassigned.
+NOTE: Fileref EMPUB has been deassigned.
+ 
+NOTE: There were 15 observations read from the data set EMWS1.GRP_IMPORTSET.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: %INCLUDE (level 1) file EMFLOW is file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas.
+16216 +*------------------------------------------------------------*;
+16217 +* EndGrp: ;
+16218 +* User: Divya;
+16219 +* Date: 23NOV16: 03:23;
+16220 +*------------------------------------------------------------* ;
+16221 +* Ensemble Code;
+16222 +*------------------------------------------------------------* ;
+16223 +* Bagging: Loop=1;
+16224 +* Temporary Variables;
+16225 +drop _BagVar1;
+16226 +_BagVar1 = 0;
+16227 +drop _BagVar2;
+16228 +_BagVar2 = 0;
+16229 +*------------------------------------------------------------*;
+16230 +* Grp: StartGroup;
+16231 +* User: Divya;
+16232 +* Date: 23NOV16: 03:23;
+16233 +* Bagging: Loop=1;
+16234 +*------------------------------------------------------------*;
+16235 +*------------------------------------------------------------*;
+16236 +* Tree5: DecisionTree;
+16237 +* User: Divya;
+16238 +* Date: 23NOV16: 03:23;
+16239 +* Bagging: Loop=1;
+16240 +*------------------------------------------------------------*;
+16241 +****************************************************************;
+16242 +******             DECISION TREE SCORING CODE             ******;
+16243 +****************************************************************;
+16244 +
+16245 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+16246 +LENGTH F_Contributed_To_Accident  $    3;
+16247 +LENGTH I_Contributed_To_Accident  $    3;
+16248 +LENGTH U_Contributed_To_Accident  $    3;
+16249 +LENGTH _WARN_  $    4;
+16250 +
+16251 +******              LABELS FOR NEW VARIABLES              ******;
+16252 +label _NODE_ = 'Node' ;
+16253 +label _LEAF_ = 'Leaf' ;
+16254 +label P_Contributed_To_AccidentYes =
+16255 +'Predicted: Contributed_To_Accident=Yes' ;
+16256 +label P_Contributed_To_AccidentNo = 'Predicted: Contributed_To_Accident=No' ;
+16257 +label Q_Contributed_To_AccidentYes =
+16258 +'Unadjusted P: Contributed_To_Accident=Yes' ;
+16259 +label Q_Contributed_To_AccidentNo =
+16260 +'Unadjusted P: Contributed_To_Accident=No' ;
+16261 +label V_Contributed_To_AccidentYes =
+16262 +'Validated: Contributed_To_Accident=Yes' ;
+16263 +label V_Contributed_To_AccidentNo = 'Validated: Contributed_To_Accident=No' ;
+16264 +label R_Contributed_To_AccidentYes = 'Residual: Contributed_To_Accident=Yes' ;
+16265 +label R_Contributed_To_AccidentNo = 'Residual: Contributed_To_Accident=No' ;
+16266 +label F_Contributed_To_Accident = 'From: Contributed_To_Accident' ;
+16267 +label I_Contributed_To_Accident = 'Into: Contributed_To_Accident' ;
+16268 +label U_Contributed_To_Accident =
+16269 +'Unnormalized Into: Contributed_To_Accident' ;
+16270 +label _WARN_ = 'Warnings' ;
+16271 +
+16272 +
+16273 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+16274 +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+16275 +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+16276 +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+16277 +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+16278 +
+16279 +
+16280 +_ARBFMT_3 = PUT( Contributed_To_Accident , $3.);
+16281 + %DMNORMCP( _ARBFMT_3, F_Contributed_To_Accident );
+16282 +
+16283 +******             ASSIGN OBSERVATION TO NODE             ******;
+16284 +_ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16285 + %DMNORMIP( _ARBFMT_12);
+16286 +IF _ARBFMT_12 IN ('3' ) THEN DO;
+16287 +  _NODE_  =                    3;
+16288 +  _LEAF_  =                    4;
+16289 +  P_Contributed_To_AccidentYes  =     0.96969696969696;
+16290 +  P_Contributed_To_AccidentNo  =     0.03030303030303;
+16291 +  Q_Contributed_To_AccidentYes  =     0.96969696969696;
+16292 +  Q_Contributed_To_AccidentNo  =     0.03030303030303;
+16293 +  V_Contributed_To_AccidentYes  =      0.2156862745098;
+16294 +  V_Contributed_To_AccidentNo  =     0.78431372549019;
+16295 +  I_Contributed_To_Accident  = 'YES' ;
+16296 +  U_Contributed_To_Accident  = 'Yes' ;
+16297 +  END;
+16298 +ELSE DO;
+16299 +  _ARBFMT_12 = PUT( GRP_Personal_Injury , BEST12.);
+16300 +   %DMNORMIP( _ARBFMT_12);
+16301 +  IF _ARBFMT_12 IN ('3' ) THEN DO;
+16302 +    _NODE_  =                    5;
+16303 +    _LEAF_  =                    3;
+16304 +    P_Contributed_To_AccidentYes  =      0.9763779527559;
+16305 +    P_Contributed_To_AccidentNo  =     0.02362204724409;
+16306 +    Q_Contributed_To_AccidentYes  =      0.9763779527559;
+16307 +    Q_Contributed_To_AccidentNo  =     0.02362204724409;
+16308 +    V_Contributed_To_AccidentYes  =                    0;
+16309 +    V_Contributed_To_AccidentNo  =                    0;
+16310 +    I_Contributed_To_Accident  = 'YES' ;
+16311 +    U_Contributed_To_Accident  = 'Yes' ;
+16312 +    END;
+16313 +  ELSE DO;
+16314 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16315 +     %DMNORMIP( _ARBFMT_12);
+16316 +    IF _ARBFMT_12 IN ('3' ,'4' ) THEN DO;
+16317 +      _NODE_  =                    7;
+16318 +      _LEAF_  =                    2;
+16319 +      P_Contributed_To_AccidentYes  =     0.18579234972677;
+16320 +      P_Contributed_To_AccidentNo  =     0.81420765027322;
+16321 +      Q_Contributed_To_AccidentYes  =     0.18579234972677;
+16322 +      Q_Contributed_To_AccidentNo  =     0.81420765027322;
+16323 +      V_Contributed_To_AccidentYes  =     0.00302343159486;
+16324 +      V_Contributed_To_AccidentNo  =     0.99697656840514;
+16325 +      I_Contributed_To_Accident  = 'NO' ;
+16326 +      U_Contributed_To_Accident  = 'No' ;
+16327 +      END;
+16328 +    ELSE DO;
+16329 +      _NODE_  =                    6;
+16330 +      _LEAF_  =                    1;
+16331 +      P_Contributed_To_AccidentYes  =     0.38775510204081;
+16332 +      P_Contributed_To_AccidentNo  =     0.61224489795918;
+16333 +      Q_Contributed_To_AccidentYes  =     0.38775510204081;
+16334 +      Q_Contributed_To_AccidentNo  =     0.61224489795918;
+16335 +      V_Contributed_To_AccidentYes  =     0.02827289489858;
+16336 +      V_Contributed_To_AccidentNo  =     0.97172710510141;
+16337 +      I_Contributed_To_Accident  = 'NO' ;
+16338 +      U_Contributed_To_Accident  = 'No' ;
+16339 +      END;
+16340 +    END;
+16341 +  END;
+16342 +
+16343 +*****  RESIDUALS R_ *************;
+16344 +IF  F_Contributed_To_Accident  NE 'YES'
+16345 +AND F_Contributed_To_Accident  NE 'NO'  THEN DO;
+16346 +        R_Contributed_To_AccidentYes  = .;
+16347 +        R_Contributed_To_AccidentNo  = .;
+16348 + END;
+16349 + ELSE DO;
+16350 +       R_Contributed_To_AccidentYes  =  -P_Contributed_To_AccidentYes ;
+16351 +       R_Contributed_To_AccidentNo  =  -P_Contributed_To_AccidentNo ;
+16352 +       SELECT( F_Contributed_To_Accident  );
+16353 +          WHEN( 'YES'  ) R_Contributed_To_AccidentYes  =
+16354 +        R_Contributed_To_AccidentYes  +1;
+16355 +          WHEN( 'NO'  ) R_Contributed_To_AccidentNo  =
+16356 +        R_Contributed_To_AccidentNo  +1;
+16357 +       END;
+16358 + END;
+16359 +
+16360 +****************************************************************;
+16361 +******          END OF DECISION TREE SCORING CODE         ******;
+16362 +****************************************************************;
+16363 +
+16364 +drop _LEAF_;
+16365 +*------------------------------------------------------------*;
+16366 +* EndGrp: EndGroup;
+16367 +* User: Divya;
+16368 +* Date: 23NOV16: 03:23;
+16369 +* Bagging: Loop=1;
+16370 +*------------------------------------------------------------*;
+16371 +*------------------------------------------------------------*;
+16372 +* Bagging: Saving Probabilities for Next Iteration;
+16373 +*------------------------------------------------------------*;
+16374 +_BagVar1 = P_Contributed_To_AccidentYes;
+16375 +_BagVar2 = P_Contributed_To_AccidentNo;
+NOTE: %INCLUDE (level 1) ending.
+ 
+NOTE: DATA STEP view saved on file EMWS1.ENDGRP_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           0.18 seconds
+      cpu time            0.03 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.20 seconds
+      cpu time            0.03 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='PREDICTED';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_ in ('FROM', 'INTO');
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 0 observations read from the data set SASHELP.VFORMAT.
+      WHERE UPCASE(fmtname)='$3';
+NOTE: DATA statement used (Total process time):
+      real time           0.14 seconds
+      cpu time            0.12 seconds
+ 
+ 
+ 
+NOTE: The file EMFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=6538,
+      Last Modified=23Nov2016:03:23:13,
+      Create Time=23Nov2016:03:23:13
+ 
+NOTE: 24 records were written to the file EMFLOW.
+      The minimum record length was 4.
+      The maximum record length was 67.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_ in ('FROM', 'TARGET');
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='PREDICTED';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DM.
+      WHERE _TYPE_='RESIDUAL';
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+ 
+NOTE: The file EMFLOW is:
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas,
+      RECFM=V,LRECL=32767,File Size (bytes)=7377,
+      Last Modified=23Nov2016:03:23:14,
+      Create Time=23Nov2016:03:23:13
+ 
+NOTE: 23 records were written to the file EMFLOW.
+      The minimum record length was 3.
+      The maximum record length was 75.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+16376  data EndGrp_SCORE/view=EndGrp_SCORE;
+16377  set EMWS1.EndGrp_TRAIN;
+16378  run;
+ 
+NOTE: DATA STEP view saved on file WORK.ENDGRP_SCORE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.ENDGRP_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+ 
+ 
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DD.
+NOTE: The data set WORK.CONTRIBUTED_TO_ACCIDENT has 2 observations and 7 variables.
+NOTE: There were 2 observations read from the data set EMWS1.TREE5_CONTRIBUTED_TO_A_DD.
+NOTE: The data set WORK.CONTRIBUTED_TO_ACCIDENT has 2 observations and 7 variables.
+16379  *------------------------------------------------------------*;
+16380  * EndGrp: Create decision matrix;
+16381  *------------------------------------------------------------*;
+16382  data WORK.Contributed_To_Accident;
+16383    length   Contributed_To_Accident          $  32
+16384             COUNT                                8
+16385             DATAPRIOR                            8
+16386             TRAINPRIOR                           8
+16387             DECPRIOR                             8
+16388             DECISION1                            8
+16389             DECISION2                            8
+16390             ;
+16391
+16392    label    COUNT="Level Counts"
+16393             DATAPRIOR="Data Proportions"
+16394             TRAINPRIOR="Training Proportions"
+16395             DECPRIOR="Decision Priors"
+16396             DECISION1="YES"
+16397             DECISION2="NO"
+16398             ;
+16399    format   COUNT 10.
+16400             ;
+16401  Contributed_To_Accident="YES"; COUNT=515; DATAPRIOR=0.5009519992; TRAINPRIOR=0.53870292887029; DECPRIOR=.; DECISION1=1; DECISION2=0;
+16402  output;
+16403  Contributed_To_Accident="NO"; COUNT=441; DATAPRIOR=0.4990480008; TRAINPRIOR=0.4612970711297; DECPRIOR=.; DECISION1=0; DECISION2=1;
+16404  output;
+16405  ;
+16406  run;
+ 
+NOTE: The data set WORK.CONTRIBUTED_TO_ACCIDENT has 2 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16407  proc datasets lib=work nolist;
+16408  modify Contributed_To_Accident(type=PROFIT label=Contributed_To_Accident);
+16409  label DECISION1= 'YES';
+16410  label DECISION2= 'NO';
+16411  run;
+ 
+NOTE: MODIFY was successful for WORK.CONTRIBUTED_TO_ACCIDENT.DATA.
+16412  quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+ 
+ 
+16413  *------------------------------------------------------------*;
+16414  * EndGrp Generate decision score code;
+16415  *------------------------------------------------------------*;
+16416  run;
+ 
+NOTE: Fileref _DECFLOW has been deassigned.
+NOTE: %INCLUDE (level 1) file EMFLOW is file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas.
+16417 +*------------------------------------------------------------*;
+16418 +* EndGrp: ;
+16419 +* User: Divya;
+16420 +* Date: 23NOV16: 03:23;
+16421 +*------------------------------------------------------------* ;
+16422 +* Ensemble Code;
+16423 +*------------------------------------------------------------* ;
+16424 +* Bagging: Loop=1;
+16425 +* Temporary Variables;
+16426 +drop _BagVar1;
+16427 +_BagVar1 = 0;
+16428 +drop _BagVar2;
+16429 +_BagVar2 = 0;
+16430 +*------------------------------------------------------------*;
+16431 +* Grp: StartGroup;
+16432 +* User: Divya;
+16433 +* Date: 23NOV16: 03:23;
+16434 +* Bagging: Loop=1;
+16435 +*------------------------------------------------------------*;
+16436 +*------------------------------------------------------------*;
+16437 +* Tree5: DecisionTree;
+16438 +* User: Divya;
+16439 +* Date: 23NOV16: 03:23;
+16440 +* Bagging: Loop=1;
+16441 +*------------------------------------------------------------*;
+16442 +****************************************************************;
+16443 +******             DECISION TREE SCORING CODE             ******;
+16444 +****************************************************************;
+16445 +
+16446 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+16447 +LENGTH F_Contributed_To_Accident  $    3;
+16448 +LENGTH I_Contributed_To_Accident  $    3;
+16449 +LENGTH U_Contributed_To_Accident  $    3;
+16450 +LENGTH _WARN_  $    4;
+16451 +
+16452 +******              LABELS FOR NEW VARIABLES              ******;
+16453 +label _NODE_ = 'Node' ;
+16454 +label _LEAF_ = 'Leaf' ;
+16455 +label P_Contributed_To_AccidentYes =
+16456 +'Predicted: Contributed_To_Accident=Yes' ;
+16457 +label P_Contributed_To_AccidentNo = 'Predicted: Contributed_To_Accident=No' ;
+16458 +label Q_Contributed_To_AccidentYes =
+16459 +'Unadjusted P: Contributed_To_Accident=Yes' ;
+16460 +label Q_Contributed_To_AccidentNo =
+16461 +'Unadjusted P: Contributed_To_Accident=No' ;
+16462 +label V_Contributed_To_AccidentYes =
+16463 +'Validated: Contributed_To_Accident=Yes' ;
+16464 +label V_Contributed_To_AccidentNo = 'Validated: Contributed_To_Accident=No' ;
+16465 +label R_Contributed_To_AccidentYes = 'Residual: Contributed_To_Accident=Yes' ;
+16466 +label R_Contributed_To_AccidentNo = 'Residual: Contributed_To_Accident=No' ;
+16467 +label F_Contributed_To_Accident = 'From: Contributed_To_Accident' ;
+16468 +label I_Contributed_To_Accident = 'Into: Contributed_To_Accident' ;
+16469 +label U_Contributed_To_Accident =
+16470 +'Unnormalized Into: Contributed_To_Accident' ;
+16471 +label _WARN_ = 'Warnings' ;
+16472 +
+16473 +
+16474 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+16475 +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+16476 +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+16477 +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+16478 +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+16479 +
+16480 +
+16481 +_ARBFMT_3 = PUT( Contributed_To_Accident , $3.);
+16482 + %DMNORMCP( _ARBFMT_3, F_Contributed_To_Accident );
+16483 +
+16484 +******             ASSIGN OBSERVATION TO NODE             ******;
+16485 +_ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16486 + %DMNORMIP( _ARBFMT_12);
+16487 +IF _ARBFMT_12 IN ('3' ) THEN DO;
+16488 +  _NODE_  =                    3;
+16489 +  _LEAF_  =                    4;
+16490 +  P_Contributed_To_AccidentYes  =     0.96969696969696;
+16491 +  P_Contributed_To_AccidentNo  =     0.03030303030303;
+16492 +  Q_Contributed_To_AccidentYes  =     0.96969696969696;
+16493 +  Q_Contributed_To_AccidentNo  =     0.03030303030303;
+16494 +  V_Contributed_To_AccidentYes  =      0.2156862745098;
+16495 +  V_Contributed_To_AccidentNo  =     0.78431372549019;
+16496 +  I_Contributed_To_Accident  = 'YES' ;
+16497 +  U_Contributed_To_Accident  = 'Yes' ;
+16498 +  END;
+16499 +ELSE DO;
+16500 +  _ARBFMT_12 = PUT( GRP_Personal_Injury , BEST12.);
+16501 +   %DMNORMIP( _ARBFMT_12);
+16502 +  IF _ARBFMT_12 IN ('3' ) THEN DO;
+16503 +    _NODE_  =                    5;
+16504 +    _LEAF_  =                    3;
+16505 +    P_Contributed_To_AccidentYes  =      0.9763779527559;
+16506 +    P_Contributed_To_AccidentNo  =     0.02362204724409;
+16507 +    Q_Contributed_To_AccidentYes  =      0.9763779527559;
+16508 +    Q_Contributed_To_AccidentNo  =     0.02362204724409;
+16509 +    V_Contributed_To_AccidentYes  =                    0;
+16510 +    V_Contributed_To_AccidentNo  =                    0;
+16511 +    I_Contributed_To_Accident  = 'YES' ;
+16512 +    U_Contributed_To_Accident  = 'Yes' ;
+16513 +    END;
+16514 +  ELSE DO;
+16515 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16516 +     %DMNORMIP( _ARBFMT_12);
+16517 +    IF _ARBFMT_12 IN ('3' ,'4' ) THEN DO;
+16518 +      _NODE_  =                    7;
+16519 +      _LEAF_  =                    2;
+16520 +      P_Contributed_To_AccidentYes  =     0.18579234972677;
+16521 +      P_Contributed_To_AccidentNo  =     0.81420765027322;
+16522 +      Q_Contributed_To_AccidentYes  =     0.18579234972677;
+16523 +      Q_Contributed_To_AccidentNo  =     0.81420765027322;
+16524 +      V_Contributed_To_AccidentYes  =     0.00302343159486;
+16525 +      V_Contributed_To_AccidentNo  =     0.99697656840514;
+16526 +      I_Contributed_To_Accident  = 'NO' ;
+16527 +      U_Contributed_To_Accident  = 'No' ;
+16528 +      END;
+16529 +    ELSE DO;
+16530 +      _NODE_  =                    6;
+16531 +      _LEAF_  =                    1;
+16532 +      P_Contributed_To_AccidentYes  =     0.38775510204081;
+16533 +      P_Contributed_To_AccidentNo  =     0.61224489795918;
+16534 +      Q_Contributed_To_AccidentYes  =     0.38775510204081;
+16535 +      Q_Contributed_To_AccidentNo  =     0.61224489795918;
+16536 +      V_Contributed_To_AccidentYes  =     0.02827289489858;
+16537 +      V_Contributed_To_AccidentNo  =     0.97172710510141;
+16538 +      I_Contributed_To_Accident  = 'NO' ;
+16539 +      U_Contributed_To_Accident  = 'No' ;
+16540 +      END;
+16541 +    END;
+16542 +  END;
+16543 +
+16544 +*****  RESIDUALS R_ *************;
+16545 +IF  F_Contributed_To_Accident  NE 'YES'
+16546 +AND F_Contributed_To_Accident  NE 'NO'  THEN DO;
+16547 +        R_Contributed_To_AccidentYes  = .;
+16548 +        R_Contributed_To_AccidentNo  = .;
+16549 + END;
+16550 + ELSE DO;
+16551 +       R_Contributed_To_AccidentYes  =  -P_Contributed_To_AccidentYes ;
+16552 +       R_Contributed_To_AccidentNo  =  -P_Contributed_To_AccidentNo ;
+16553 +       SELECT( F_Contributed_To_Accident  );
+16554 +          WHEN( 'YES'  ) R_Contributed_To_AccidentYes  =
+16555 +        R_Contributed_To_AccidentYes  +1;
+16556 +          WHEN( 'NO'  ) R_Contributed_To_AccidentNo  =
+16557 +        R_Contributed_To_AccidentNo  +1;
+16558 +       END;
+16559 + END;
+16560 +
+16561 +****************************************************************;
+16562 +******          END OF DECISION TREE SCORING CODE         ******;
+16563 +****************************************************************;
+16564 +
+16565 +drop _LEAF_;
+16566 +*------------------------------------------------------------*;
+16567 +* EndGrp: EndGroup;
+16568 +* User: Divya;
+16569 +* Date: 23NOV16: 03:23;
+16570 +* Bagging: Loop=1;
+16571 +*------------------------------------------------------------*;
+16572 +*------------------------------------------------------------*;
+16573 +* Bagging: Saving Probabilities for Next Iteration;
+16574 +*------------------------------------------------------------*;
+16575 +_BagVar1 = P_Contributed_To_AccidentYes;
+16576 +_BagVar2 = P_Contributed_To_AccidentNo;
+16577 +*------------------------------------------------------------*;
+16578 +*Computing Classification Vars: Contributed_To_Accident;
+16579 +*------------------------------------------------------------*;
+16580 +length I_Contributed_To_Accident $3;
+16581 +label  I_Contributed_To_Accident = 'Into: Contributed_To_Accident';
+16582 +length _format200 $200;
+16583 +drop _format200;
+16584 +_format200= ' ' ;
+16585 +length _p_ 8;
+16586 +_p_= 0 ;
+16587 +drop _p_ ;
+16588 +if P_Contributed_To_AccidentYes - _p_ > 1e-8 then do ;
+16589 +   _p_= P_Contributed_To_AccidentYes ;
+16590 +   _format200='YES';
+16591 +end;
+16592 +if P_Contributed_To_AccidentNo - _p_ > 1e-8 then do ;
+16593 +   _p_= P_Contributed_To_AccidentNo ;
+16594 +   _format200='NO';
+16595 +end;
+16596 +I_Contributed_To_Accident=dmnorm(_format200,32); ;
+16597 +if I_Contributed_To_Accident='YES' then
+16598 +U_Contributed_To_Accident='YES';
+16599 +if I_Contributed_To_Accident='NO' then
+16600 +U_Contributed_To_Accident='NO';
+16601 +*------------------------------------------------------------*;
+16602 +*Computing Residual Vars: Contributed_To_Accident;
+16603 +*------------------------------------------------------------*;
+16604 +Length R_Contributed_To_AccidentYes 8;
+16605 +Label R_Contributed_To_AccidentYes='Residual: Contributed_To_Accident=Yes';
+16606 +Length R_Contributed_To_AccidentNo 8;
+16607 +Label R_Contributed_To_AccidentNo='Residual: Contributed_To_Accident=No';
+16608 +if
+16609 + F_Contributed_To_Accident ne 'YES'
+16610 +and F_Contributed_To_Accident ne 'NO'
+16611 + then do;
+16612 +R_Contributed_To_AccidentYes=.;
+16613 +R_Contributed_To_AccidentNo=.;
+16614 +end;
+16615 +else do;
+16616 +R_Contributed_To_AccidentYes= - P_Contributed_To_AccidentYes;
+16617 +R_Contributed_To_AccidentNo= - P_Contributed_To_AccidentNo;
+16618 +select(F_Contributed_To_Accident);
+16619 +when('YES')R_Contributed_To_AccidentYes= R_Contributed_To_AccidentYes+1;
+16620 +when('NO')R_Contributed_To_AccidentNo= R_Contributed_To_AccidentNo+1;
+16621 +otherwise;
+16622 +end;
+16623 +end;
+NOTE: %INCLUDE (level 1) ending.
+ 
+NOTE: DATA STEP view saved on file EMWS1.ENDGRP_TRAIN.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.STAT2_TRAIN.VIEW used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.05 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: %INCLUDE (level 1) file EMFLOW is file D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas.
+16624 +*------------------------------------------------------------*;
+16625 +* EndGrp: ;
+16626 +* User: Divya;
+16627 +* Date: 23NOV16: 03:23;
+16628 +*------------------------------------------------------------* ;
+16629 +* Ensemble Code;
+16630 +*------------------------------------------------------------* ;
+16631 +* Bagging: Loop=1;
+16632 +* Temporary Variables;
+16633 +drop _BagVar1;
+16634 +_BagVar1 = 0;
+16635 +drop _BagVar2;
+16636 +_BagVar2 = 0;
+16637 +*------------------------------------------------------------*;
+16638 +* Grp: StartGroup;
+16639 +* User: Divya;
+16640 +* Date: 23NOV16: 03:23;
+16641 +* Bagging: Loop=1;
+16642 +*------------------------------------------------------------*;
+16643 +*------------------------------------------------------------*;
+16644 +* Tree5: DecisionTree;
+16645 +* User: Divya;
+16646 +* Date: 23NOV16: 03:23;
+16647 +* Bagging: Loop=1;
+16648 +*------------------------------------------------------------*;
+16649 +****************************************************************;
+16650 +******             DECISION TREE SCORING CODE             ******;
+16651 +****************************************************************;
+16652 +
+16653 +******         LENGTHS OF NEW CHARACTER VARIABLES         ******;
+16654 +LENGTH F_Contributed_To_Accident  $    3;
+16655 +LENGTH I_Contributed_To_Accident  $    3;
+16656 +LENGTH U_Contributed_To_Accident  $    3;
+16657 +LENGTH _WARN_  $    4;
+16658 +
+16659 +******              LABELS FOR NEW VARIABLES              ******;
+16660 +label _NODE_ = 'Node' ;
+16661 +label _LEAF_ = 'Leaf' ;
+16662 +label P_Contributed_To_AccidentYes =
+16663 +'Predicted: Contributed_To_Accident=Yes' ;
+16664 +label P_Contributed_To_AccidentNo = 'Predicted: Contributed_To_Accident=No' ;
+16665 +label Q_Contributed_To_AccidentYes =
+16666 +'Unadjusted P: Contributed_To_Accident=Yes' ;
+16667 +label Q_Contributed_To_AccidentNo =
+16668 +'Unadjusted P: Contributed_To_Accident=No' ;
+16669 +label V_Contributed_To_AccidentYes =
+16670 +'Validated: Contributed_To_Accident=Yes' ;
+16671 +label V_Contributed_To_AccidentNo = 'Validated: Contributed_To_Accident=No' ;
+16672 +label R_Contributed_To_AccidentYes = 'Residual: Contributed_To_Accident=Yes' ;
+16673 +label R_Contributed_To_AccidentNo = 'Residual: Contributed_To_Accident=No' ;
+16674 +label F_Contributed_To_Accident = 'From: Contributed_To_Accident' ;
+16675 +label I_Contributed_To_Accident = 'Into: Contributed_To_Accident' ;
+16676 +label U_Contributed_To_Accident =
+16677 +'Unnormalized Into: Contributed_To_Accident' ;
+16678 +label _WARN_ = 'Warnings' ;
+16679 +
+16680 +
+16681 +******      TEMPORARY VARIABLES FOR FORMATTED VALUES      ******;
+16682 +LENGTH _ARBFMT_3 $      3; DROP _ARBFMT_3;
+16683 +_ARBFMT_3 = ' '; /* Initialize to avoid warning. */
+16684 +LENGTH _ARBFMT_12 $     12; DROP _ARBFMT_12;
+16685 +_ARBFMT_12 = ' '; /* Initialize to avoid warning. */
+16686 +
+16687 +
+16688 +_ARBFMT_3 = PUT( Contributed_To_Accident , $3.);
+16689 + %DMNORMCP( _ARBFMT_3, F_Contributed_To_Accident );
+16690 +
+16691 +******             ASSIGN OBSERVATION TO NODE             ******;
+16692 +_ARBFMT_12 = PUT( GRP_Property_Damage , BEST12.);
+16693 + %DMNORMIP( _ARBFMT_12);
+16694 +IF _ARBFMT_12 IN ('3' ) THEN DO;
+16695 +  _NODE_  =                    3;
+16696 +  _LEAF_  =                    4;
+16697 +  P_Contributed_To_AccidentYes  =     0.96969696969696;
+16698 +  P_Contributed_To_AccidentNo  =     0.03030303030303;
+16699 +  Q_Contributed_To_AccidentYes  =     0.96969696969696;
+16700 +  Q_Contributed_To_AccidentNo  =     0.03030303030303;
+16701 +  V_Contributed_To_AccidentYes  =      0.2156862745098;
+16702 +  V_Contributed_To_AccidentNo  =     0.78431372549019;
+16703 +  I_Contributed_To_Accident  = 'YES' ;
+16704 +  U_Contributed_To_Accident  = 'Yes' ;
+16705 +  END;
+16706 +ELSE DO;
+16707 +  _ARBFMT_12 = PUT( GRP_Personal_Injury , BEST12.);
+16708 +   %DMNORMIP( _ARBFMT_12);
+16709 +  IF _ARBFMT_12 IN ('3' ) THEN DO;
+16710 +    _NODE_  =                    5;
+16711 +    _LEAF_  =                    3;
+16712 +    P_Contributed_To_AccidentYes  =      0.9763779527559;
+16713 +    P_Contributed_To_AccidentNo  =     0.02362204724409;
+16714 +    Q_Contributed_To_AccidentYes  =      0.9763779527559;
+16715 +    Q_Contributed_To_AccidentNo  =     0.02362204724409;
+16716 +    V_Contributed_To_AccidentYes  =                    0;
+16717 +    V_Contributed_To_AccidentNo  =                    0;
+16718 +    I_Contributed_To_Accident  = 'YES' ;
+16719 +    U_Contributed_To_Accident  = 'Yes' ;
+16720 +    END;
+16721 +  ELSE DO;
+16722 +    _ARBFMT_12 = PUT( GRP_Violation_Type , BEST12.);
+16723 +     %DMNORMIP( _ARBFMT_12);
+16724 +    IF _ARBFMT_12 IN ('3' ,'4' ) THEN DO;
+16725 +      _NODE_  =                    7;
+16726 +      _LEAF_  =                    2;
+16727 +      P_Contributed_To_AccidentYes  =     0.18579234972677;
+16728 +      P_Contributed_To_AccidentNo  =     0.81420765027322;
+16729 +      Q_Contributed_To_AccidentYes  =     0.18579234972677;
+16730 +      Q_Contributed_To_AccidentNo  =     0.81420765027322;
+16731 +      V_Contributed_To_AccidentYes  =     0.00302343159486;
+16732 +      V_Contributed_To_AccidentNo  =     0.99697656840514;
+16733 +      I_Contributed_To_Accident  = 'NO' ;
+16734 +      U_Contributed_To_Accident  = 'No' ;
+16735 +      END;
+16736 +    ELSE DO;
+16737 +      _NODE_  =                    6;
+16738 +      _LEAF_  =                    1;
+16739 +      P_Contributed_To_AccidentYes  =     0.38775510204081;
+16740 +      P_Contributed_To_AccidentNo  =     0.61224489795918;
+16741 +      Q_Contributed_To_AccidentYes  =     0.38775510204081;
+16742 +      Q_Contributed_To_AccidentNo  =     0.61224489795918;
+16743 +      V_Contributed_To_AccidentYes  =     0.02827289489858;
+16744 +      V_Contributed_To_AccidentNo  =     0.97172710510141;
+16745 +      I_Contributed_To_Accident  = 'NO' ;
+16746 +      U_Contributed_To_Accident  = 'No' ;
+16747 +      END;
+16748 +    END;
+16749 +  END;
+16750 +
+16751 +*****  RESIDUALS R_ *************;
+16752 +IF  F_Contributed_To_Accident  NE 'YES'
+16753 +AND F_Contributed_To_Accident  NE 'NO'  THEN DO;
+16754 +        R_Contributed_To_AccidentYes  = .;
+16755 +        R_Contributed_To_AccidentNo  = .;
+16756 + END;
+16757 + ELSE DO;
+16758 +       R_Contributed_To_AccidentYes  =  -P_Contributed_To_AccidentYes ;
+16759 +       R_Contributed_To_AccidentNo  =  -P_Contributed_To_AccidentNo ;
+16760 +       SELECT( F_Contributed_To_Accident  );
+16761 +          WHEN( 'YES'  ) R_Contributed_To_AccidentYes  =
+16762 +        R_Contributed_To_AccidentYes  +1;
+16763 +          WHEN( 'NO'  ) R_Contributed_To_AccidentNo  =
+16764 +        R_Contributed_To_AccidentNo  +1;
+16765 +       END;
+16766 + END;
+16767 +
+16768 +****************************************************************;
+16769 +******          END OF DECISION TREE SCORING CODE         ******;
+16770 +****************************************************************;
+16771 +
+16772 +drop _LEAF_;
+16773 +*------------------------------------------------------------*;
+16774 +* EndGrp: EndGroup;
+16775 +* User: Divya;
+16776 +* Date: 23NOV16: 03:23;
+16777 +* Bagging: Loop=1;
+16778 +*------------------------------------------------------------*;
+16779 +*------------------------------------------------------------*;
+16780 +* Bagging: Saving Probabilities for Next Iteration;
+16781 +*------------------------------------------------------------*;
+16782 +_BagVar1 = P_Contributed_To_AccidentYes;
+16783 +_BagVar2 = P_Contributed_To_AccidentNo;
+16784 +*------------------------------------------------------------*;
+16785 +*Computing Classification Vars: Contributed_To_Accident;
+16786 +*------------------------------------------------------------*;
+16787 +length I_Contributed_To_Accident $3;
+16788 +label  I_Contributed_To_Accident = 'Into: Contributed_To_Accident';
+16789 +length _format200 $200;
+16790 +drop _format200;
+16791 +_format200= ' ' ;
+16792 +length _p_ 8;
+16793 +_p_= 0 ;
+16794 +drop _p_ ;
+16795 +if P_Contributed_To_AccidentYes - _p_ > 1e-8 then do ;
+16796 +   _p_= P_Contributed_To_AccidentYes ;
+16797 +   _format200='YES';
+16798 +end;
+16799 +if P_Contributed_To_AccidentNo - _p_ > 1e-8 then do ;
+16800 +   _p_= P_Contributed_To_AccidentNo ;
+16801 +   _format200='NO';
+16802 +end;
+16803 +I_Contributed_To_Accident=dmnorm(_format200,32); ;
+16804 +if I_Contributed_To_Accident='YES' then
+16805 +U_Contributed_To_Accident='YES';
+16806 +if I_Contributed_To_Accident='NO' then
+16807 +U_Contributed_To_Accident='NO';
+16808 +*------------------------------------------------------------*;
+16809 +*Computing Residual Vars: Contributed_To_Accident;
+16810 +*------------------------------------------------------------*;
+16811 +Length R_Contributed_To_AccidentYes 8;
+16812 +Label R_Contributed_To_AccidentYes='Residual: Contributed_To_Accident=Yes';
+16813 +Length R_Contributed_To_AccidentNo 8;
+16814 +Label R_Contributed_To_AccidentNo='Residual: Contributed_To_Accident=No';
+16815 +if
+16816 + F_Contributed_To_Accident ne 'YES'
+16817 +and F_Contributed_To_Accident ne 'NO'
+16818 + then do;
+16819 +R_Contributed_To_AccidentYes=.;
+16820 +R_Contributed_To_AccidentNo=.;
+16821 +end;
+16822 +else do;
+16823 +R_Contributed_To_AccidentYes= - P_Contributed_To_AccidentYes;
+16824 +R_Contributed_To_AccidentNo= - P_Contributed_To_AccidentNo;
+16825 +select(F_Contributed_To_Accident);
+16826 +when('YES')R_Contributed_To_AccidentYes= R_Contributed_To_AccidentYes+1;
+16827 +when('NO')R_Contributed_To_AccidentNo= R_Contributed_To_AccidentNo+1;
+16828 +otherwise;
+16829 +end;
+16830 +end;
+NOTE: %INCLUDE (level 1) ending.
+ 
+NOTE: DATA STEP view saved on file EMWS1.ENDGRP_VALIDATE.
+NOTE: A stored DATA STEP view cannot run under a different operating system.
+NOTE: View EMWS1.STAT2_VALIDATE.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+NOTE: DATA statement used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+ 
+ 
+NOTE: Fileref EMFLOW has been deassigned.
+16831  *------------------------------------------------------------*;
+16832  * End SCORE: EndGrp;
+16833  *------------------------------------------------------------*;
+16834
+ 
+16895  proc append base=EMWS1.EndGrp_EMOUTFIT data=WORK.OUTFITDATA force;
+16896  run;
+ 
+NOTE: Appending WORK.OUTFITDATA to EMWS1.ENDGRP_EMOUTFIT.
+NOTE: BASE data set does not exist. DATA file is being copied to BASE file.
+NOTE: There were 1 observations read from the data set WORK.OUTFITDATA.
+NOTE: The data set EMWS1.ENDGRP_EMOUTFIT has 1 observations and 19 variables.
+NOTE: PROCEDURE APPEND used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+16897  filename emflow "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMFLOWSCORE.sas";
+16898  filename lpflow catalog "EMWS1.EndGrp_LOOP.EMFLOWCODE_1.source";
+16899  %em_copyfile(infref=emflow, outfref=lpflow);
+ 
+NOTE: The file LPFLOW is:
+      Catalog Name=EMWS1.ENDGRP_LOOP.EMFLOWCODE_1.SOURCE,
+      Catalog Page Size=4096,
+      Number of Catalog Pages=5,
+      Created=Wed, Nov 23, 2016 03:23:17 AM,
+      Last Modified=Wed, Nov 23, 2016 03:23:17 AM,
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\endgrp_loop.sas7bcat,
+      Release Created=9.0401M3,
+      Host Created=X64_8HOME
+ 
+NOTE: 207 records were written to the file LPFLOW.
+      The minimum record length was 1.
+      The maximum record length was 78.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+16900  filename lpflow;
+NOTE: Fileref LPFLOW has been deassigned.
+16901  filename emflow;
+NOTE: Fileref EMFLOW has been deassigned.
+ 
+16902  filename empub "D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\EndGrp\EMPUBLISHSCORE.sas";
+16903  filename lppub catalog "EMWS1.EndGrp_LOOP.EMPUBLISHCODE_1.source";
+16904  %em_copyfile(infref=empub, outfref=lppub);
+ 
+NOTE: The file LPPUB is:
+      Catalog Name=EMWS1.ENDGRP_LOOP.EMPUBLISHCODE_1.SOURCE,
+      Catalog Page Size=4096,
+      Number of Catalog Pages=8,
+      Created=Wed, Nov 23, 2016 03:23:17 AM,
+      Last Modified=Wed, Nov 23, 2016 03:23:17 AM,
+      Filename=D:\ITM\SAS\Project 007 - traffic violations\SAS FInal\SAS Final\Workspaces\EMWS1\endgrp_loop.sas7bcat,
+      Release Created=9.0401M3,
+      Host Created=X64_8HOME
+ 
+NOTE: 136 records were written to the file LPPUB.
+      The minimum record length was 1.
+      The maximum record length was 77.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+16905  filename lppub;
+NOTE: Fileref LPPUB has been deassigned.
+16906  filename empub;
+NOTE: Fileref EMPUB has been deassigned.
+ 
+16907  *------------------------------------------------------------*;
+16908  * EndGrp: Computing metadata for TRAIN data;
+16909  *------------------------------------------------------------*;
+ 
+NOTE: View EMWS1.ENDGRP_TRAIN.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+17255  data WORK.MODELTEMP_INFO;
+17256  set EMWS1.EndGrp_EMINFO;
+17257  where DATA='EndGrp' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+17258  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.ENDGRP_EMINFO.
+      WHERE (DATA='EndGrp') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 1 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17259  data EMWS1.EndGrp_EMINFO;
+17260  length TARGET KEY $32 DATA $43;
+17261  input TARGET KEY DATA $;
+17262  cards;
+ 
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17266  run;
+17267  data EMWS1.EndGrp_EMINFO;
+17268  set EMWS1.EndGrp_EMINFO WORK.MODELTEMP_INFO;
+17269  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: There were 1 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17270  proc sort data = EMWS1.EndGrp_EMINFO NOTHREADS;
+17271  by TARGET KEY;
+17272  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 4 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17273  proc sort data = EMWS1.Tree5_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+17274  by TARGET KEY;
+17275  run;
+ 
+NOTE: There were 5 observations read from the data set EMWS1.TREE5_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 5 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17276  proc sort data = EMWS1.EndGrp_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+17277  by TARGET KEY;
+17278  run;
+ 
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 4 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 4 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17279  data EMWS1.EndGrp_EMINFO;
+17280  merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+17281  by TARGET KEY;
+17282  run;
+ 
+NOTE: There were 5 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 4 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 6 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17283  proc datasets lib=work nolist;
+17284  delete TEMP_INFO SORTEDEMINFO;
+17285  run;
+ 
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+17286  quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: View EMWS1.ENDGRP_TRAIN.VIEW used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.01 seconds
+ 
+17287  *------------------------------------------------------------*;
+17288  * EndGrp: Computing metadata for VALIDATE data;
+17289  *------------------------------------------------------------*;
+ 
+NOTE: View EMWS1.ENDGRP_VALIDATE.VIEW used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+17637  data WORK.MODELTEMP_INFO;
+17638  set EMWS1.EndGrp_EMINFO;
+17639  where DATA='EndGrp' and KEY ^in('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+17640  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.ENDGRP_EMINFO.
+      WHERE (DATA='EndGrp') and KEY not in ('DECDATA', 'DECMETA', 'IMPORTANCE', 'MODEL');
+NOTE: The data set WORK.MODELTEMP_INFO has 1 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+17641  data EMWS1.EndGrp_EMINFO;
+17642  length TARGET KEY $32 DATA $43;
+17643  input TARGET KEY DATA $;
+17644  cards;
+ 
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17648  run;
+17649  data EMWS1.EndGrp_EMINFO;
+17650  set EMWS1.EndGrp_EMINFO WORK.MODELTEMP_INFO;
+17651  run;
+ 
+NOTE: There were 3 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: There were 1 observations read from the data set WORK.MODELTEMP_INFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 4 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17652  proc sort data = EMWS1.EndGrp_EMINFO NOTHREADS;
+17653  by TARGET KEY;
+17654  run;
+ 
+NOTE: There were 4 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 4 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17655  proc sort data = EMWS1.Tree5_EMINFO OUT=WORK.SORTEDEMINFO NOTHREADS;
+17656  by TARGET KEY;
+17657  run;
+ 
+NOTE: There were 5 observations read from the data set EMWS1.TREE5_EMINFO.
+NOTE: The data set WORK.SORTEDEMINFO has 5 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17658  proc sort data = EMWS1.EndGrp_EMINFO OUT=WORK.TEMP_INFO NOTHREADS;
+17659  by TARGET KEY;
+17660  run;
+ 
+NOTE: Input data set is already sorted; it has been copied to the output data set.
+NOTE: There were 4 observations read from the data set EMWS1.ENDGRP_EMINFO.
+NOTE: The data set WORK.TEMP_INFO has 4 observations and 3 variables.
+NOTE: PROCEDURE SORT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17661  data EMWS1.EndGrp_EMINFO;
+17662  merge WORK.SORTEDEMINFO WORK.TEMP_INFO;
+17663  by TARGET KEY;
+17664  run;
+ 
+NOTE: There were 5 observations read from the data set WORK.SORTEDEMINFO.
+NOTE: There were 4 observations read from the data set WORK.TEMP_INFO.
+NOTE: The data set EMWS1.ENDGRP_EMINFO has 6 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17665  proc datasets lib=work nolist;
+17666  delete TEMP_INFO SORTEDEMINFO;
+17667  run;
+ 
+NOTE: Deleting WORK.TEMP_INFO (memtype=DATA).
+NOTE: Deleting WORK.SORTEDEMINFO (memtype=DATA).
+17668  quit;
+ 
+NOTE: PROCEDURE DATASETS used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 
+NOTE: View EMWS1.ENDGRP_VALIDATE.VIEW used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.04 seconds
+ 
+*------------------------------------------------------------*
+* Report Log
+Date:                November 23, 2016
+Time:                03:23:19
+*------------------------------------------------------------*
+17692  %let _cn = %sysfunc(getoption(CENTER));
+17693  options nocenter;
+17694  data EMWS1.EndGrp_EMEVENTREPORT;
+17695  length DATAROLE TARGET $32 TARGETLABEL $200 FALSENEVENT TRUENEVENT FALSEEVENT TRUEEVENT 8;
+17696  label DATAROLE = "%sysfunc(sasmsg(sashelp.dmine, rpt_datarole_vlabel ,    NOQUOTE))" TARGET = "%sysfunc(sasmsg(sashelp.dmine, rpt_target_vlabel ,      NOQUOTE))" TARGETLABEL = "%sysfunc(sasmsg(sashelp.dmine, meta_targetlabel_vlabel, NOQUOTE))"
+17696! FALSEEVENT
+17697  = "%sysfunc(sasmsg(sashelp.dmine, rpt_falseevent_vlabel ,  NOQUOTE))" FALSENEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_falsenevent_vlabel , NOQUOTE))" TRUEEVENT = "%sysfunc(sasmsg(sashelp.dmine, rpt_trueevent_vlabel ,   NOQUOTE))" TRUENEVENT =
+17698     "%sysfunc(sasmsg(sashelp.dmine, rpt_truenevent_vlabel ,  NOQUOTE))";
+17699  FALSEEVENT=0;
+17700  FALSENEVENT=0;
+17701  TRUEEVENT=0;
+17702  TRUENEVENT=0;
+17703  set EMWS1.EndGrp_EMEVENTREPORT;
+17704  run;
+ 
+NOTE: There were 2 observations read from the data set EMWS1.ENDGRP_EMEVENTREPORT.
+NOTE: The data set EMWS1.ENDGRP_EMEVENTREPORT has 2 observations and 7 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+ 
+ 
+17705  proc print data=EMWS1.EndGrp_EMEVENTREPORT noobs label;
+17706  title9 ' ';
+17707  title10 "%sysfunc(sasmsg(sashelp.dmine, rpt_eventtable_title    , NOQUOTE))";
+17708  by notsorted DATAROLE notsorted TARGET notsorted TARGETLABEL;
+17709  run;
+ 
+NOTE: There were 2 observations read from the data set EMWS1.ENDGRP_EMEVENTREPORT.
+NOTE: The PROCEDURE PRINT printed page 4.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+ 
+ 
+17710  title10;
+17711  options &_cn;
+ 
+17712  data temp;
+17713  length _LOOP_ 8 _WHERE_ $200;
+17714  format _LOOP_ 6.;
+17715  label _LOOP_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_loop_vlabel, NOQUOTE))" _WHERE_ = "%sysfunc(sasmsg(sashelp.dmine, rpt_where_vlabel, NOQUOTE))";
+17716  set EMWS1.EndGrp_EMOUTFIT;
+17717  _LOOP_ =1;
+17718  _WHERE_ ="";
+17719  run;
+ 
+NOTE: There were 1 observations read from the data set EMWS1.ENDGRP_EMOUTFIT.
+NOTE: The data set WORK.TEMP has 1 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+ 
+ 
+17720  data EMWS1.EndGrp_EMOUTFIT_LOOP;
+17721  set temp;
+17722  run;
+ 
+NOTE: There were 1 observations read from the data set WORK.TEMP.
+NOTE: The data set EMWS1.ENDGRP_EMOUTFIT_LOOP has 1 observations and 21 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+ 
+ 

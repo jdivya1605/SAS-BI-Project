@@ -1,0 +1,37 @@
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Variable Summary
+
+          Measurement    Frequency
+ Role        Level         Count
+
+INPUT       ORDINAL          3    
+TARGET      BINARY           1    
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Model Events
+
+                                                   Number
+                                    Measurement      of
+        Target             Event       Level       Levels      Order       Label
+
+Contributed_To_Accident     YES       BINARY          2      Descending         
+ 
+                                                                                                                                                                                                                                                                
+ 
+ 
+Predicted and decision variables
+
+Type                   Variable                              Label
+
+TARGET       Contributed_To_Accident                                               
+PREDICTED    P_Contributed_To_AccidentYes    Predicted: Contributed_To_Accident=Yes
+RESIDUAL     R_Contributed_To_AccidentYes    Residual: Contributed_To_Accident=Yes 
+PREDICTED    P_Contributed_To_AccidentNo     Predicted: Contributed_To_Accident=No 
+RESIDUAL     R_Contributed_To_AccidentNo     Residual: Contributed_To_Accident=No  
+FROM         F_Contributed_To_Accident       From: Contributed_To_Accident         
+INTO         I_Contributed_To_Accident       Into: Contributed_To_Accident         
